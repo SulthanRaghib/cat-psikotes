@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import DB from '@/lib/db';
 import bcrypt from 'bcryptjs';
 import { loginSession } from '@/lib/auth';
 
@@ -11,7 +11,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Username and password required' }, { status: 400 });
     }
 
-    const admin = db.prepare('SELECT * FROM admins WHERE username = ?').get(username) as any;
+    const admin = await DB.admins.findByUsername(username);
     if (!admin) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }

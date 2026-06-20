@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import DB from '@/lib/db';
 import { getSession } from '@/lib/auth';
 
 export async function PUT(request: Request, { params }: { params: { id: string } }) {
@@ -10,20 +10,13 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const id = params.id;
     const data = await request.json();
 
-    const stmt = db.prepare(`
-      UPDATE questions 
-      SET category = ?, question = ?, options = ?, correct_index = ?, explanation = ?
-      WHERE id = ?
-    `);
-
-    stmt.run(
-      data.category,
-      data.question,
-      JSON.stringify(data.options),
-      data.correct_index,
-      data.explanation,
-      id
-    );
+    await DB.questions.update(id, {
+      category: data.category,
+      question: data.question,
+      options: JSON.stringify(data.options),
+      correct_index: data.correct_index,
+      explanation: data.explanation
+    });
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
@@ -37,7 +30,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
 
   try {
     const id = params.id;
-    db.prepare('DELETE FROM questions WHERE id = ?').run(id);
+    await DB.questions.delete(id);
     return NextResponse.json({ success: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

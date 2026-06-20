@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import DB from '@/lib/db';
 import { Question } from '@/types';
 
 export async function GET(request: Request) {
@@ -15,15 +15,16 @@ export async function GET(request: Request) {
 
     const count = countParam ? parseInt(countParam, 10) : 20;
 
-    // Build the query
-    const placeholders = categories.map(() => '?').join(',');
-    const stmt = db.prepare(`SELECT * FROM questions WHERE category IN (${placeholders})`);
-    const rows = stmt.all(...categories) as any[];
+    // Fetch all questions from repository
+    const allQuestions = await DB.questions.getAll();
+
+    // Filter by requested categories
+    const filteredRows = allQuestions.filter(q => categories.includes(q.category));
 
     // Map and parse options
-    let questions: Question[] = rows.map((r) => ({
+    let questions: Question[] = filteredRows.map((r) => ({
       id: r.id,
-      category: r.category,
+      category: r.category as any,
       question: r.question,
       options: JSON.parse(r.options),
       correct_index: r.correct_index,

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import DB from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
@@ -10,44 +10,20 @@ export async function POST(request: Request) {
     const correctCount = answers.filter((a: any) => a.isCorrect).length;
     const percent = Math.round((correctCount / Math.max(totalQuestions, 1)) * 100);
 
-    const insertAttempt = db.prepare(`
-      INSERT INTO attempts (started_at, finished_at, total_questions, correct_count, percent, categories, timer_mode)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `);
+    const attemptData = {
+      startedAt,
+      finishedAt,
+      totalQuestions,
+      correctCount,
+      percent,
+      categories,
+      timerMode,
+      answers
+    };
 
-    const insertAnswer = db.prepare(`
-      INSERT INTO attempt_answers (attempt_id, question_id, chosen_index, is_correct)
-      VALUES (?, ?, ?, ?)
-    `);
+    const result = await DB.attempts.save(attemptData);
 
-    let attemptId: number | bigint = 0;
-
-    // Use transaction
-    const processAttempt = db.transaction(() => {
-      const result = insertAttempt.run(
-        startedAt,
-        finishedAt,
-        totalQuestions,
-        correctCount,
-        percent,
-        JSON.stringify(categories),
-        timerMode ? 1 : 0
-      );
-      attemptId = result.lastInsertRowid;
-
-      for (const ans of answers) {
-        insertAnswer.run(
-          attemptId,
-          ans.questionId,
-          ans.chosenIndex === null ? null : ans.chosenIndex,
-          ans.isCorrect ? 1 : 0
-        );
-      }
-    });
-
-    processAttempt();
-
-    return NextResponse.json({ id: attemptId, totalQuestions, correctCount, percent }, { status: 201 });
+    return NextResponse.json(result, { status: 201 });
   } catch (error: any) {
     console.error(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -59,10 +35,9 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit') as string, 10) : 8;
 
-    const stmt = db.prepare(`SELECT * FROM attempts ORDER BY finished_at DESC LIMIT ?`);
-    const rows = stmt.all(limit) as any[];
+    const recentAttempts = await DB.attempts.getRecent(limit);
 
-    const attempts = rows.map(r => ({
+    const attempts = recentAttempts.map(r => ({
       id: r.id,
       startedAt: r.started_at,
       finishedAt: r.finished_at,
@@ -82,7 +57,7 @@ export async function GET(request: Request) {
 
 export async function DELETE() {
   try {
-    db.prepare('DELETE FROM attempts').run();
+    await DB.attempts.deleteAll();
     return new NextResponse(null, { status: 204 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
