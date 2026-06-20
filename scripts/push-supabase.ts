@@ -1,14 +1,13 @@
 import { config } from 'dotenv';
 config({ path: '.env' });
-config({ path: '.env.local' });
 
 // Setup environment before importing providers
 process.env.DB_PROVIDER = 'sqlite'; // Force sqlite for local reading
 
-import { sqliteProvider } from '../src/lib/db/providers/sqlite';
-import { supabaseProvider } from '../src/lib/db/providers/supabase';
-
 async function pushData() {
+  const { sqliteProvider } = await import('../src/lib/db/providers/sqlite');
+  const { supabaseProvider } = await import('../src/lib/db/providers/supabase');
+
   if (!sqliteProvider.isReady) {
     console.error('❌ Error: Database SQLite lokal tidak siap.');
     process.exit(1);
