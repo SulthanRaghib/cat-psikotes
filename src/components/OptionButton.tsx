@@ -1,3 +1,7 @@
+import ReactMarkdown from 'react-markdown';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
+
 interface Props {
   letter: string;
   text: string;
@@ -31,7 +35,14 @@ export default function OptionButton({ letter, text, state, onClick }: Props) {
       disabled={state !== 'default'}
     >
       <div className={letterClass}>{letter}</div>
-      <span>{text}</span>
+      <div className="flex-1 prose dark:prose-invert prose-p:my-0 prose-p:inline-block max-w-none text-sm">
+        <ReactMarkdown 
+          remarkPlugins={[remarkMath]} 
+          rehypePlugins={[rehypeKatex]}
+        >
+          {text}
+        </ReactMarkdown>
+      </div>
     </button>
   );
 }
