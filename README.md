@@ -1,36 +1,138 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧠 CAT - Bank Soal Psikotes RTC
 
-## Getting Started
+Aplikasi **Computer Assisted Test (CAT)** modern berbasis web untuk mengelola dan menjalankan simulasi ujian psikotes. Dibangun dengan fokus pada kecepatan, kenyamanan baca (*UI/UX Premium*), keandalan sistem, serta skalabilitas tinggi menggunakan arsitektur *Multi-Environment Database*.
 
-First, run the development server:
+---
 
+## ✨ Fitur Utama
+
+### 🎓 Modul Ujian (Test Module)
+- **Kategori Dinamis**: Mendukung berbagai kategori tes (Numerik, Logika & Penalaran, Verbal, Situasional).
+- **Mode Timer Tersedia**: Menyediakan batasan waktu ujian yang dihitung mundur secara *real-time* dengan visualisasi yang menarik.
+- **Dukungan Matematika Kompleks**: Dapat memuat dan merender rumus matematika berat (pecahan, akar, kuadrat, dsb) dengan sempurna (*KaTeX/LaTeX Integration*).
+- **Navigasi Cerdas**: Panel grid soal interaktif untuk menandai, meloncati, atau meninjau ulang soal dengan mudah.
+- **Analisis & Rapor Ujian**: Skor otomatis, akurasi per kategori, dan umpan balik/pembahasan lengkap di akhir tes.
+
+### 🛡️ Modul Admin (Management Module)
+- **Keamanan Berlapis**: Proteksi sesi menggunakan JSON Web Tokens (JWT) & Bcrypt.
+- **Profil Admin & Ganti Password**: Dilengkapi antarmuka eksklusif berkeamanan ganda untuk mengubah sandi kredensial admin tanpa perlu menyentuh database secara langsung.
+- **Manajemen Bank Soal (CRUD)**: Antarmuka *dashboard* yang bersih untuk membuat, mengubah, atau menghapus soal.
+- **Import & Export Cerdas**: Anda bisa mengunduh *template* beserta contohnya, dan mengunggah ratusan soal sekaligus dalam format **CSV** maupun **JSON**.
+- **Mode Pratinjau**: Label berwarna untuk memudahkan pemilahan soal berdasarkan kategori secara visual.
+
+### ⚙️ Logic & Architecture
+- **Multi-Environment Database (DAL)**: 
+  - 🖥️ **Lokal**: Menggunakan **SQLite** untuk kecepatan pengembangan.
+  - ☁️ **Production**: Menggunakan **Supabase (PostgreSQL)** untuk *deployment* awan (seperti Vercel).
+  - 🚑 **Fallback/Dummy**: Sistem pengaman yang secara otomatis mengambil alih (*takeover*) jika database utama gagal tersambung, mencegah aplikasi lumpuh (500 Error).
+- **Otomatisasi Cloud (CLI Scripts)**: Kemampuan memompa data dari lokal ke *cloud* (Supabase) secara otomatis hanya dengan satu perintah eksekusi.
+- **Dark/Light Mode**: Kustomisasi tema terintegrasi secara menyeluruh.
+
+---
+
+## 🛠️ Teknologi yang Digunakan
+
+| Kategori | Teknologi |
+| :--- | :--- |
+| **Framework** | Next.js (App Router), React |
+| **Styling** | Tailwind CSS, Lucide React (Icons) |
+| **Database (Lokal)** | Better-SQLite3 |
+| **Database (Cloud)** | Supabase (PostgreSQL) |
+| **Keamanan** | Jose (JWT), BcryptJS |
+| **Parser & Renderer** | React-Markdown, KaTeX, PapaParse (CSV) |
+
+---
+
+## 🚀 Prasyarat Instalasi
+
+Pastikan sistem Anda telah memasang:
+- **Node.js** (Versi 18.17 atau lebih tinggi)
+- **NPM** atau **Yarn** atau **PNPM**
+- Terminal atau Command Prompt
+
+---
+
+## 📦 Panduan Instalasi & Penggunaan
+
+### 1. Kloning Repositori & Instal Dependensi
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <url-repositori-anda>
+cd cat-tes-psikotes-rtc-staff
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Konfigurasi Lingkungan (Environment Variables)
+Ubah nama file `.env.example` menjadi `.env` (atau buat file `.env` baru jika tidak ada), lalu sesuaikan nilainya:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+# Konfigurasi Database Utama Aplikasi
+# Pilihan: sqlite | supabase | dummy
+DB_PROVIDER="sqlite"
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Kredensial Default Admin (Digunakan oleh script seed)
+ADMIN_USERNAME="admin"
+ADMIN_PASSWORD="admin123"
 
-## Learn More
+# JWT Secret untuk Login
+JWT_SECRET="super-secret-key-psikotes-rtc-2026"
 
-To learn more about Next.js, take a look at the following resources:
+# Konfigurasi Supabase (Wajib diisi jika DB_PROVIDER="supabase")
+NEXT_PUBLIC_SUPABASE_URL=""
+SUPABASE_SERVICE_ROLE_KEY=""
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# (OPSIONAL) Untuk otomasi Terminal "npm run db:migrate:supabase" & "npm run db:push:supabase"
+# Salin Connection String (Bukan REST API) dari Settings > Database > Connection String di Supabase
+SUPABASE_DB_URL=""
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 3. Migrasi & Seeding Database (Lokal)
+Jalankan perintah berikut untuk mengisi database SQLite lokal Anda dengan kredensial admin secara otomatis:
+```bash
+npm run db:seed
+```
 
-## Deploy on Vercel
+### 4. Menjalankan Aplikasi (Development)
+```bash
+npm run dev
+```
+Aplikasi kini berjalan di: **http://localhost:3000** 🚀
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 5. (Lanjutan) Sinkronisasi ke Supabase (Cloud)
+Jika Anda sudah mengatur kredensial Supabase di `.env` dan siap meluncur ke *Production*:
+1. Jalankan `npm run db:migrate:supabase` untuk merakit struktur tabel.
+2. Jalankan `npm run db:push:supabase` untuk menyedot semua soal dari lokal dan memompanya ke Supabase!
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📂 Susunan Proyek (Project Structure)
+
+```text
+├── /data                # Lokasi penyimpanan database SQLite lokal (.db)
+├── /scripts             # Skrip otomatisasi (seeding admin)
+├── /src
+│   ├── /app             # Next.js App Router (Halaman & Rute API)
+│   │   ├── /admin       # Halaman dashboard admin
+│   │   ├── /api         # Endpoint REST API (auth, attempts, questions)
+│   │   └── /test        # Halaman simulasi ujian pengguna
+│   ├── /components      # Komponen UI React yang dapat digunakan ulang
+│   ├── /lib             # Utilitas sistem inti
+│   │   ├── /db          # Data Access Layer (DAL) & Providers (SQLite, Supabase, Dummy)
+│   │   └── auth.ts      # Pengelola Autentikasi & Sesi (JWT)
+│   └── /types           # Definisi TypeScript
+└── package.json         # Konfigurasi dependensi proyek
+```
+
+---
+
+## 💡 Contoh Penggunaan
+
+### Mengakses Dashboard Admin
+1. Buka browser dan arahkan ke `http://localhost:3000/admin`.
+2. Jika diminta login, masukkan kredensial yang ada di `.env` (Default: `admin` / `admin123`).
+3. Dari dashboard, Anda bisa menekan tombol **Import Data** untuk mengunggah soal dalam format CSV atau JSON.
+
+### Memulai Ujian
+1. Buka halaman utama `http://localhost:3000`.
+2. Klik tombol **Mulai Latihan Sekarang**.
+3. Centang kategori soal yang ingin diujikan, sesuaikan jumlah waktu, lalu klik **Mulai**.
+4. Selesaikan ujian dan lihat rincian skor serta pembahasan di layar hasil!
