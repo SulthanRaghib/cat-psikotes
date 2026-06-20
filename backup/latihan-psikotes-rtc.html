@@ -1,0 +1,1417 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan Psikotes — RTC Staff</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0f2a43;
+        --canvas: #eef2f1;
+        --panel: #ffffff;
+        --line: #d3dbda;
+        --accent: #e8821e;
+        --accent-deep: #c2660e;
+        --success: #1b8a5a;
+        --success-bg: #e4f4ec;
+        --danger: #c0392b;
+        --danger-bg: #fbeae8;
+        --num: #2e6f95;
+        --log: #6b4fa0;
+        --ver: #117a73;
+        --sit: #c2660e;
+        --text-muted: #5b6b72;
+        --radius: 14px;
+        font-size: 16px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--canvas);
+        color: var(--ink);
+        font-family: "Inter", system-ui, sans-serif;
+        line-height: 1.5;
+      }
+      h1,
+      h2,
+      h3,
+      .display {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        letter-spacing: -0.01em;
+      }
+      .mono {
+        font-family: "IBM Plex Mono", monospace;
+      }
+      #app {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 28px 18px 48px;
+      }
+      header.top {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 22px;
+      }
+      .mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .mark svg {
+        width: 24px;
+        height: 24px;
+      }
+      header.top h1 {
+        font-size: 1.15rem;
+        margin: 0;
+        color: var(--ink);
+        font-weight: 700;
+      }
+      header.top p {
+        margin: 2px 0 0;
+        font-size: 0.82rem;
+        color: var(--text-muted);
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 22px;
+        margin-bottom: 16px;
+      }
+      .hidden {
+        display: none !important;
+      }
+
+      /* ---- setup screen ---- */
+      .field-label {
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        margin: 0 0 10px;
+      }
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      .chip {
+        border: 1.5px solid var(--line);
+        background: #fff;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 0.86rem;
+        font-weight: 600;
+        cursor: pointer;
+        color: var(--text-muted);
+        transition:
+          border-color 0.15s,
+          color 0.15s,
+          background 0.15s;
+      }
+      .chip[aria-pressed="true"] {
+        border-color: var(--cat-color, var(--ink));
+        color: var(--cat-color, var(--ink));
+        background: color-mix(in srgb, var(--cat-color, var(--ink)) 10%, white);
+      }
+      .count-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 22px;
+      }
+      .count-btn {
+        flex: 1;
+        border: 1.5px solid var(--line);
+        background: #fff;
+        padding: 10px 0;
+        border-radius: 10px;
+        font-family: "IBM Plex Mono", monospace;
+        font-weight: 600;
+        cursor: pointer;
+        color: var(--ink);
+      }
+      .count-btn[aria-pressed="true"] {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: #fff;
+      }
+      .toggle-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 22px;
+        padding: 12px 14px;
+        background: var(--canvas);
+        border-radius: 10px;
+      }
+      .toggle-row span {
+        font-size: 0.86rem;
+        font-weight: 500;
+      }
+      .switch {
+        position: relative;
+        width: 42px;
+        height: 24px;
+        flex-shrink: 0;
+      }
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider-ui {
+        position: absolute;
+        inset: 0;
+        background: var(--line);
+        border-radius: 999px;
+        cursor: pointer;
+        transition: 0.15s;
+      }
+      .slider-ui:before {
+        content: "";
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        left: 3px;
+        top: 3px;
+        background: #fff;
+        border-radius: 50%;
+        transition: 0.15s;
+      }
+      .switch input:checked + .slider-ui {
+        background: var(--accent);
+      }
+      .switch input:checked + .slider-ui:before {
+        transform: translateX(18px);
+      }
+
+      button.primary {
+        width: 100%;
+        background: var(--ink);
+        color: #fff;
+        border: none;
+        padding: 14px;
+        border-radius: 10px;
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      button.primary:hover {
+        background: #163655;
+      }
+      button.primary:disabled {
+        background: var(--line);
+        cursor: not-allowed;
+      }
+      button.ghost {
+        width: 100%;
+        background: transparent;
+        color: var(--ink);
+        border: 1.5px solid var(--line);
+        padding: 12px;
+        border-radius: 10px;
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 600;
+        font-size: 0.92rem;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+
+      .history-block {
+        margin-top: 6px;
+      }
+      .history-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 9px 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 0.85rem;
+      }
+      .history-item:last-child {
+        border-bottom: none;
+      }
+      .history-score {
+        font-family: "IBM Plex Mono", monospace;
+        font-weight: 600;
+      }
+      .empty-note {
+        color: var(--text-muted);
+        font-size: 0.84rem;
+      }
+
+      /* ---- gauge ---- */
+      .gauge-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .gauge-readout {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        margin-top: -6px;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+      }
+      .gauge-readout strong {
+        color: var(--ink);
+      }
+      .timer-pill {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.78rem;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: var(--canvas);
+        color: var(--ink);
+        border: 1px solid var(--line);
+      }
+      .timer-pill.low {
+        background: var(--danger-bg);
+        color: var(--danger);
+        border-color: var(--danger);
+      }
+
+      /* ---- question ---- */
+      .badge {
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        padding: 4px 10px;
+        border-radius: 6px;
+        margin-bottom: 14px;
+      }
+      .q-text {
+        font-size: 1.05rem;
+        font-weight: 600;
+        margin: 0 0 18px;
+        color: var(--ink);
+      }
+      .options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .opt-btn {
+        text-align: left;
+        border: 1.5px solid var(--line);
+        background: #fff;
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-size: 0.92rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--ink);
+        transition:
+          border-color 0.15s,
+          background 0.15s;
+      }
+      .opt-btn .letter {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 1.5px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.74rem;
+        font-weight: 700;
+        flex-shrink: 0;
+        font-family: "IBM Plex Mono", monospace;
+      }
+      .opt-btn:hover:not(:disabled) {
+        border-color: var(--ink);
+      }
+      .opt-btn:disabled {
+        cursor: default;
+      }
+      .opt-btn.correct {
+        border-color: var(--success);
+        background: var(--success-bg);
+      }
+      .opt-btn.correct .letter {
+        background: var(--success);
+        border-color: var(--success);
+        color: #fff;
+      }
+      .opt-btn.wrong {
+        border-color: var(--danger);
+        background: var(--danger-bg);
+      }
+      .opt-btn.wrong .letter {
+        background: var(--danger);
+        border-color: var(--danger);
+        color: #fff;
+      }
+
+      .feedback {
+        margin-top: 16px;
+        padding: 14px;
+        border-radius: 10px;
+        font-size: 0.88rem;
+      }
+      .feedback.is-correct {
+        background: var(--success-bg);
+        color: #0e5c39;
+      }
+      .feedback.is-wrong {
+        background: var(--danger-bg);
+        color: #8c281c;
+      }
+      .feedback .fb-title {
+        font-weight: 700;
+        margin-bottom: 4px;
+        font-family: "Space Grotesk", sans-serif;
+      }
+
+      /* ---- result ---- */
+      .score-display {
+        text-align: center;
+        margin: 6px 0 18px;
+      }
+      .score-display .big {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 2.6rem;
+        font-weight: 700;
+        color: var(--ink);
+      }
+      .score-display .pct {
+        font-family: "IBM Plex Mono", monospace;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
+      .breakdown {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 18px 0;
+      }
+      .bd-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.85rem;
+      }
+      .bd-label {
+        width: 96px;
+        flex-shrink: 0;
+        font-weight: 600;
+      }
+      .bd-bar {
+        flex: 1;
+        height: 8px;
+        background: var(--canvas);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      .bd-fill {
+        height: 100%;
+        border-radius: 999px;
+      }
+      .bd-frac {
+        font-family: "IBM Plex Mono", monospace;
+        width: 42px;
+        text-align: right;
+        flex-shrink: 0;
+        color: var(--text-muted);
+      }
+
+      .review-item {
+        border-top: 1px solid var(--line);
+        padding: 14px 0;
+      }
+      .review-item:first-child {
+        border-top: none;
+      }
+      .review-q {
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+      }
+      .review-line {
+        font-size: 0.83rem;
+        margin: 3px 0;
+      }
+      .review-line.your {
+        color: var(--danger);
+      }
+      .review-line.correct {
+        color: var(--success);
+      }
+      .review-exp {
+        font-size: 0.83rem;
+        color: var(--text-muted);
+        margin-top: 6px;
+      }
+
+      footer.note {
+        font-size: 0.76rem;
+        color: var(--text-muted);
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <header class="top">
+        <div class="mark">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path
+              d="M5 19h11M5 19V8.5L11 4l6 4.5V19M9 19v-6h4v6M16 11l2.5 2v3.5a1.5 1.5 0 0 1-3 0"
+              stroke="#F2994A"
+              stroke-width="1.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+        <div>
+          <h1>Latihan Psikotes — RTC Staff</h1>
+          <p>
+            PT Elnusa Petrofin · Road Traffic Control · soal acak &amp; koreksi
+            otomatis
+          </p>
+        </div>
+      </header>
+
+      <!-- ============ SETUP SCREEN ============ -->
+      <section id="screen-setup">
+        <div class="card">
+          <p class="field-label">Kategori soal</p>
+          <div class="chip-row" id="category-chips"></div>
+
+          <p class="field-label">Jumlah soal per sesi</p>
+          <div class="count-row" id="count-row"></div>
+
+          <div class="toggle-row">
+            <span>Mode waktu (45 detik / soal)</span>
+            <label class="switch">
+              <input type="checkbox" id="timer-toggle" />
+              <span class="slider-ui"></span>
+            </label>
+          </div>
+
+          <button class="primary" id="btn-start">Mulai Latihan →</button>
+        </div>
+
+        <div class="card">
+          <p class="field-label">Riwayat latihan</p>
+          <div class="history-block" id="history-block">
+            <p class="empty-note">Memuat riwayat…</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ QUIZ SCREEN ============ -->
+      <section id="screen-quiz" class="hidden">
+        <div class="gauge-wrap">
+          <svg id="gauge-svg" viewBox="0 0 200 120" width="220">
+            <path
+              d="M20 100 A80 80 0 0 1 60 30.7"
+              stroke="#C0392B"
+              stroke-width="14"
+              fill="none"
+              stroke-linecap="round"
+              opacity="0.18"
+            />
+            <path
+              d="M60 30.7 A80 80 0 0 1 140 30.7"
+              stroke="#E8821E"
+              stroke-width="14"
+              fill="none"
+              opacity="0.18"
+            />
+            <path
+              d="M140 30.7 A80 80 0 0 1 180 100"
+              stroke="#1B8A5A"
+              stroke-width="14"
+              fill="none"
+              stroke-linecap="round"
+              opacity="0.18"
+            />
+            <text
+              x="14"
+              y="116"
+              font-family="IBM Plex Mono"
+              font-size="11"
+              fill="#5B6B72"
+            >
+              E
+            </text>
+            <text
+              x="180"
+              y="116"
+              font-family="IBM Plex Mono"
+              font-size="11"
+              fill="#5B6B72"
+            >
+              F
+            </text>
+            <g id="needle" transform="rotate(-90 100 100)">
+              <line
+                x1="100"
+                y1="100"
+                x2="100"
+                y2="32"
+                stroke="#0F2A43"
+                stroke-width="3"
+                stroke-linecap="round"
+              />
+            </g>
+            <circle cx="100" cy="100" r="7" fill="#0F2A43" />
+          </svg>
+          <div class="gauge-readout">
+            <span
+              >Soal <strong id="q-index">1</strong>/<span id="q-total"
+                >20</span
+              ></span
+            >
+            <span id="timer-pill" class="timer-pill hidden mono">45s</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="badge" id="q-badge">Numerik</span>
+          <p class="q-text" id="q-text">Pertanyaan</p>
+          <div class="options" id="q-options"></div>
+          <div class="feedback hidden" id="q-feedback"></div>
+        </div>
+
+        <button class="primary hidden" id="btn-next">Soal Berikutnya →</button>
+      </section>
+
+      <!-- ============ RESULT SCREEN ============ -->
+      <section id="screen-result" class="hidden">
+        <div class="card">
+          <div class="score-display">
+            <div class="big" id="res-score">16/20</div>
+            <div class="pct" id="res-pct">80%</div>
+          </div>
+          <p class="field-label">Rincian per kategori</p>
+          <div class="breakdown" id="res-breakdown"></div>
+        </div>
+
+        <div class="card">
+          <p class="field-label">Pembahasan soal yang terlewat</p>
+          <div id="res-review"></div>
+          <p class="empty-note hidden" id="res-review-empty">
+            Semua jawaban benar — mantap!
+          </p>
+        </div>
+
+        <button class="primary" id="btn-retry">
+          Coba Lagi (soal acak baru) →
+        </button>
+        <button class="ghost" id="btn-setup">Ubah Pengaturan</button>
+      </section>
+
+      <footer class="note">
+        Latihan ini dibuat sebagai simulasi mandiri dan tidak berafiliasi resmi
+        dengan PT Elnusa Petrofin.
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        const CATS = {
+          numerik: { label: "Numerik", color: "var(--num)" },
+          logika: { label: "Logika", color: "var(--log)" },
+          verbal: { label: "Verbal", color: "var(--ver)" },
+          situasional: { label: "Situasional", color: "var(--sit)" },
+        };
+
+        const QUESTIONS = [
+          // ---------- NUMERIK ----------
+          {
+            id: "n1",
+            cat: "numerik",
+            q: "Lanjutkan deret berikut: 2, 6, 12, 20, 30, ...",
+            opts: ["38", "40", "42", "44"],
+            correct: 2,
+            exp: "Selisih antar suku bertambah 2 setiap kali: +4, +6, +8, +10, +12. Maka 30 + 12 = 42.",
+          },
+          {
+            id: "n2",
+            cat: "numerik",
+            q: "Lanjutkan deret berikut: 5, 10, 8, 16, 14, 28, ...",
+            opts: ["24", "26", "30", "32"],
+            correct: 1,
+            exp: "Pola berulang: kali 2, lalu kurang 2, secara bergantian. Setelah 28 (hasil kali 2), langkah berikutnya adalah kurang 2: 28 − 2 = 26.",
+          },
+          {
+            id: "n3",
+            cat: "numerik",
+            q: "Sebuah truk tangki BBM berkapasitas 16.000 liter saat ini terisi 65%. Berapa liter yang sudah terisi?",
+            opts: [
+              "9.600 liter",
+              "10.400 liter",
+              "10.800 liter",
+              "11.200 liter",
+            ],
+            correct: 1,
+            exp: "65% × 16.000 = 10.400 liter.",
+          },
+          {
+            id: "n4",
+            cat: "numerik",
+            q: "Jarak Depot A ke SPBU B adalah 180 km. Truk melaju rata-rata 45 km/jam dan berangkat pukul 07.00 tanpa berhenti. Pukul berapa truk tiba?",
+            opts: ["10.00", "11.00", "11.30", "12.00"],
+            correct: 1,
+            exp: "Waktu tempuh = 180 ÷ 45 = 4 jam. 07.00 + 4 jam = 11.00.",
+          },
+          {
+            id: "n5",
+            cat: "numerik",
+            q: "Harga BBM Solar Rp6.800/liter. Sebuah SPBU membeli 12.000 liter. Berapa total biayanya?",
+            opts: [
+              "Rp78.600.000",
+              "Rp79.200.000",
+              "Rp81.600.000",
+              "Rp84.000.000",
+            ],
+            correct: 2,
+            exp: "6.800 × 12.000 = Rp81.600.000.",
+          },
+          {
+            id: "n6",
+            cat: "numerik",
+            q: "Perbandingan jumlah truk tangki kecil : besar di suatu depot adalah 3 : 5. Jika jumlah truk besar ada 40 unit, berapa jumlah truk kecil?",
+            opts: ["20", "24", "28", "30"],
+            correct: 1,
+            exp: "3/5 × 40 = 24 unit.",
+          },
+          {
+            id: "n7",
+            cat: "numerik",
+            q: "Lanjutkan deret huruf: A, C, F, J, O, ...",
+            opts: ["S", "T", "U", "V"],
+            correct: 2,
+            exp: "Posisi huruf: A(1), C(3, +2), F(6, +3), J(10, +4), O(15, +5), berikutnya +6 = 21, yaitu huruf U.",
+          },
+          {
+            id: "n8",
+            cat: "numerik",
+            q: "Satu pompa di SPBU dapat melayani 6 mobil per jam. Jika 2 pompa beroperasi bersamaan selama 3,5 jam, berapa mobil yang terlayani?",
+            opts: ["36", "40", "42", "45"],
+            correct: 2,
+            exp: "2 pompa × 6 mobil/jam = 12 mobil/jam. 12 × 3,5 jam = 42 mobil.",
+          },
+          {
+            id: "n9",
+            cat: "numerik",
+            q: "Tangki timbun berkapasitas 50.000 liter saat ini berisi 18.000 liter. Jika pemakaian rata-rata 3.000 liter/hari tanpa pengisian ulang, dalam berapa hari tangki akan kosong?",
+            opts: ["5 hari", "6 hari", "7 hari", "8 hari"],
+            correct: 1,
+            exp: "18.000 ÷ 3.000 = 6 hari.",
+          },
+          {
+            id: "n10",
+            cat: "numerik",
+            q: "15% dari 240, kemudian dikurangi 8, hasilnya adalah...",
+            opts: ["26", "28", "30", "32"],
+            correct: 1,
+            exp: "15% × 240 = 36. 36 − 8 = 28.",
+          },
+
+          // ---------- LOGIKA ----------
+          {
+            id: "l1",
+            cat: "logika",
+            q: "Semua sopir truk tangki wajib memiliki SIM B2. Budi adalah sopir truk tangki. Kesimpulan yang tepat adalah...",
+            opts: [
+              "Budi wajib memiliki SIM B2",
+              "Budi tidak perlu SIM B2",
+              "Semua sopir adalah Budi",
+              "Tidak dapat disimpulkan",
+            ],
+            correct: 0,
+            exp: "Ini adalah silogisme valid: semua anggota kelompok (sopir truk tangki) memenuhi syarat tertentu, dan Budi adalah anggota kelompok itu, sehingga syarat itu pasti berlaku padanya.",
+          },
+          {
+            id: "l2",
+            cat: "logika",
+            q: "Jika hari hujan, maka jalan menjadi licin. Hari ini jalan tidak licin. Kesimpulan yang tepat adalah...",
+            opts: [
+              "Hari ini hujan",
+              "Hari ini tidak hujan",
+              "Tidak dapat disimpulkan",
+              "Jalan basah",
+            ],
+            correct: 1,
+            exp: "Ini pola modus tollens: jika konsekuen (jalan licin) terbukti salah, maka anteseden (hujan) juga pasti salah.",
+          },
+          {
+            id: "l3",
+            cat: "logika",
+            q: "SPBU : BBM = Apotek : ...",
+            opts: ["Obat", "Dokter", "Resep", "Pasien"],
+            correct: 0,
+            exp: "SPBU adalah tempat menjual/menyalurkan BBM, sebagaimana apotek adalah tempat menjual/menyalurkan obat.",
+          },
+          {
+            id: "l4",
+            cat: "logika",
+            q: "Semua A adalah B. Sebagian B adalah C. Kesimpulan yang pasti benar adalah...",
+            opts: [
+              "Semua A adalah C",
+              "Sebagian A adalah C",
+              "Tidak dapat dipastikan hubungan antara A dan C",
+              "Tidak ada A yang merupakan C",
+            ],
+            correct: 2,
+            exp: "Karena hanya sebagian B yang berstatus C, kita tidak tahu apakah anggota A jatuh pada bagian B yang itu atau bukan — hubungan A dan C tidak dapat dipastikan dari premis ini.",
+          },
+          {
+            id: "l5",
+            cat: "logika",
+            q: "Lanjutkan deret: 3, 9, 27, 81, ...",
+            opts: ["162", "216", "243", "324"],
+            correct: 2,
+            exp: "Setiap suku dikalikan 3: 81 × 3 = 243.",
+          },
+          {
+            id: "l6",
+            cat: "logika",
+            q: "Manakah yang tidak sekelompok dengan yang lain: Solar, Pertalite, Pertamax, Oli, Minyak Tanah?",
+            opts: ["Solar", "Pertamax", "Oli", "Minyak Tanah"],
+            correct: 2,
+            exp: "Solar, Pertalite, Pertamax, dan Minyak Tanah adalah jenis bahan bakar (BBM), sedangkan Oli adalah pelumas, bukan bahan bakar.",
+          },
+          {
+            id: "l7",
+            cat: "logika",
+            q: "Semua RTC Staff bekerja dengan sistem shift. Andi bukan RTC Staff. Kesimpulan yang tepat adalah...",
+            opts: [
+              "Andi tidak bekerja shift",
+              "Andi bekerja shift",
+              "Tidak dapat disimpulkan apakah Andi bekerja shift",
+              "Andi adalah RTC Staff",
+            ],
+            correct: 2,
+            exp: "Pernyataan awal hanya menjamin RTC Staff bekerja shift; tidak menjelaskan pekerjaan lain yang juga shift. Menyimpulkan Andi pasti tidak shift adalah kesalahan logika (penyangkalan anteseden).",
+          },
+          {
+            id: "l8",
+            cat: "logika",
+            q: "Lengkapi alur distribusi BBM: Depot → ... → SPBU → Konsumen",
+            opts: [
+              "Transportasi/Pengangkutan BBM",
+              "Produksi BBM",
+              "Penambangan minyak mentah",
+              "Ekspor",
+            ],
+            correct: 0,
+            exp: "Setelah BBM keluar dari depot, tahap berikutnya sebelum sampai ke SPBU adalah proses pengangkutan/transportasi menggunakan truk tangki — inilah area yang dipantau oleh RTC Staff.",
+          },
+          {
+            id: "l9",
+            cat: "logika",
+            q: "Jika A lebih cepat dari B, dan B lebih cepat dari C, maka C ... dibanding A.",
+            opts: [
+              "lebih lambat",
+              "lebih cepat",
+              "sama cepat",
+              "tidak dapat ditentukan",
+            ],
+            correct: 0,
+            exp: "Hubungan transitif: A > B > C dalam kecepatan, sehingga C pasti lebih lambat dari A.",
+          },
+          {
+            id: "l10",
+            cat: "logika",
+            q: "Jika SOP keselamatan dipatuhi, maka risiko kecelakaan berkurang. Pada kenyataannya risiko kecelakaan di suatu depot tidak berkurang. Kesimpulan yang tepat adalah...",
+            opts: [
+              "SOP keselamatan dipatuhi",
+              "SOP keselamatan tidak dipatuhi",
+              "Risiko kecelakaan selalu ada",
+              "Tidak dapat disimpulkan",
+            ],
+            correct: 1,
+            exp: "Modus tollens: karena akibat yang diharapkan (risiko berkurang) tidak terjadi, maka syaratnya (SOP dipatuhi) pasti tidak terpenuhi.",
+          },
+
+          // ---------- VERBAL ----------
+          {
+            id: "v1",
+            cat: "verbal",
+            q: "Sinonim kata KOORDINASI adalah...",
+            opts: ["Penyelarasan", "Perselisihan", "Pemisahan", "Pengabaian"],
+            correct: 0,
+            exp: "Koordinasi berarti mengatur/menyelaraskan kegiatan agar berjalan selaras, sehingga sinonimnya adalah penyelarasan.",
+          },
+          {
+            id: "v2",
+            cat: "verbal",
+            q: "Antonim kata EFISIEN adalah...",
+            opts: ["Boros", "Hemat", "Cepat", "Tepat"],
+            correct: 0,
+            exp: "Efisien berarti hemat dalam penggunaan sumber daya; lawan katanya adalah boros.",
+          },
+          {
+            id: "v3",
+            cat: "verbal",
+            q: "Sinonim kata MONITORING adalah...",
+            opts: ["Pengawasan", "Pengabaian", "Perbaikan", "Produksi"],
+            correct: 0,
+            exp: "Monitoring berarti memantau atau mengawasi suatu proses secara berkelanjutan.",
+          },
+          {
+            id: "v4",
+            cat: "verbal",
+            q: "Antonim kata KELALAIAN adalah...",
+            opts: ["Kecermatan", "Kecerobohan", "Kelambatan", "Kerusakan"],
+            correct: 0,
+            exp: "Kelalaian berarti sikap kurang hati-hati; lawan katanya adalah kecermatan atau kehati-hatian.",
+          },
+          {
+            id: "v5",
+            cat: "verbal",
+            q: "PILOT : PESAWAT = SOPIR : ...",
+            opts: ["Kendaraan", "Jalan raya", "SIM", "Bahan bakar"],
+            correct: 0,
+            exp: "Pilot mengoperasikan pesawat, sebagaimana sopir mengoperasikan kendaraan.",
+          },
+          {
+            id: "v6",
+            cat: "verbal",
+            q: "Sinonim kata DISTRIBUSI adalah...",
+            opts: ["Penyaluran", "Penyimpanan", "Pengumpulan", "Produksi"],
+            correct: 0,
+            exp: "Distribusi berarti proses penyaluran barang dari satu pihak ke pihak lain.",
+          },
+          {
+            id: "v7",
+            cat: "verbal",
+            q: "Antonim kata PROAKTIF adalah...",
+            opts: ["Reaktif", "Aktif", "Dinamis", "Responsif"],
+            correct: 0,
+            exp: "Proaktif berarti bertindak lebih dulu mengantisipasi masalah; lawan katanya adalah reaktif, yaitu baru bertindak setelah masalah terjadi.",
+          },
+          {
+            id: "v8",
+            cat: "verbal",
+            q: "Makna kata EVAKUASI yang paling tepat adalah...",
+            opts: [
+              "Pemindahan orang/barang ke tempat aman saat kondisi bahaya",
+              "Perbaikan kendaraan yang rusak",
+              "Pengisian ulang bahan bakar",
+              "Pelaporan kegiatan rutin harian",
+            ],
+            correct: 0,
+            exp: "Evakuasi adalah proses memindahkan orang atau barang dari lokasi berbahaya ke tempat yang lebih aman.",
+          },
+          {
+            id: "v9",
+            cat: "verbal",
+            q: "DOKTER : PASIEN = RTC STAFF : ...",
+            opts: [
+              "Armada/truk tangki yang dipantau",
+              "Pasien",
+              "Resep obat",
+              "Rumah sakit",
+            ],
+            correct: 0,
+            exp: "Dokter menangani/memantau kondisi pasien, sebagaimana RTC Staff memantau kondisi dan pergerakan armada truk tangki.",
+          },
+          {
+            id: "v10",
+            cat: "verbal",
+            q: "Sinonim kata KOMPETEN adalah...",
+            opts: ["Cakap", "Lemah", "Ragu", "Baru"],
+            correct: 0,
+            exp: "Kompeten berarti memiliki kemampuan/kecakapan yang memadai untuk suatu tugas.",
+          },
+
+          // ---------- SITUASIONAL ----------
+          {
+            id: "s1",
+            cat: "situasional",
+            q: "Saat memantau GPS armada, Anda melihat satu truk tangki keluar dari rute yang ditentukan tanpa pemberitahuan. Apa langkah pertama yang paling tepat?",
+            opts: [
+              "Membiarkannya karena mungkin ada alasan tertentu",
+              "Segera menghubungi sopir untuk konfirmasi dan mencatat sesuai prosedur",
+              "Langsung melaporkan ke media sosial perusahaan",
+              "Menunggu sampai truk kembali ke rute dengan sendirinya",
+            ],
+            correct: 1,
+            exp: "Sebagai pemantau lalu lintas armada, respons proaktif berupa klarifikasi langsung dan pencatatan sesuai SOP adalah sikap yang menunjukkan tanggung jawab dan kepedulian terhadap keselamatan.",
+          },
+          {
+            id: "s2",
+            cat: "situasional",
+            q: "Anda menemukan data laporan pengiriman yang tidak sesuai dengan catatan GPS. Apa yang sebaiknya dilakukan?",
+            opts: [
+              "Mengabaikannya karena selisihnya kecil",
+              "Memperbaiki data sendiri agar terlihat rapi",
+              "Memverifikasi ulang lalu melaporkan ketidaksesuaian kepada pihak terkait",
+              "Menunggu ditegur atasan baru bertindak",
+            ],
+            correct: 2,
+            exp: "Ketelitian dan integritas data sangat penting dalam operasi distribusi BBM. Verifikasi dan pelaporan sesuai jalur resmi mencegah kesalahan data tersembunyi yang bisa berdampak besar.",
+          },
+          {
+            id: "s3",
+            cat: "situasional",
+            q: "Rekan kerja Anda kewalahan memantau banyak armada sekaligus saat shift sibuk. Sikap terbaik Anda adalah...",
+            opts: [
+              "Membantu sesuai kapasitas dan berkoordinasi dengannya",
+              "Membiarkan karena bukan tugas Anda",
+              "Melaporkan kelambanannya ke atasan tanpa membantu",
+              "Fokus pada pekerjaan sendiri sepenuhnya",
+            ],
+            correct: 0,
+            exp: "Kerja sama tim adalah nilai penting di lingkungan kerja yang padat dan berisiko tinggi seperti pemantauan distribusi BBM; saling membantu menjaga kelancaran operasi secara keseluruhan.",
+          },
+          {
+            id: "s4",
+            cat: "situasional",
+            q: "Anda mendapat tekanan waktu untuk segera menyelesaikan laporan, namun ada data yang masih meragukan. Apa yang Anda lakukan?",
+            opts: [
+              "Tetap mengirim laporan apa adanya agar tidak terlambat",
+              "Memastikan keakuratan data lebih dulu meski perlu waktu tambahan",
+              "Mengisi data meragukan dengan perkiraan sendiri",
+              "Meminta rekan lain menyelesaikan laporan tanpa pengecekan",
+            ],
+            correct: 1,
+            exp: "Akurasi data terkait operasional BBM lebih diutamakan daripada kecepatan semata, karena kesalahan data dapat berdampak pada keselamatan dan pengambilan keputusan.",
+          },
+          {
+            id: "s5",
+            cat: "situasional",
+            q: "Anda menyadari ada indikasi truk tangki melebihi batas kecepatan secara berulang. Tindakan paling tepat adalah...",
+            opts: [
+              "Mengabaikan karena truk belum pernah mengalami insiden",
+              "Mendokumentasikan kejadian dan melaporkannya ke pihak berwenang sesuai SOP",
+              "Menegur sopir secara pribadi tanpa pencatatan",
+              "Menunggu insiden benar-benar terjadi baru bertindak",
+            ],
+            correct: 1,
+            exp: "Pendokumentasian dan pelaporan sesuai SOP keselamatan (HSE) adalah langkah preventif yang tepat untuk mencegah potensi kecelakaan sebelum terjadi.",
+          },
+          {
+            id: "s6",
+            cat: "situasional",
+            q: "Atasan memberi tugas baru di luar deskripsi kerja biasa secara mendadak. Sikap yang mencerminkan profesionalisme adalah...",
+            opts: [
+              "Menolak karena bukan tanggung jawab utama",
+              "Menerima dengan terbuka, mengonfirmasi prioritas, dan mengerjakannya secara bertanggung jawab",
+              "Mengerjakan asal-asalan karena bukan tugas rutin",
+              "Menunda tanpa memberi kabar",
+            ],
+            correct: 1,
+            exp: "Fleksibilitas dan komunikasi yang baik terhadap perubahan prioritas kerja adalah sikap profesional yang dicari dalam lingkungan kerja operasional yang dinamis.",
+          },
+          {
+            id: "s7",
+            cat: "situasional",
+            q: "Terjadi insiden kecil (nearmiss) tanpa kerusakan atau cedera. Apakah perlu dilaporkan?",
+            opts: [
+              "Tidak perlu, karena tidak ada kerugian",
+              "Ya, tetap dilaporkan sesuai budaya HSE karena nearmiss adalah indikator dini risiko",
+              "Cukup dibicarakan secara informal",
+              "Hanya dilaporkan jika ditanya atasan",
+            ],
+            correct: 1,
+            exp: "Pelaporan nearmiss adalah bagian penting dari budaya keselamatan (HSE) untuk mencegah insiden serupa terjadi dengan dampak yang lebih besar di kemudian hari.",
+          },
+          {
+            id: "s8",
+            cat: "situasional",
+            q: "Anda menerima dua instruksi berbeda dari dua atasan terkait prioritas pekerjaan hari itu. Tindakan terbaik adalah...",
+            opts: [
+              "Memilih salah satu sesuai penilaian sendiri tanpa konfirmasi",
+              "Mengerjakan keduanya secara bersamaan tanpa klarifikasi",
+              "Mengklarifikasi langsung kepada kedua pihak untuk menyamakan prioritas",
+              "Mengabaikan keduanya sampai ada instruksi tunggal",
+            ],
+            correct: 2,
+            exp: "Klarifikasi langsung mencegah miskomunikasi dan memastikan pekerjaan dikerjakan sesuai prioritas yang disepakati bersama.",
+          },
+          {
+            id: "s9",
+            cat: "situasional",
+            q: "Anda harus memantau data dalam jumlah besar secara berulang dalam waktu lama. Sikap yang mendukung kinerja optimal adalah...",
+            opts: [
+              "Bekerja secepat mungkin tanpa jeda agar cepat selesai",
+              "Menjaga fokus dan konsistensi, mengambil jeda sewajarnya, serta menggunakan checklist",
+              "Mengurangi cakupan pemantauan agar tidak lelah",
+              "Mendelegasikan seluruh tugas ke rekan lain",
+            ],
+            correct: 1,
+            exp: "Pekerjaan pemantauan yang repetitif memerlukan strategi menjaga fokus jangka panjang, seperti penggunaan checklist dan jeda sewajarnya, agar ketelitian tetap terjaga.",
+          },
+          {
+            id: "s10",
+            cat: "situasional",
+            q: "Anda melihat pelanggaran SOP dilakukan oleh rekan kerja yang lebih senior. Sikap yang tepat adalah...",
+            opts: [
+              "Diam saja karena dia lebih senior",
+              "Tetap menyampaikan/melaporkan sesuai prosedur, karena SOP berlaku untuk semua",
+              "Membicarakannya ke rekan lain tanpa melapor resmi",
+              "Menunggu pelanggaran terjadi berulang baru bertindak",
+            ],
+            correct: 1,
+            exp: "Kepatuhan terhadap SOP keselamatan berlaku untuk semua pihak tanpa terkecuali; melaporkan pelanggaran sesuai prosedur mencerminkan integritas, bukan ketidaksopanan.",
+          },
+        ];
+
+        // ---------------- state ----------------
+        let selectedCats = new Set(Object.keys(CATS));
+        let selectedCount = 20;
+        let timerMode = false;
+        let session = [];
+        let qIndex = 0;
+        let score = 0;
+        let answers = []; // {q, chosen, correct}
+        let answered = false;
+        let timerInterval = null;
+        let timeLeft = 45;
+
+        // ---------------- elements ----------------
+        const screenSetup = document.getElementById("screen-setup");
+        const screenQuiz = document.getElementById("screen-quiz");
+        const screenResult = document.getElementById("screen-result");
+        const catChips = document.getElementById("category-chips");
+        const countRow = document.getElementById("count-row");
+        const timerToggle = document.getElementById("timer-toggle");
+        const btnStart = document.getElementById("btn-start");
+        const historyBlock = document.getElementById("history-block");
+
+        const needle = document.getElementById("needle");
+        const qIndexEl = document.getElementById("q-index");
+        const qTotalEl = document.getElementById("q-total");
+        const timerPill = document.getElementById("timer-pill");
+        const qBadge = document.getElementById("q-badge");
+        const qText = document.getElementById("q-text");
+        const qOptions = document.getElementById("q-options");
+        const qFeedback = document.getElementById("q-feedback");
+        const btnNext = document.getElementById("btn-next");
+
+        const resScore = document.getElementById("res-score");
+        const resPct = document.getElementById("res-pct");
+        const resBreakdown = document.getElementById("res-breakdown");
+        const resReview = document.getElementById("res-review");
+        const resReviewEmpty = document.getElementById("res-review-empty");
+        const btnRetry = document.getElementById("btn-retry");
+        const btnSetup = document.getElementById("btn-setup");
+
+        // ---------------- setup screen build ----------------
+        Object.entries(CATS).forEach(([key, meta]) => {
+          const chip = document.createElement("button");
+          chip.className = "chip";
+          chip.type = "button";
+          chip.style.setProperty("--cat-color", meta.color);
+          chip.textContent = meta.label;
+          chip.setAttribute("aria-pressed", "true");
+          chip.addEventListener("click", () => {
+            if (selectedCats.has(key)) {
+              if (selectedCats.size === 1) return; // keep at least one
+              selectedCats.delete(key);
+              chip.setAttribute("aria-pressed", "false");
+            } else {
+              selectedCats.add(key);
+              chip.setAttribute("aria-pressed", "true");
+            }
+          });
+          catChips.appendChild(chip);
+        });
+
+        [10, 20, 30, 40].forEach((n) => {
+          const b = document.createElement("button");
+          b.className = "count-btn";
+          b.type = "button";
+          b.textContent = n;
+          b.setAttribute(
+            "aria-pressed",
+            n === selectedCount ? "true" : "false",
+          );
+          b.addEventListener("click", () => {
+            selectedCount = n;
+            [...countRow.children].forEach((c) =>
+              c.setAttribute("aria-pressed", "false"),
+            );
+            b.setAttribute("aria-pressed", "true");
+          });
+          countRow.appendChild(b);
+        });
+
+        timerToggle.addEventListener("change", () => {
+          timerMode = timerToggle.checked;
+        });
+
+        function shuffle(arr) {
+          const a = arr.slice();
+          for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+          }
+          return a;
+        }
+
+        // ---------------- storage / history ----------------
+        const HISTORY_KEY = "rtc_quiz_history";
+
+        async function loadHistory() {
+          try {
+            const res = await window.storage.get(HISTORY_KEY, false);
+            return res ? JSON.parse(res.value) : [];
+          } catch (e) {
+            return [];
+          }
+        }
+
+        async function saveHistoryEntry(entry) {
+          try {
+            const list = await loadHistory();
+            list.unshift(entry);
+            const trimmed = list.slice(0, 8);
+            await window.storage.set(
+              HISTORY_KEY,
+              JSON.stringify(trimmed),
+              false,
+            );
+          } catch (e) {
+            // storage unavailable — fail silently, scoring still works this session
+          }
+        }
+
+        async function renderHistory() {
+          const list = await loadHistory();
+          historyBlock.innerHTML = "";
+          if (!list.length) {
+            historyBlock.innerHTML =
+              '<p class="empty-note">Belum ada riwayat. Selesaikan satu sesi latihan untuk mulai mencatat progres Anda.</p>';
+            return;
+          }
+          list.forEach((item) => {
+            const row = document.createElement("div");
+            row.className = "history-item";
+            row.innerHTML = `<span>${item.date}</span><span class="history-score">${item.score}/${item.total} · ${item.pct}%</span>`;
+            historyBlock.appendChild(row);
+          });
+        }
+        renderHistory();
+
+        // ---------------- gauge ----------------
+        function setGauge(frac) {
+          // frac 0..1 -> needle sweeps from E (left, -90°) through top (0°) to F (right, +90°)
+          const angle = -90 + 180 * frac;
+          needle.setAttribute("transform", `rotate(${angle} 100 100)`);
+        }
+
+        // ---------------- quiz flow ----------------
+        btnStart.addEventListener("click", () => {
+          const pool = QUESTIONS.filter((q) => selectedCats.has(q.cat));
+          const count = Math.min(selectedCount, pool.length);
+          session = shuffle(pool).slice(0, count);
+          qIndex = 0;
+          score = 0;
+          answers = [];
+          qTotalEl.textContent = session.length;
+          screenSetup.classList.add("hidden");
+          screenResult.classList.add("hidden");
+          screenQuiz.classList.remove("hidden");
+          timerPill.classList.toggle("hidden", !timerMode);
+          renderQuestion();
+        });
+
+        function renderQuestion() {
+          answered = false;
+          clearInterval(timerInterval);
+          const q = session[qIndex];
+          qIndexEl.textContent = qIndex + 1;
+          setGauge(qIndex / session.length);
+
+          const meta = CATS[q.cat];
+          qBadge.textContent = meta.label;
+          qBadge.style.background = `color-mix(in srgb, ${meta.color} 14%, white)`;
+          qBadge.style.color = meta.color;
+
+          qText.textContent = q.q;
+          qOptions.innerHTML = "";
+          const letters = ["A", "B", "C", "D"];
+          q.opts.forEach((opt, i) => {
+            const b = document.createElement("button");
+            b.className = "opt-btn";
+            b.innerHTML = `<span class="letter">${letters[i]}</span><span>${opt}</span>`;
+            b.addEventListener("click", () => selectOption(i, b));
+            qOptions.appendChild(b);
+          });
+          qFeedback.classList.add("hidden");
+          qFeedback.className = "feedback hidden";
+          btnNext.classList.add("hidden");
+
+          if (timerMode) {
+            timeLeft = 45;
+            updateTimerPill();
+            timerInterval = setInterval(() => {
+              timeLeft--;
+              updateTimerPill();
+              if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                if (!answered) selectOption(-1, null); // time's up, no answer
+              }
+            }, 1000);
+          }
+        }
+
+        function updateTimerPill() {
+          timerPill.textContent = timeLeft + "s";
+          timerPill.classList.toggle("low", timeLeft <= 10);
+        }
+
+        function selectOption(chosenIndex, btnEl) {
+          if (answered) return;
+          answered = true;
+          clearInterval(timerInterval);
+          const q = session[qIndex];
+          const correctIndex = q.correct;
+          const isCorrect = chosenIndex === correctIndex;
+          if (isCorrect) score++;
+          answers.push({ q, chosen: chosenIndex, correct: isCorrect });
+
+          [...qOptions.children].forEach((btn, i) => {
+            btn.disabled = true;
+            if (i === correctIndex) btn.classList.add("correct");
+            else if (i === chosenIndex) btn.classList.add("wrong");
+          });
+
+          qFeedback.classList.remove("hidden");
+          qFeedback.className =
+            "feedback " + (isCorrect ? "is-correct" : "is-wrong");
+          const title =
+            chosenIndex === -1
+              ? "Waktu habis"
+              : isCorrect
+                ? "Benar"
+                : "Kurang tepat";
+          qFeedback.innerHTML = `<div class="fb-title">${title}</div><div>${q.exp}</div>`;
+
+          btnNext.textContent =
+            qIndex === session.length - 1
+              ? "Lihat Hasil →"
+              : "Soal Berikutnya →";
+          btnNext.classList.remove("hidden");
+        }
+
+        btnNext.addEventListener("click", () => {
+          qIndex++;
+          if (qIndex >= session.length) {
+            finishQuiz();
+          } else {
+            renderQuestion();
+          }
+        });
+
+        async function finishQuiz() {
+          setGauge(1);
+          screenQuiz.classList.add("hidden");
+          screenResult.classList.remove("hidden");
+
+          const total = session.length;
+          const pct = Math.round((score / total) * 100);
+          resScore.textContent = `${score}/${total}`;
+          resPct.textContent = `${pct}%`;
+
+          resBreakdown.innerHTML = "";
+          Object.entries(CATS).forEach(([key, meta]) => {
+            const catAnswers = answers.filter((a) => a.q.cat === key);
+            if (!catAnswers.length) return;
+            const correctCount = catAnswers.filter((a) => a.correct).length;
+            const row = document.createElement("div");
+            row.className = "bd-row";
+            const fillPct = Math.round(
+              (correctCount / catAnswers.length) * 100,
+            );
+            row.innerHTML = `<span class="bd-label" style="color:${meta.color}">${meta.label}</span>
+      <span class="bd-bar"><span class="bd-fill" style="width:${fillPct}%;background:${meta.color}"></span></span>
+      <span class="bd-frac">${correctCount}/${catAnswers.length}</span>`;
+            resBreakdown.appendChild(row);
+          });
+
+          const wrongAnswers = answers.filter((a) => !a.correct);
+          resReview.innerHTML = "";
+          if (!wrongAnswers.length) {
+            resReviewEmpty.classList.remove("hidden");
+          } else {
+            resReviewEmpty.classList.add("hidden");
+            const letters = ["A", "B", "C", "D"];
+            wrongAnswers.forEach((a) => {
+              const div = document.createElement("div");
+              div.className = "review-item";
+              const yourAns =
+                a.chosen === -1
+                  ? "Tidak dijawab (waktu habis)"
+                  : `${letters[a.chosen]}. ${a.q.opts[a.chosen]}`;
+              div.innerHTML = `
+        <div class="review-q">${a.q.q}</div>
+        <div class="review-line your">Jawaban Anda: ${yourAns}</div>
+        <div class="review-line correct">Jawaban benar: ${letters[a.q.correct]}. ${a.q.opts[a.q.correct]}</div>
+        <div class="review-exp">${a.q.exp}</div>`;
+              resReview.appendChild(div);
+            });
+          }
+
+          const now = new Date();
+          const dateStr =
+            now.toLocaleDateString("id-ID", {
+              day: "2-digit",
+              month: "short",
+            }) +
+            ", " +
+            now.toLocaleTimeString("id-ID", {
+              hour: "2-digit",
+              minute: "2-digit",
+            });
+          await saveHistoryEntry({ date: dateStr, score, total, pct });
+        }
+
+        btnRetry.addEventListener("click", () => {
+          btnStart.click();
+        });
+        btnSetup.addEventListener("click", async () => {
+          screenResult.classList.add("hidden");
+          screenSetup.classList.remove("hidden");
+          await renderHistory();
+        });
+      })();
+    </script>
+  </body>
+</html>
