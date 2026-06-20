@@ -5,7 +5,7 @@ import { SubtestSession } from "@/types";
 
 interface Props {
   subtestName: string;
-  onStart: (durationMins: number, feedbackMode: boolean) => void;
+  onStart: (durationMins: number | '', feedbackMode: boolean) => void;
   recentSessions: SubtestSession[];
   selectedDuration: number | '';
   setSelectedDuration: (v: number | '') => void;
