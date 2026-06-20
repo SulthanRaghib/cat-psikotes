@@ -63,6 +63,49 @@ export default function App() {
     }
   };
 
+  const handlePreviewHistory = async (id: number) => {
+    try {
+      const res = await fetch(`/api/attempts/${id}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.attempt) {
+          setSelectedCats(data.attempt.categories);
+          setAnswers(data.attempt.answers.map((a: any) => ({
+             id: 0,
+             attempt_id: data.attempt.id,
+             question_id: a.questionId,
+             chosen_index: a.chosenIndex,
+             is_correct: a.isCorrect,
+             question: a.question,
+             options: a.options,
+             correct_index: a.correctIndex,
+             explanation: a.explanation
+          })));
+          setAttemptResult(data.attempt);
+          setScreen('result');
+        }
+      }
+    } catch(e) {
+      console.error(e);
+    }
+  };
+
+  const handleDeleteHistory = async (id: number) => {
+    if(!confirm("Yakin ingin menghapus riwayat ini?")) return;
+    try {
+      const res = await fetch(`/api/attempts/${id}`, { method: 'DELETE' });
+      if(res.ok) fetchHistories();
+    } catch(e) { console.error(e); }
+  };
+
+  const handleClearAllHistory = async () => {
+    if(!confirm("Yakin ingin membersihkan seluruh riwayat latihan?")) return;
+    try {
+      const res = await fetch(`/api/attempts`, { method: 'DELETE' });
+      if(res.ok) fetchHistories();
+    } catch(e) { console.error(e); }
+  };
+
   // Timer logic
   useEffect(() => {
     if (screen === 'quiz' && timerMode && !isAnswered) {
@@ -221,7 +264,13 @@ export default function App() {
 
         <div className="bg-white dark:bg-[#111827] p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
           <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400 mb-2">Riwayat Latihan</p>
-          <HistoryList attempts={histories} loading={loadingHistory} />
+          <HistoryList 
+            attempts={histories} 
+            loading={loadingHistory} 
+            onPreview={handlePreviewHistory}
+            onDelete={handleDeleteHistory}
+            onClearAll={histories.length > 0 ? handleClearAllHistory : undefined}
+          />
         </div>
       </div>
     );
@@ -350,7 +399,7 @@ export default function App() {
             Coba Lagi (Acak Baru) →
           </button>
           <button onClick={() => setScreen('setup')} className="w-full bg-transparent text-ink dark:text-slate-200 border-2 border-slate-200 dark:border-slate-700 font-['Space_Grotesk'] font-bold text-base py-3.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
-            Ubah Pengaturan
+            Kembali ke Beranda
           </button>
         </div>
       </div>
