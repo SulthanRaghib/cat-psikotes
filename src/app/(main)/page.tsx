@@ -220,7 +220,8 @@ export default function App() {
     const startedAt = new Date(Date.now() - (questions.length * timerDuration * 1000)).toISOString(); // Approx
     const finishedAt = new Date().toISOString();
     
-    const newSeen = Array.from(new Set([...seenQuestionIds, ...questions.map(q => q.id)]));
+    const correctlyAnsweredIds = answers.filter(a => a.is_correct).map(a => a.question_id);
+    const newSeen = Array.from(new Set([...seenQuestionIds, ...correctlyAnsweredIds]));
     setSeenQuestionIds(newSeen);
     try {
       localStorage.setItem('cat_seen_questions', JSON.stringify(newSeen));
