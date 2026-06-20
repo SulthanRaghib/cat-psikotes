@@ -6,8 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "db:seed": "tsx scripts/seed.ts"
+    "db:seed": "tsx scripts/seed.ts",
+    "db:migrate:supabase": "tsx scripts/migrate-supabase.ts",
+    "db:push:supabase": "tsx scripts/push-supabase.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",
@@ -19,6 +20,7 @@
     "next": "^15.1.0",
     "next-themes": "^0.4.6",
     "papaparse": "^5.5.4",
+    "postgres": "^3.4.9",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-markdown": "^10.1.0",
