@@ -21,7 +21,8 @@ export async function decrypt(input: string): Promise<Record<string, unknown> | 
 }
 
 export async function getSession(req?: NextRequest): Promise<{ username: string } | null> {
-  const session = req ? req.cookies.get('admin_session')?.value : cookies().get('admin_session')?.value;
+  const cookieStore = await cookies();
+  const session = req ? req.cookies.get('admin_session')?.value : cookieStore.get('admin_session')?.value;
   if (!session) return null;
   try {
     return await decrypt(session) as { username: string };
@@ -34,7 +35,8 @@ export async function loginSession(username: string) {
   const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
   const session = await encrypt({ username, expires });
 
-  cookies().set('admin_session', session, {
+  const cookieStore = await cookies();
+  cookieStore.set('admin_session', session, {
     expires,
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -44,7 +46,8 @@ export async function loginSession(username: string) {
 }
 
 export async function logoutSession() {
-  cookies().set('admin_session', '', {
+  const cookieStore = await cookies();
+  cookieStore.set('admin_session', '', {
     expires: new Date(0),
     httpOnly: true,
     path: '/',
