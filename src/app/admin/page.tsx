@@ -4,12 +4,22 @@ import { useState, useEffect, useRef } from 'react';
 import Papa from 'papaparse';
 import { Category, Question } from '@/types';
 
+// Extend Question type locally to include created_at
+interface AdminQuestion extends Question {
+  created_at?: string;
+}
+
 export default function AdminDashboard() {
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<AdminQuestion[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   
+  // Pagination & Sorting State
+  const [sortOrder, setSortOrder] = useState<'terbaru' | 'terlama'>('terbaru');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   // Modal States
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -55,6 +65,7 @@ export default function AdminDashboard() {
         options: JSON.parse(q.options)
       }));
       setQuestions(parsed);
+      setCurrentPage(1); // reset to first page on fetch
     } catch (err) {
       console.error(err);
     } finally {
@@ -298,7 +309,7 @@ export default function AdminDashboard() {
     setIsModalOpen(true);
   };
 
-  const openModalForEdit = (q: Question) => {
+  const openModalForEdit = (q: AdminQuestion) => {
     setEditingId(q.id);
     setFormData({
       category: q.category,
@@ -359,12 +370,51 @@ export default function AdminDashboard() {
     }
   };
 
+  // --- Process Data for Render ---
+  const isNewQuestion = (dateStr?: string) => {
+    if (!dateStr) return false;
+    const date = new Date(dateStr + 'Z'); // SQLite returns UTC time
+    const diff = Date.now() - date.getTime();
+    return diff < 24 * 60 * 60 * 1000; // < 24 hours
+  };
+
+  const sortedQuestions = [...questions].sort((a, b) => {
+    // If no created_at, fallback to old date for consistent sorting
+    const dateA = new Date((a.created_at || '2000-01-01') + 'Z').getTime();
+    const dateB = new Date((b.created_at || '2000-01-01') + 'Z').getTime();
+    return sortOrder === 'terbaru' ? dateB - dateA : dateA - dateB;
+  });
+
+  const totalPages = Math.ceil(sortedQuestions.length / itemsPerPage);
+  const displayedQuestions = sortedQuestions.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(p => p - 1);
+  };
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(p => p + 1);
+  };
+
   return (
     <div className="flex flex-col gap-6 animate-in fade-in">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white dark:bg-[#111827] p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
         <div>
           <h2 className="text-2xl font-bold text-ink dark:text-slate-100">Bank Soal</h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Total: <strong className="text-ink dark:text-slate-200">{questions.length}</strong> Soal Tersedia</p>
+          <div className="flex items-center gap-3 mt-1.5">
+            <p className="text-sm text-slate-500 dark:text-slate-400">Total: <strong className="text-ink dark:text-slate-200">{questions.length}</strong> Soal Tersedia</p>
+            <div className="w-px h-4 bg-slate-300 dark:bg-slate-700"></div>
+            <select 
+              value={sortOrder}
+              onChange={(e) => {
+                setSortOrder(e.target.value as 'terbaru' | 'terlama');
+                setCurrentPage(1); // reset to page 1 on sort change
+              }}
+              className="text-sm font-medium bg-transparent border-none text-ink dark:text-slate-200 focus:ring-0 cursor-pointer p-0 hover:text-accent transition-colors outline-none"
+            >
+              <option value="terbaru">Urutkan: Terbaru</option>
+              <option value="terlama">Urutkan: Terlama</option>
+            </select>
+          </div>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <button 
@@ -417,12 +467,12 @@ export default function AdminDashboard() {
       )}
 
       {/* Table Section */}
-      <div className="bg-white dark:bg-[#111827] rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+      <div className="bg-white dark:bg-[#111827] rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">
               <tr>
-                <th className="p-4 font-semibold w-[120px]">Kategori</th>
+                <th className="p-4 font-semibold w-[140px]">Kategori</th>
                 <th className="p-4 font-semibold">Pertanyaan</th>
                 <th className="p-4 font-semibold w-[140px] text-right">Aksi</th>
               </tr>
@@ -432,7 +482,7 @@ export default function AdminDashboard() {
                 <tr>
                   <td colSpan={3} className="p-12 text-center text-slate-500">Memuat data bank soal...</td>
                 </tr>
-              ) : questions.length === 0 ? (
+              ) : displayedQuestions.length === 0 ? (
                 <tr>
                   <td colSpan={3} className="p-12 text-center">
                     <div className="text-slate-500 mb-4">Belum ada soal dalam sistem.</div>
@@ -440,7 +490,7 @@ export default function AdminDashboard() {
                   </td>
                 </tr>
               ) : (
-                questions.map(q => (
+                displayedQuestions.map(q => (
                   <tr key={q.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group">
                     <td className="p-4 align-top">
                       <span className={`inline-block px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-wider rounded-md ${getCategoryColor(q.category)}`}>
@@ -448,13 +498,26 @@ export default function AdminDashboard() {
                       </span>
                     </td>
                     <td className="p-4">
-                      <div className="font-medium text-ink dark:text-slate-200 line-clamp-2 mb-1">{q.question}</div>
-                      <div className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">Kunci: {q.options[q.correct_index]}</div>
+                      <div className="font-medium text-ink dark:text-slate-200 line-clamp-2 mb-1 flex items-center gap-2">
+                        {isNewQuestion(q.created_at) && (
+                          <span className="inline-block px-1.5 py-0.5 text-[0.6rem] font-bold text-white bg-danger rounded shrink-0">
+                            BARU
+                          </span>
+                        )}
+                        <span>{q.question}</span>
+                      </div>
+                      <div className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1 mt-1.5">
+                        <span className="font-semibold">Kunci:</span> {q.options[q.correct_index]}
+                      </div>
                     </td>
                     <td className="p-4 text-right align-top">
                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button onClick={() => openModalForEdit(q)} className="text-slate-400 hover:text-accent font-semibold p-2 bg-slate-100 dark:bg-slate-800 rounded-lg transition-colors">Edit</button>
-                        <button onClick={() => handleDelete(q.id)} className="text-slate-400 hover:text-danger font-semibold p-2 bg-slate-100 dark:bg-slate-800 rounded-lg transition-colors">Hapus</button>
+                        <button onClick={() => openModalForEdit(q)} className="text-slate-400 hover:text-accent font-semibold p-2 bg-slate-100 dark:bg-slate-800 rounded-lg transition-colors" title="Edit Soal">
+                          <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        </button>
+                        <button onClick={() => handleDelete(q.id)} className="text-slate-400 hover:text-danger font-semibold p-2 bg-slate-100 dark:bg-slate-800 rounded-lg transition-colors" title="Hapus Soal">
+                          <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -463,6 +526,34 @@ export default function AdminDashboard() {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20">
+            <div className="text-sm text-slate-500 dark:text-slate-400">
+              Menampilkan <span className="font-semibold text-ink dark:text-slate-200">{(currentPage - 1) * itemsPerPage + 1}</span> hingga <span className="font-semibold text-ink dark:text-slate-200">{Math.min(currentPage * itemsPerPage, sortedQuestions.length)}</span> dari <span className="font-semibold text-ink dark:text-slate-200">{sortedQuestions.length}</span> soal
+            </div>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={handlePrevPage} 
+                disabled={currentPage === 1}
+                className="p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4"><path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </button>
+              <span className="text-sm font-semibold px-2 text-ink dark:text-slate-200">
+                Hal {currentPage} / {totalPages}
+              </span>
+              <button 
+                onClick={handleNextPage} 
+                disabled={currentPage === totalPages}
+                className="p-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4"><path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Import Modal */}

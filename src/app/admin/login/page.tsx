@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function AdminLogin() {
@@ -37,9 +38,20 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-canvas dark:bg-[#090e17] flex flex-col items-center justify-center p-4">
-      <div className="absolute top-4 right-4">
-        <ThemeToggle />
+    <div className="min-h-screen bg-canvas dark:bg-[#090e17] flex flex-col items-center justify-center p-4 relative">
+      <div className="absolute top-4 left-4 sm:top-6 sm:left-6">
+        <Link 
+          href="/" 
+          className="flex items-center gap-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-ink dark:hover:text-white transition-colors bg-white dark:bg-[#111827] px-4 py-2.5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700"
+        >
+          <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4"><path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          Kembali ke Ujian
+        </Link>
+      </div>
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
+        <div className="bg-white dark:bg-[#111827] p-1.5 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
+          <ThemeToggle />
+        </div>
       </div>
       <div className="w-full max-w-md bg-white dark:bg-[#111827] rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-8">
         <div className="flex flex-col items-center mb-8">

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Space_Grotesk, Inter, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
+import 'katex/dist/katex.min.css';
 import { ThemeProvider } from '@/components/ThemeProvider';
 
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space' });
