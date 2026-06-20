@@ -1,63 +1,92 @@
-import {
-  IDatabaseProvider,
-  IQuestionRepository,
-  IAdminRepository,
-  IAttemptRepository,
-  QuestionRecord,
-  AdminRecord,
-  AttemptRecord,
-  SaveAttemptData,
-  AttemptAnswerRecord,
-} from "../types";
+import { IDatabaseProvider, ISubtestRepository, ISubtestSessionRepository, ISubtestSessionItemRepository, IAdminRepository } from "../types";
+import { Subtest, SubtestSession, SubtestSessionItem, AdminRecord } from "@/types";
 import bcrypt from 'bcryptjs';
 
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 const DEFAULT_HASH = bcrypt.hashSync(ADMIN_PASSWORD, 10);
 
-class DummyQuestionRepository implements IQuestionRepository {
-  private questions: QuestionRecord[] = [
-    {
-      id: "dummy_1",
-      category: "numerik",
-      question: "Berapakah 1 + 1? (Mode Dummy)",
-      options: JSON.stringify(["1", "2", "3", "4"]),
-      correct_index: 1,
-      explanation:
-        "Sistem sedang berjalan dalam Mode Dummy (Fallback) karena database utama gagal terhubung.",
-      created_at: new Date().toISOString(),
-    },
-  ];
+class DummySubtestRepository implements ISubtestRepository {
+  private subtests: Subtest[] = [];
 
-  async getAll(): Promise<QuestionRecord[]> {
-    return this.questions;
+  async getAll(): Promise<Subtest[]> {
+    return this.subtests.sort((a, b) => a.number - b.number);
   }
 
-  async getById(id: string): Promise<QuestionRecord | null> {
-    return this.questions.find((q) => q.id === id) || null;
+  async getById(id: string): Promise<Subtest | null> {
+    return this.subtests.find((s) => s.id === id) || null;
   }
 
-  async create(data: QuestionRecord): Promise<void> {
-    this.questions.push(data);
+  async create(data: Subtest): Promise<void> {
+    this.subtests.push(data);
   }
 
-  async update(id: string, data: Partial<QuestionRecord>): Promise<void> {
-    const idx = this.questions.findIndex((q) => q.id === id);
-    if (idx !== -1) {
-      this.questions[idx] = { ...this.questions[idx], ...data };
-    }
-  }
-
-  async delete(id: string): Promise<void> {
-    this.questions = this.questions.filter((q) => q.id !== id);
-  }
-
-  async bulkCreate(data: QuestionRecord[]): Promise<void> {
-    this.questions.push(...data);
+  async bulkCreate(data: Subtest[]): Promise<void> {
+    this.subtests.push(...data);
   }
 
   async deleteAll(): Promise<void> {
-    this.questions = [];
+    this.subtests = [];
+  }
+}
+
+class DummySubtestSessionRepository implements ISubtestSessionRepository {
+  private sessions: SubtestSession[] = [];
+
+  async create(subtestId: string, timeLimitSeconds: number): Promise<number> {
+    const id = Date.now();
+    this.sessions.push({
+      id,
+      subtest_id: subtestId,
+      started_at: new Date().toISOString(),
+      finished_at: null,
+      time_limit_seconds: timeLimitSeconds,
+      items_attempted: 0,
+      correct_count: 0,
+      accuracy_percent: null,
+      items_per_minute: null,
+    });
+    return id;
+  }
+
+  async finish(sessionId: number, itemsAttempted: number, correctCount: number, accuracyPercent: number, itemsPerMinute: number): Promise<void> {
+    const session = this.sessions.find(s => s.id === sessionId);
+    if (session) {
+      session.finished_at = new Date().toISOString();
+      session.items_attempted = itemsAttempted;
+      session.correct_count = correctCount;
+      session.accuracy_percent = accuracyPercent;
+      session.items_per_minute = itemsPerMinute;
+    }
+  }
+
+  async getRecent(subtestId: string, limit: number): Promise<SubtestSession[]> {
+    return this.sessions
+      .filter(s => s.subtest_id === subtestId && s.finished_at !== null)
+      .slice(-limit)
+      .reverse();
+  }
+
+  async getById(id: number): Promise<SubtestSession | null> {
+    return this.sessions.find(s => s.id === id) || null;
+  }
+}
+
+class DummySubtestSessionItemRepository implements ISubtestSessionItemRepository {
+  private items: SubtestSessionItem[] = [];
+
+  async bulkCreate(sessionId: number, ans: Omit<SubtestSessionItem, 'id' | 'session_id'>[]): Promise<void> {
+    ans.forEach(a => {
+      this.items.push({
+        id: Date.now() + Math.random(),
+        session_id: sessionId,
+        ...a
+      });
+    });
+  }
+
+  async getBySessionId(sessionId: number): Promise<SubtestSessionItem[]> {
+    return this.items.filter(i => i.session_id === sessionId).sort((a, b) => a.item_index - b.item_index);
   }
 }
 
@@ -90,79 +119,11 @@ class DummyAdminRepository implements IAdminRepository {
   }
 }
 
-class DummyAttemptRepository implements IAttemptRepository {
-  private attempts: AttemptRecord[] = [];
-  private answers: AttemptAnswerRecord[] = [];
-
-  async save(
-    data: SaveAttemptData,
-  ): Promise<{
-    id: number;
-    totalQuestions: number;
-    correctCount: number;
-    percent: number;
-  }> {
-    const attemptId = Date.now();
-    this.attempts.push({
-      id: attemptId,
-      started_at: data.startedAt,
-      finished_at: data.finishedAt,
-      total_questions: data.totalQuestions,
-      correct_count: data.correctCount,
-      percent: data.percent,
-      categories: JSON.stringify(data.categories),
-      timer_mode: data.timerMode ? 1 : 0,
-    });
-
-    data.answers.forEach((ans) => {
-      this.answers.push({
-        id: Date.now() + Math.random(),
-        attempt_id: attemptId,
-        question_id: ans.questionId,
-        chosen_index: ans.chosenIndex,
-        is_correct: ans.isCorrect ? 1 : 0,
-      });
-    });
-
-    return {
-      id: attemptId,
-      totalQuestions: data.totalQuestions,
-      correctCount: data.correctCount,
-      percent: data.percent,
-    };
-  }
-
-  async getRecent(limit: number): Promise<AttemptRecord[]> {
-    return this.attempts.slice(-limit).reverse();
-  }
-
-  async getById(
-    id: number,
-  ): Promise<{
-    attempt: AttemptRecord;
-    answers: AttemptAnswerRecord[];
-  } | null> {
-    const attempt = this.attempts.find((a) => a.id === id);
-    if (!attempt) return null;
-    const ans = this.answers.filter((a) => a.attempt_id === id);
-    return { attempt, answers: ans };
-  }
-
-  async delete(id: number): Promise<void> {
-    this.attempts = this.attempts.filter((a) => a.id !== id);
-    this.answers = this.answers.filter((a) => a.attempt_id !== id);
-  }
-
-  async deleteAll(): Promise<void> {
-    this.attempts = [];
-    this.answers = [];
-  }
-}
-
 export const dummyProvider: IDatabaseProvider = {
   name: "dummy",
   isReady: true,
-  questions: new DummyQuestionRepository(),
+  subtests: new DummySubtestRepository(),
+  sessions: new DummySubtestSessionRepository(),
+  sessionItems: new DummySubtestSessionItemRepository(),
   admins: new DummyAdminRepository(),
-  attempts: new DummyAttemptRepository(),
 };

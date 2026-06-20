@@ -1,36 +1,29 @@
-import { IDatabaseProvider } from './types';
-import { sqliteProvider } from './providers/sqlite';
-import { supabaseProvider } from './providers/supabase';
-import { dummyProvider } from './providers/dummy';
+import { sqliteProvider } from "./providers/sqlite";
+import { supabaseProvider } from "./providers/supabase";
+import { dummyProvider } from "./providers/dummy";
+import { IDatabaseProvider } from "./types";
 
-function initializeProvider(): IDatabaseProvider {
-  const envProvider = process.env.DB_PROVIDER || 'sqlite';
-  
-  console.log(`[DB] Attempting to initialize provider: ${envProvider}`);
+const DB_PROVIDER = process.env.DB_PROVIDER || 'sqlite';
 
-  let provider: IDatabaseProvider | null = null;
+let activeProvider: IDatabaseProvider;
 
-  if (envProvider === 'supabase') {
-    provider = supabaseProvider;
-  } else if (envProvider === 'sqlite') {
-    provider = sqliteProvider;
-  } else if (envProvider === 'dummy') {
-    provider = dummyProvider;
-  }
-
-  // Check if chosen provider is ready (e.g. connected properly)
-  if (provider && provider.isReady) {
-    console.log(`[DB] Successfully connected to ${provider.name}`);
-    return provider;
-  }
-
-  // Fallback Logic
-  console.warn(`[DB] Provider '${envProvider}' is not ready or failed to initialize.`);
-  console.warn(`[DB] FALLBACK: Switching to Dummy Provider to prevent system crash.`);
-  
-  return dummyProvider;
+switch (DB_PROVIDER.toLowerCase()) {
+  case 'supabase':
+    activeProvider = supabaseProvider;
+    break;
+  case 'sqlite':
+    activeProvider = sqliteProvider;
+    break;
+  case 'dummy':
+  default:
+    activeProvider = dummyProvider;
+    break;
 }
 
-const DB = initializeProvider();
+// Fallback to dummy if chosen provider is not ready
+if (!activeProvider.isReady) {
+  console.warn(`Database provider '${DB_PROVIDER}' is not ready. Falling back to 'dummy' provider.`);
+  activeProvider = dummyProvider;
+}
 
-export default DB;
+export default activeProvider;
