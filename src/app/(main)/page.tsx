@@ -28,6 +28,7 @@ export default function App() {
   const [questionCount, setQuestionCount] = useState<number>(20);
   const [timerMode, setTimerMode] = useState<boolean>(false);
   const [timerDuration, setTimerDuration] = useState<number>(45);
+  const [seenQuestionIds, setSeenQuestionIds] = useState<string[]>([]);
   
   // History State
   const [histories, setHistories] = useState<Attempt[]>([]);
@@ -47,6 +48,12 @@ export default function App() {
   // Load histories on mount
   useEffect(() => {
     fetchHistories();
+    const storedSeen = localStorage.getItem('cat_seen_questions');
+    if (storedSeen) {
+      try {
+        setSeenQuestionIds(JSON.parse(storedSeen));
+      } catch (e) { console.error(e); }
+    }
   }, []);
 
   const fetchHistories = async () => {
@@ -153,17 +160,27 @@ export default function App() {
   };
 
   const startQuiz = async () => {
-    const res = await fetch(`/api/questions?categories=${selectedCats.join(',')}&count=${questionCount}`);
-    const data = await res.json();
-    if (data.questions && data.questions.length > 0) {
-      setQuestions(data.questions);
-      setCurrentIndex(0);
-      setAnswers([]);
-      setIsAnswered(false);
-      setTimeLeft(timerDuration);
-      setScreen('quiz');
-    } else {
-      alert("Gagal memuat soal atau bank soal kosong.");
+    const payload = { categories: selectedCats, count: questionCount, excludeIds: seenQuestionIds };
+    try {
+      const res = await fetch('/api/questions/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.questions && data.questions.length > 0) {
+        setQuestions(data.questions);
+        setCurrentIndex(0);
+        setAnswers([]);
+        setIsAnswered(false);
+        setTimeLeft(timerDuration);
+        setScreen('quiz');
+      } else {
+        alert("Gagal memuat soal atau bank soal kosong.");
+      }
+    } catch(e) {
+      console.error(e);
+      alert("Terjadi kesalahan saat memulai tes.");
     }
   };
 
@@ -202,6 +219,12 @@ export default function App() {
     setScreen('result');
     const startedAt = new Date(Date.now() - (questions.length * timerDuration * 1000)).toISOString(); // Approx
     const finishedAt = new Date().toISOString();
+    
+    const newSeen = Array.from(new Set([...seenQuestionIds, ...questions.map(q => q.id)]));
+    setSeenQuestionIds(newSeen);
+    try {
+      localStorage.setItem('cat_seen_questions', JSON.stringify(newSeen));
+    } catch(e) {}
     
     const payload = {
       startedAt,
