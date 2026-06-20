@@ -88,7 +88,7 @@ class SqliteQuestionRepository implements IQuestionRepository {
   async update(id: string, data: Partial<QuestionRecord>): Promise<void> {
     if (!db) throw new Error("SQLite not initialized");
     const sets: string[] = [];
-    const values: any[] = [];
+    const values: unknown[] = [];
     for (const [k, v] of Object.entries(data)) {
       if (k !== "id") {
         sets.push(`${k} = ?`);
