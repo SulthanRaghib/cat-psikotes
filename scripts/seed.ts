@@ -1,4 +1,10 @@
-import db from "../src/lib/db";
+import { config } from 'dotenv';
+config({ path: '.env' });
+config({ path: '.env.local' });
+process.env.DB_PROVIDER = 'sqlite';
+
+import { sqliteProvider } from "../src/lib/db/providers/sqlite";
+import { QuestionRecord } from "../src/lib/db/types";
 
 const rawQuestions = [
   {
@@ -474,28 +480,30 @@ const rawQuestions = [
   },
 ];
 
-function seed() {
+async function seed() {
+  if (!sqliteProvider.isReady) {
+    console.error("SQLite provider is not ready.");
+    return;
+  }
+  
   console.log("Seeding data to database...");
-  const insert = db.prepare(`
-    INSERT OR REPLACE INTO questions (id, category, question, options, correct_index, explanation)
-    VALUES (@id, @category, @question, @options, @correct_index, @explanation)
-  `);
+  const formattedQuestions: QuestionRecord[] = rawQuestions.map(q => ({
+    id: q.id,
+    category: q.category as "numerik" | "logika" | "verbal" | "situasional",
+    question: q.question,
+    options: JSON.stringify(q.options),
+    correct_index: q.correctIndex,
+    explanation: q.explanation,
+  }));
 
-  const insertMany = db.transaction((questions: any[]) => {
-    for (const q of questions) {
-      insert.run({
-        id: q.id,
-        category: q.category,
-        question: q.question,
-        options: JSON.stringify(q.options),
-        correct_index: q.correctIndex,
-        explanation: q.explanation,
-      });
-    }
-  });
-
-  insertMany(rawQuestions);
-  console.log(`Seeded ${rawQuestions.length} questions successfully!`);
+  try {
+    // Menghapus data lama agar tidak duplikat jika dijalankan ulang
+    await sqliteProvider.questions.deleteAll();
+    await sqliteProvider.questions.bulkCreate(formattedQuestions);
+    console.log(`Seeded ${rawQuestions.length} questions successfully!`);
+  } catch (error) {
+    console.error("Error seeding questions:", error);
+  }
 }
 
 seed();
