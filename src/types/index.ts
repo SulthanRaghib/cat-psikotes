@@ -31,4 +31,5 @@ export interface AttemptAnswer {
   options?: string[];
   correct_index?: number;
   explanation?: string;
+  category?: Category;
 }
