@@ -7,8 +7,8 @@ interface Props {
   subtestName: string;
   onStart: (durationMins: number, feedbackMode: boolean) => void;
   recentSessions: SubtestSession[];
-  selectedDuration: number;
-  setSelectedDuration: (v: number) => void;
+  selectedDuration: number | '';
+  setSelectedDuration: (v: number | '') => void;
   feedbackMode: boolean;
   setFeedbackMode: (v: boolean) => void;
 }
@@ -23,7 +23,6 @@ export default function SubtestInstructionScreen({
   setFeedbackMode
 }: Props) {
 
-  const durations = [5, 6, 7, 8, 9, 10];
 
   return (
     <div className="w-full max-w-3xl mx-auto flex flex-col gap-8 p-4">
@@ -44,22 +43,18 @@ export default function SubtestInstructionScreen({
 
         <div className="flex flex-col md:flex-row gap-6 mb-8">
           <div className="flex-1">
-            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Pilih Durasi (Menit)</label>
-            <div className="flex flex-wrap gap-2">
-              {durations.map(d => (
-                <button
-                  key={d}
-                  onClick={() => setSelectedDuration(d)}
-                  className={`px-4 py-2 rounded font-semibold transition-colors ${
-                    selectedDuration === d 
-                      ? 'bg-[#0F2A43] text-white shadow-md' 
-                      : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
-                  }`}
-                >
-                  {d}
-                </button>
-              ))}
-            </div>
+            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Atur Durasi (Menit)</label>
+            <input 
+              type="number"
+              min="1"
+              value={selectedDuration}
+              onChange={(e) => {
+                const val = e.target.value;
+                setSelectedDuration(val === '' ? '' : Number(val));
+              }}
+              className="w-full max-w-[200px] px-4 py-2 rounded-lg font-semibold bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-[#E8821E] shadow-sm"
+              placeholder="Contoh: 5"
+            />
           </div>
           
           <div className="flex-1 border-t md:border-t-0 md:border-l border-slate-200 dark:border-slate-700 pt-4 md:pt-0 md:pl-6">

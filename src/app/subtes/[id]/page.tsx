@@ -9,6 +9,7 @@ import AnswerButtonsRow from "@/components/AnswerButtonsRow";
 import GlobalCountdown from "@/components/GlobalCountdown";
 import SessionResultSummary from "@/components/SessionResultSummary";
 import SessionReviewList from "@/components/SessionReviewList";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { SubtestSession } from "@/types";
 
 export default function SubtestPage({ params }: { params: Promise<{ id: string }> }) {
@@ -19,7 +20,7 @@ export default function SubtestPage({ params }: { params: Promise<{ id: string }
   const [recentSessions, setRecentSessions] = useState<SubtestSession[]>([]);
   
   // Settings state
-  const [selectedDuration, setSelectedDuration] = useState<number>(6); // Default 6 minutes
+  const [selectedDuration, setSelectedDuration] = useState<number | ''>(5); // Default 5 minutes
   const [feedbackMode, setFeedbackMode] = useState<boolean>(true); // Default ON
 
   // Session state
@@ -56,22 +57,23 @@ export default function SubtestPage({ params }: { params: Promise<{ id: string }
     });
   };
 
-  const handleStart = async (durationMins: number, fbMode: boolean) => {
-    setSelectedDuration(durationMins);
+  const handleStart = async (durationMins: number | '', fbMode: boolean) => {
+    const finalDuration = typeof durationMins === 'number' && durationMins > 0 ? durationMins : 5;
+    setSelectedDuration(finalDuration);
     setFeedbackMode(fbMode);
     
     try {
       const res = await fetch(`/api/subtests/${id}/sessions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ timeLimitSeconds: durationMins * 60 })
+        body: JSON.stringify({ timeLimitSeconds: finalDuration * 60 })
       });
       const data = await res.json();
       if (data.sessionId) {
         setSessionId(data.sessionId);
         setSessionItems([]);
         setItemIndex(1);
-        setEndTime(Date.now() + (durationMins * 60 * 1000));
+        setEndTime(Date.now() + (finalDuration * 60 * 1000));
         setCurrentItem(generateLetterMatchItem());
         setScreen('session');
       }
@@ -85,7 +87,7 @@ export default function SubtestPage({ params }: { params: Promise<{ id: string }
     if (isInputLocked) return;
 
     const isCorrect = userAnswer === currentItem.correctAnswer;
-    const answeredAtMs = Date.now() - (endTime! - (selectedDuration * 60 * 1000));
+    const answeredAtMs = Date.now() - (endTime! - ((typeof selectedDuration === 'number' ? selectedDuration : 5) * 60 * 1000));
 
     const itemRecord = {
       itemIndex,
@@ -154,7 +156,10 @@ export default function SubtestPage({ params }: { params: Promise<{ id: string }
 
   if (screen === 'instruction') {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 py-8 transition-colors">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 py-8 transition-colors relative">
+        <div className="absolute top-4 right-4 z-50">
+          <ThemeToggle />
+        </div>
         <SubtestInstructionScreen 
           subtestName={subtestInfo?.name || "Memuat..."}
           onStart={handleStart}
@@ -193,7 +198,10 @@ export default function SubtestPage({ params }: { params: Promise<{ id: string }
 
   if (screen === 'result') {
     return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 py-8 transition-colors px-4">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 py-8 transition-colors px-4 relative">
+        <div className="absolute top-4 right-4 z-50">
+          <ThemeToggle />
+        </div>
         {resultMetrics && (
           <SessionResultSummary 
             attempted={resultMetrics.attempted}
