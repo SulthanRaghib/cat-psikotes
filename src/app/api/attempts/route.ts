@@ -24,9 +24,19 @@ export async function POST(request: Request) {
     const result = await DB.attempts.save(attemptData);
 
     return NextResponse.json(result, { status: 201 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
+  }
+}
+
+export async function DELETE() {
+  try {
+    await DB.attempts.deleteAll();
+    return NextResponse.json({ success: true });
+  } catch (error: unknown) {
+    console.error(error);
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
   }
 }
 
@@ -49,17 +59,8 @@ export async function GET(request: Request) {
     }));
 
     return NextResponse.json({ attempts });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
-
-export async function DELETE() {
-  try {
-    await DB.attempts.deleteAll();
-    return new NextResponse(null, { status: 204 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
   }
 }

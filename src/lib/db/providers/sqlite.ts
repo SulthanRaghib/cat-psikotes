@@ -219,6 +219,10 @@ class SqliteAttemptRepository implements IAttemptRepository {
       .all(id) as AttemptAnswerRecord[];
     return { attempt, answers };
   }
+  async delete(id: number): Promise<void> {
+    if (!db) throw new Error("SQLite not initialized");
+    db.prepare("DELETE FROM attempts WHERE id = ?").run(id);
+  }
   async deleteAll(): Promise<void> {
     if (!db) throw new Error("SQLite not initialized");
     db.prepare("DELETE FROM attempts").run();

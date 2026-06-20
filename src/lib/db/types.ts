@@ -69,6 +69,7 @@ export interface IAttemptRepository {
   save(data: SaveAttemptData): Promise<{ id: number; totalQuestions: number; correctCount: number; percent: number }>;
   getRecent(limit: number): Promise<AttemptRecord[]>;
   getById(id: number): Promise<{ attempt: AttemptRecord, answers: AttemptAnswerRecord[] } | null>;
+  delete(id: number): Promise<void>;
   deleteAll(): Promise<void>;
 }
 

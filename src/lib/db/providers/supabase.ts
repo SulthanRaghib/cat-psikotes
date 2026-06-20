@@ -185,6 +185,12 @@ class SupabaseAttemptRepository implements IAttemptRepository {
     };
   }
 
+  async delete(id: number): Promise<void> {
+    if (!supabase) throw new Error("Supabase not initialized");
+    const { error } = await supabase.from("attempts").delete().eq("id", id);
+    if (error) throw new Error(error.message);
+  }
+
   async deleteAll(): Promise<void> {
     if (!supabase) throw new Error("Supabase not initialized");
     const { error } = await supabase.from("attempts").delete().neq("id", 0);
