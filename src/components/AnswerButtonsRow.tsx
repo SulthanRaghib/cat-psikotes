@@ -6,16 +6,16 @@ interface Props {
 }
 
 export default function AnswerButtonsRow({ onAnswer, disabled }: Props) {
-  const options = [0, 1, 2, 3, 4];
+  const options = [1, 2, 3, 4];
 
   return (
-    <div className="flex justify-center gap-3 md:gap-6 w-full max-w-xl mx-auto mt-8 px-4">
+    <div className="flex justify-center gap-4 md:gap-8 w-full mt-8">
       {options.map((opt) => (
         <button
           key={opt}
           onClick={() => onAnswer(opt)}
           disabled={disabled}
-          className={`flex-1 aspect-square md:aspect-auto md:h-16 rounded-xl font-bold text-2xl flex items-center justify-center transition-all ${
+          className={`w-16 h-12 md:w-24 md:h-16 rounded-xl font-bold text-2xl flex-shrink-0 flex items-center justify-center transition-all ${
             disabled
               ? "bg-slate-200 text-slate-400 cursor-not-allowed"
               : "bg-white text-[#0F2A43] border-2 border-[#0F2A43] hover:bg-[#0F2A43] hover:text-white shadow-sm active:scale-95"
