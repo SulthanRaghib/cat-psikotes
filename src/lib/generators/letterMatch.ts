@@ -16,12 +16,20 @@ export function generateLetterMatchItem(): {
   const rowA: string[] = [];
   const rowB: string[] = [];
 
+  // Tentukan jumlah pasangan yang sama (1 sampai 4, tidak pernah 0)
+  const targetMatches = Math.floor(Math.random() * 4) + 1;
+  
+  // Pilih kolom mana saja yang akan dibuat sama
+  const matchIndices = new Set<number>();
+  while (matchIndices.size < targetMatches) {
+    matchIndices.add(Math.floor(Math.random() * 4));
+  }
+
   for (let col = 0; col < 4; col++) {
     const baseLetter = randomLetter();
     rowA.push(randomCase(baseLetter));
 
-    const shouldMatch = Math.random() < 0.5; // ~50% peluang kolom ini cocok
-    if (shouldMatch) {
+    if (matchIndices.has(col)) {
       rowB.push(randomCase(baseLetter)); // huruf sama, kapitalisasi diacak ulang
     } else {
       let otherLetter = randomLetter();
