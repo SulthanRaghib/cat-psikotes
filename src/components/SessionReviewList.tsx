@@ -17,32 +17,38 @@ export default function SessionReviewList({ items }: Props) {
     <div className="w-full max-w-4xl mx-auto mt-8 flex flex-col gap-4">
       <h3 className="text-xl font-bold text-[#0F2A43] dark:text-slate-100 mb-2">Review Jawaban</h3>
       {items.map((item, i) => (
-        <div key={i} className={`p-4 rounded-xl border ${item.isCorrect ? 'border-green-200 bg-green-50/30' : 'border-red-200 bg-red-50/30'} flex flex-col md:flex-row gap-6 items-center`}>
-          <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-slate-100 rounded-full font-bold text-slate-500">
-            {item.index}
+        <div key={i} className={`p-4 rounded-xl border ${item.isCorrect ? 'border-green-200 dark:border-emerald-800 bg-green-50/50 dark:bg-emerald-900/20' : 'border-red-200 dark:border-rose-800 bg-red-50/50 dark:bg-rose-900/20'} flex flex-col md:flex-row gap-6 items-center shadow-sm`}>
+          <div className="flex flex-col items-center justify-center gap-1 min-w-[3rem]">
+            <span className="text-xs font-bold text-slate-400 dark:text-slate-500">#{item.index}</span>
+            <div className={`w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full font-bold text-white shadow-sm ${item.isCorrect ? 'bg-green-500' : 'bg-red-500'}`}>
+              {item.isCorrect ? (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              )}
+            </div>
           </div>
           
           <div className="flex-1 overflow-x-auto p-4 bg-white dark:bg-slate-800 rounded shadow-sm">
             {/* Render stimulus specifically for letter match */}
             {item.stimulus && item.stimulus.rowA && item.stimulus.rowB ? (
-              <div className="flex flex-col items-center select-none font-mono font-bold text-2xl md:text-3xl text-[#0F2A43] dark:text-slate-100">
-                <div className="flex gap-4 md:gap-8">
-                  {item.stimulus.rowA.map((char: string, cIdx: number) => {
-                    const match = char.toUpperCase() === item.stimulus.rowB[cIdx].toUpperCase();
+              <div className="flex flex-col items-center select-none font-bold text-xl md:text-2xl text-[#0F2A43] dark:text-slate-100">
+                <div className="flex gap-2 md:gap-4">
+                  {item.stimulus.rowA.map((charA: string, cIdx: number) => {
+                    const charB = item.stimulus.rowB[cIdx];
+                    const match = charA.toUpperCase() === charB.toUpperCase();
                     return (
-                      <div key={`a-${cIdx}`} className={`w-8 md:w-12 text-center pb-2 ${match ? 'text-green-600 border-b-4 border-green-500' : 'text-slate-400'}`}>
-                        {char}
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="h-2"></div>
-                <div className="flex gap-4 md:gap-8">
-                  {item.stimulus.rowB.map((char: string, cIdx: number) => {
-                    const match = item.stimulus.rowA[cIdx].toUpperCase() === char.toUpperCase();
-                    return (
-                      <div key={`b-${cIdx}`} className={`w-8 md:w-12 text-center pt-2 ${match ? 'text-green-600 border-t-4 border-green-500' : 'text-slate-400'}`}>
-                        {char}
+                      <div key={`col-${cIdx}`} className={`flex flex-col border-2 rounded-xl bg-white dark:bg-slate-900 overflow-hidden shadow-sm ${match ? 'border-green-400 dark:border-emerald-600 shadow-green-100 dark:shadow-emerald-900/20' : 'border-slate-200 dark:border-slate-700'}`}>
+                        <div className={`w-10 h-10 md:w-14 md:h-14 flex items-center justify-center border-b-2 bg-slate-50 dark:bg-slate-800/80 ${match ? 'text-green-600 border-green-200 dark:border-emerald-800/50' : 'text-slate-500 dark:text-slate-400 border-slate-100 dark:border-slate-800'}`}>
+                          {charA}
+                        </div>
+                        <div className={`w-10 h-10 md:w-14 md:h-14 flex items-center justify-center ${match ? 'text-green-600' : 'text-slate-500 dark:text-slate-400'}`}>
+                          {charB}
+                        </div>
                       </div>
                     );
                   })}
