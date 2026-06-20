@@ -24,7 +24,7 @@ export async function GET(request: Request) {
     // Map and parse options
     let questions: Question[] = filteredRows.map((r) => ({
       id: r.id,
-      category: r.category as any,
+      category: r.category as Question['category'],
       question: r.question,
       options: JSON.parse(r.options),
       correct_index: r.correct_index,
@@ -41,8 +41,8 @@ export async function GET(request: Request) {
     questions = questions.slice(0, Math.min(count, questions.length));
 
     return NextResponse.json({ questions });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
   }
 }
