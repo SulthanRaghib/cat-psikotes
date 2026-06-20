@@ -66,8 +66,8 @@ export default function SubtestInstructionScreen({
 
           <ul className="list-disc pl-5 space-y-2">
             <li>Pilih jawaban Anda dengan menekan angka yang sesuai.</li>
-            <li>Setelah yakin, tekan tombol <strong>"Selanjutnya"</strong> untuk berpindah ke soal berikutnya.</li>
-            <li>Anda dapat kembali ke soal sebelumnya dengan menekan <strong>"Sebelumnya"</strong> jika ingin merubah jawaban.</li>
+            <li>Setelah yakin, tekan tombol <strong>&quot;Selanjutnya&quot;</strong> untuk berpindah ke soal berikutnya.</li>
+            <li>Anda dapat kembali ke soal sebelumnya dengan menekan <strong>&quot;Sebelumnya&quot;</strong> jika ingin merubah jawaban.</li>
             <li>Kerjakan soal secepat dan setepat mungkin sebelum waktu habis!</li>
           </ul>
         </div>
