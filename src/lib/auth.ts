@@ -20,11 +20,11 @@ export async function decrypt(input: string): Promise<Record<string, unknown> | 
   return payload;
 }
 
-export async function getSession(req?: NextRequest) {
+export async function getSession(req?: NextRequest): Promise<{ username: string } | null> {
   const session = req ? req.cookies.get('admin_session')?.value : cookies().get('admin_session')?.value;
   if (!session) return null;
   try {
-    return await decrypt(session);
+    return await decrypt(session) as { username: string };
   } catch (err) {
     return null;
   }
