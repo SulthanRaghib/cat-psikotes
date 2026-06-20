@@ -80,7 +80,8 @@ export default function App() {
              question: a.question,
              options: a.options,
              correct_index: a.correctIndex,
-             explanation: a.explanation
+             explanation: a.explanation,
+             category: a.category
           })));
           setAttemptResult(data.attempt);
           setScreen('result');
@@ -136,7 +137,8 @@ export default function App() {
       question: q.question,
       options: q.options,
       correct_index: q.correct_index,
-      explanation: q.explanation
+      explanation: q.explanation,
+      category: q.category
     }]);
   };
 
@@ -181,7 +183,8 @@ export default function App() {
       question: q.question,
       options: q.options,
       correct_index: q.correct_index,
-      explanation: q.explanation
+      explanation: q.explanation,
+      category: q.category
     }]);
   };
 
@@ -378,7 +381,7 @@ export default function App() {
             <p className="text-xs font-bold tracking-widest uppercase text-slate-500 dark:text-slate-400 mb-3">Rincian per Kategori</p>
             <div className="flex flex-col gap-1">
               {CATEGORIES.filter(c => selectedCats.includes(c.id)).map(cat => {
-                const catAnswers = answers.filter(a => questions.find(q => q.id === a.question_id)?.category === cat.id);
+                const catAnswers = answers.filter(a => a.category === cat.id);
                 if (catAnswers.length === 0) return null;
                 const catCorrect = catAnswers.filter(a => a.is_correct).length;
                 return (
