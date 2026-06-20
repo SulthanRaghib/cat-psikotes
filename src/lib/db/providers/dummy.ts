@@ -148,6 +148,11 @@ class DummyAttemptRepository implements IAttemptRepository {
     return { attempt, answers: ans };
   }
 
+  async delete(id: number): Promise<void> {
+    this.attempts = this.attempts.filter((a) => a.id !== id);
+    this.answers = this.answers.filter((a) => a.attempt_id !== id);
+  }
+
   async deleteAll(): Promise<void> {
     this.attempts = [];
     this.answers = [];
