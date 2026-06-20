@@ -1,138 +1,141 @@
-# 🧠 CAT - Bank Soal Psikotes RTC
+# 🧠 CAT - Sistem Ujian Psikotes Kognitif (RTC Staff)
 
-Aplikasi **Computer Assisted Test (CAT)** modern berbasis web untuk mengelola dan menjalankan simulasi ujian psikotes. Dibangun dengan fokus pada kecepatan, kenyamanan baca (*UI/UX Premium*), keandalan sistem, serta skalabilitas tinggi menggunakan arsitektur *Multi-Environment Database*.
+Aplikasi **Computer Assisted Test (CAT)** modern berbasis web yang dirancang khusus untuk menyimulasikan baterai ujian psikometri tingkat tinggi. Dibangun dengan fokus pada kecepatan, akurasi, antarmuka premium (UI/UX yang sangat responsif), dan pembuatan soal secara algoritmik tanpa batas (Infinite Power Test).
 
 ---
 
 ## ✨ Fitur Utama
 
-### 🎓 Modul Ujian (Test Module)
-- **Kategori Dinamis**: Mendukung berbagai kategori tes (Numerik, Logika & Penalaran, Verbal, Situasional).
-- **Mode Timer Tersedia**: Menyediakan batasan waktu ujian yang dihitung mundur secara *real-time* dengan visualisasi yang menarik.
-- **Dukungan Matematika Kompleks**: Dapat memuat dan merender rumus matematika berat (pecahan, akar, kuadrat, dsb) dengan sempurna (*KaTeX/LaTeX Integration*).
-- **Navigasi Cerdas**: Panel grid soal interaktif untuk menandai, meloncati, atau meninjau ulang soal dengan mudah.
-- **Analisis & Rapor Ujian**: Skor otomatis, akurasi per kategori, dan umpan balik/pembahasan lengkap di akhir tes.
+### 🎯 Arsitektur 11 Subtes Kognitif
+Sistem dirancang untuk mendukung 11 jenis subtes kognitif dan kepribadian, dengan mekanisme ujian yang berbeda-beda.
+- **Letter Match (Menghitung Huruf Sama)**: Mengukur ketelitian tingkat tinggi dengan membandingkan deretan huruf.
+- *(Subtes lainnya sedang dalam tahap pengembangan aktif)*
 
-### 🛡️ Modul Admin (Management Module)
-- **Keamanan Berlapis**: Proteksi sesi menggunakan JSON Web Tokens (JWT) & Bcrypt.
-- **Profil Admin & Ganti Password**: Dilengkapi antarmuka eksklusif berkeamanan ganda untuk mengubah sandi kredensial admin tanpa perlu menyentuh database secara langsung.
-- **Manajemen Bank Soal (CRUD)**: Antarmuka *dashboard* yang bersih untuk membuat, mengubah, atau menghapus soal.
-- **Import & Export Cerdas**: Anda bisa mengunduh *template* beserta contohnya, dan mengunggah ratusan soal sekaligus dalam format **CSV** maupun **JSON**.
-- **Mode Pratinjau**: Label berwarna untuk memudahkan pemilahan soal berdasarkan kategori secara visual.
+### 🤖 Generator Algoritmik (Infinite Questions)
+Berbeda dengan sistem ujian tradisional, aplikasi ini **tidak menggunakan bank soal statis**. Setiap soal di-generate secara otomatis secara matematis dan logis sesaat sebelum ditampilkan kepada peserta, menjamin tidak ada soal yang habis atau berulang.
 
-### ⚙️ Logic & Architecture
-- **Multi-Environment Database (DAL)**: 
-  - 🖥️ **Lokal**: Menggunakan **SQLite** untuk kecepatan pengembangan.
-  - ☁️ **Production**: Menggunakan **Supabase (PostgreSQL)** untuk *deployment* awan (seperti Vercel).
-  - 🚑 **Fallback/Dummy**: Sistem pengaman yang secara otomatis mengambil alih (*takeover*) jika database utama gagal tersambung, mencegah aplikasi lumpuh (500 Error).
-- **Otomatisasi Cloud (CLI Scripts)**: Kemampuan memompa data dari lokal ke *cloud* (Supabase) secara otomatis hanya dengan satu perintah eksekusi.
-- **Dark/Light Mode**: Kustomisasi tema terintegrasi secara menyeluruh.
+### ⚙️ Sistem Navigasi Pintar
+- **Manual Navigation**: Peserta dapat memilih jawaban, menekan tombol *Selanjutnya*, dan kembali ke soal sebelumnya (*Sebelumnya*) untuk mengoreksi jawaban.
+- **Mode Latihan (Umpan Balik)**: Fitur opsional untuk memunculkan kilatan warna (hijau/merah) secara instan ketika peserta memilih jawaban.
+
+### 🎨 Desain Premium & Mode Gelap (Dark Mode)
+- **Tema Terintegrasi**: Pilihan *Light Mode*, *Dark Mode*, dan *System Preference*.
+- **Desain Modern**: Memanfaatkan palet warna yang memanjakan mata, tipografi modern, kotak soal presisi, dan animasi mulus.
+
+### 💾 Multi-Environment Database (DAL)
+- 🖥️ **Lokal (Development)**: Berjalan secara *plug-and-play* menggunakan **SQLite**.
+- ☁️ **Production (Cloud)**: Siap di-deploy menggunakan database skala besar **Supabase (PostgreSQL)** (ideal untuk Vercel).
+- 🔄 **Otomasi Migrasi**: Tersedia perintah `migrate:fresh --seed` bawaan layaknya framework Laravel untuk menghapus bersih dan memutar ulang database Supabase Anda hanya lewat satu perintah NPM.
 
 ---
 
 ## 🛠️ Teknologi yang Digunakan
 
-| Kategori | Teknologi |
+| Komponen | Teknologi Utama |
 | :--- | :--- |
-| **Framework** | Next.js (App Router), React |
-| **Styling** | Tailwind CSS, Lucide React (Icons) |
-| **Database (Lokal)** | Better-SQLite3 |
-| **Database (Cloud)** | Supabase (PostgreSQL) |
-| **Keamanan** | Jose (JWT), BcryptJS |
-| **Parser & Renderer** | React-Markdown, KaTeX, PapaParse (CSV) |
+| **Framework Web** | Next.js 15 (App Router), React 19 |
+| **Styling & UI** | Tailwind CSS, Lucide React (Ikonografi) |
+| **Database Lokal** | Better-SQLite3 |
+| **Database Cloud** | @supabase/supabase-js, postgres (Driver SQL) |
+| **State Management** | React Hooks (useState, useEffect, dll) |
+| **Penyandian & Keamanan** | BcryptJS (Enkripsi Hash) |
 
 ---
 
 ## 🚀 Prasyarat Instalasi
 
-Pastikan sistem Anda telah memasang:
-- **Node.js** (Versi 18.17 atau lebih tinggi)
-- **NPM** atau **Yarn** atau **PNPM**
-- Terminal atau Command Prompt
+Sebelum memulai, pastikan sistem Anda telah terpasang:
+- **Node.js** (Versi 18.x atau lebih tinggi)
+- **NPM** (atau Yarn/PNPM)
+- Akses ke Terminal atau Command Prompt
 
 ---
 
 ## 📦 Panduan Instalasi & Penggunaan
 
-### 1. Kloning Repositori & Instal Dependensi
+### 1. Kloning Repositori
+Langkah pertama, unduh repositori ini ke komputer Anda dan masuk ke direktorinya.
 ```bash
 git clone <url-repositori-anda>
 cd cat-tes-psikotes-rtc-staff
 npm install
 ```
 
-### 2. Konfigurasi Lingkungan (Environment Variables)
-Ubah nama file `.env.example` menjadi `.env` (atau buat file `.env` baru jika tidak ada), lalu sesuaikan nilainya:
+### 2. Konfigurasi Lingkungan (.env)
+Salin berkas `.env.example` menjadi `.env` (atau buat file `.env` baru) dan sesuaikan pengaturannya:
 
 ```env
-# Konfigurasi Database Utama Aplikasi
-# Pilihan: sqlite | supabase | dummy
+# Pilihan Database: sqlite | supabase
 DB_PROVIDER="sqlite"
 
-# Kredensial Default Admin (Digunakan oleh script seed)
-ADMIN_USERNAME="admin"
-ADMIN_PASSWORD="admin123"
+# === Konfigurasi Supabase (Bila Menggunakan Cloud) ===
+NEXT_PUBLIC_SUPABASE_URL="https://xxx.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJh..."
+SUPABASE_SERVICE_ROLE_KEY="eyJh..."
 
-# JWT Secret untuk Login
-JWT_SECRET="super-secret-key-psikotes-rtc-2026"
-
-# Konfigurasi Supabase (Wajib diisi jika DB_PROVIDER="supabase")
-NEXT_PUBLIC_SUPABASE_URL=""
-SUPABASE_SERVICE_ROLE_KEY=""
-
-# (OPSIONAL) Untuk otomasi Terminal "npm run db:migrate:supabase" & "npm run db:push:supabase"
-# Salin Connection String (Bukan REST API) dari Settings > Database > Connection String di Supabase
-SUPABASE_DB_URL=""
+# Connection String untuk otomasi Migrasi
+SUPABASE_DB_URL="postgresql://postgres:[PASSWORD]@[HOST]:6543/postgres"
 ```
 
-### 3. Migrasi & Seeding Database (Lokal)
-Jalankan perintah berikut untuk mengisi database SQLite lokal Anda dengan kredensial admin secara otomatis:
+### 3. Migrasi & Seeding Database
+
+**Jika menggunakan SQLite (Lokal):**
+Anda cukup menjalankan skrip bawaan untuk menginisialisasi 11 daftar subtes ke dalam file lokal `app_v2.db`.
 ```bash
 npm run db:seed
 ```
 
-### 4. Menjalankan Aplikasi (Development)
+**Jika menggunakan Supabase (Cloud):**
+Aplikasi menyediakan *tools* khusus untuk menyapu bersih skema publik dan merakit ulang tabel dari awal beserta datanya (mirip `migrate:fresh --seed`).
+```bash
+npm run db:migrate:supabase -- --seed
+```
+
+### 4. Menjalankan Aplikasi
+Mulai peladen (*server*) lokal Anda.
 ```bash
 npm run dev
 ```
-Aplikasi kini berjalan di: **http://localhost:3000** 🚀
-
-### 5. (Lanjutan) Sinkronisasi ke Supabase (Cloud)
-Jika Anda sudah mengatur kredensial Supabase di `.env` dan siap meluncur ke *Production*:
-1. Jalankan `npm run db:migrate:supabase` untuk merakit struktur tabel.
-2. Jalankan `npm run db:push:supabase` untuk menyedot semua soal dari lokal dan memompanya ke Supabase!
+Buka peramban (*browser*) Anda dan arahkan ke **http://localhost:3000**.
 
 ---
 
 ## 📂 Susunan Proyek (Project Structure)
 
+Pemahaman akan struktur map akan mempermudah navigasi Anda:
+
 ```text
-├── /data                # Lokasi penyimpanan database SQLite lokal (.db)
-├── /scripts             # Skrip otomatisasi (seeding admin)
+├── /data                # Penyimpanan database SQLite lokal (.db)
+├── /scripts             # Kumpulan skrip CLI (seeding, migrasi Supabase)
 ├── /src
-│   ├── /app             # Next.js App Router (Halaman & Rute API)
-│   │   ├── /admin       # Halaman dashboard admin
-│   │   ├── /api         # Endpoint REST API (auth, attempts, questions)
-│   │   └── /test        # Halaman simulasi ujian pengguna
-│   ├── /components      # Komponen UI React yang dapat digunakan ulang
-│   ├── /lib             # Utilitas sistem inti
-│   │   ├── /db          # Data Access Layer (DAL) & Providers (SQLite, Supabase, Dummy)
-│   │   └── auth.ts      # Pengelola Autentikasi & Sesi (JWT)
-│   └── /types           # Definisi TypeScript
-└── package.json         # Konfigurasi dependensi proyek
+│   ├── /app             # Struktur *App Router* Next.js
+│   │   ├── /api         # Endpoint sistem REST API
+│   │   └── /subtes      # Modul antarmuka utama ujian (dynamic routes)
+│   ├── /components      # Komponen Visual React (UI Reusable)
+│   │   ├── AnswerButtonsRow.tsx
+│   │   ├── LetterMatchStimulus.tsx
+│   │   └── ThemeToggle.tsx
+│   ├── /lib             # Logic dan Generator Internal
+│   │   ├── /db          # Data Access Layer (SQLite & Supabase Providers)
+│   │   └── /generators  # Pusat Algoritma Pencetak Soal Otomatis
+│   └── /types           # Definisi struktur tipe TypeScript
+└── supabase_schema.sql  # Berkas panduan skema SQL manual
 ```
 
 ---
 
-## 💡 Contoh Penggunaan
+## 💡 Dokumentasi Fungsional & Alur Logika
 
-### Mengakses Dashboard Admin
-1. Buka browser dan arahkan ke `http://localhost:3000/admin`.
-2. Jika diminta login, masukkan kredensial yang ada di `.env` (Default: `admin` / `admin123`).
-3. Dari dashboard, Anda bisa menekan tombol **Import Data** untuk mengunggah soal dalam format CSV atau JSON.
+Agar lebih mudah dipahami saat melakukan pengembangan, berikut adalah rincian cara kerja sistem utama:
 
-### Memulai Ujian
-1. Buka halaman utama `http://localhost:3000`.
-2. Klik tombol **Mulai Latihan Sekarang**.
-3. Centang kategori soal yang ingin diujikan, sesuaikan jumlah waktu, lalu klik **Mulai**.
-4. Selesaikan ujian dan lihat rincian skor serta pembahasan di layar hasil!
+### A. Generator Algoritmik (Contoh: Menghitung Huruf Sama)
+Terletak di `/src/lib/generators/letterMatch.ts`.
+- **Logic**: Algoritma akan menghasilkan dua baris *array* (Row A dan Row B).
+- Ia menjamin bahwa *selalu ada* minimal 1 pasang huruf yang identik pada kolom yang sejajar, hingga maksimal 4 huruf (jadi jawabannya selalu berkisar antara 1, 2, 3, atau 4).
+- Algoritma juga dirancang untuk mengacak kapitalisasi huruf dengan probabilitas tertentu untuk meningkatkan tingkat kesulitan visual (nyaru).
+
+### B. Siklus Pengerjaan (Subtes Page)
+Terletak di `/src/app/subtes/[id]/page.tsx`.
+- **Bank Soal Dinamis**: Sistem menyimpan soal yang sudah digenerate ke dalam `sessionItems`.
+- **Manual Navigation**: Saat peserta mengklik "Selanjutnya", sistem mengecek apakah peserta berada di ujung array soal. Jika iya, algoritma dipanggil untuk mencetak soal *baru* secara seketika (*on-the-fly*). Jika peserta sedang meninjau mundur, aplikasi hanya menaikkan indeks baca tanpa melakukan pembuatan ulang.
+- **Payload Akhir**: Begitu batas waktu habis atau sesi diakhiri, seluruh log jawaban akan dibungkus rapat dan dikirim ke REST API `/api/subtests/[id]/sessions/[sessionId]/finish` untuk dikalkulasi nilai akhirnya.
