@@ -37,7 +37,8 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
           question: q?.question || 'Pertanyaan telah dihapus',
           options: q ? JSON.parse(q.options) : [],
           correctIndex: q?.correct_index || 0,
-          explanation: q?.explanation || ''
+          explanation: q?.explanation || '',
+          category: q?.category || 'numerik'
         };
       })
     };
