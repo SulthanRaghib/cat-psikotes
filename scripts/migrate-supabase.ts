@@ -5,6 +5,9 @@ import bcrypt from 'bcryptjs';
 config({ path: '.env' });
 config({ path: '.env.local' });
 
+const args = process.argv.slice(2);
+const shouldSeed = args.includes('--seed');
+
 async function migrate() {
   const url = process.env.SUPABASE_DB_URL;
   if (!url) {
@@ -17,13 +20,16 @@ async function migrate() {
   const sql = postgres(url, { ssl: 'require' });
 
   try {
-    console.log('🔄 Menghapus tabel lama jika ada...');
-    await sql`DROP TABLE IF EXISTS attempt_answers CASCADE`;
-    await sql`DROP TABLE IF EXISTS attempts CASCADE`;
-    await sql`DROP TABLE IF EXISTS questions CASCADE`;
-    await sql`DROP TABLE IF EXISTS subtest_session_items CASCADE`;
-    await sql`DROP TABLE IF EXISTS subtest_sessions CASCADE`;
-    await sql`DROP TABLE IF EXISTS subtests CASCADE`;
+    console.log('🔄 Menghapus seluruh tabel di skema public (migrate:fresh)...');
+    await sql`
+      DO $$ DECLARE
+          r RECORD;
+      BEGIN
+          FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP
+              EXECUTE 'DROP TABLE IF EXISTS public.' || quote_ident(r.tablename) || ' CASCADE';
+          END LOOP;
+      END $$;
+    `;
     
     console.log('🔄 Membangun struktur tabel baru...');
 
@@ -77,30 +83,34 @@ async function migrate() {
 
     console.log('✅ Struktur tabel baru berhasil dibuat!');
 
-    console.log('🔄 Menanamkan (Seeding) 11 Subtes...');
-    await sql`
-      INSERT INTO subtests (id, number, name, group_name, item_type, default_time_limit_seconds, is_active)
-      VALUES 
-      ('subtes_1', 1, 'Menghitung Huruf Sama', 'Learning Agility Index', 'letter_match_count', 360, 1),
-      ('subtes_2', 2, 'Segera Hadir', 'Learning Agility Index', NULL, NULL, 0),
-      ('subtes_3', 3, 'Selisih Huruf Terjauh', 'Learning Agility Index', NULL, NULL, 0),
-      ('subtes_4', 4, 'Selisih Angka Terjauh', 'Learning Agility Index', NULL, NULL, 0),
-      ('subtes_5', 5, 'Pasangan Huruf Diputar 90°', 'Learning Agility Index', NULL, NULL, 0),
-      ('subtes_6', 6, 'Berhitung Angka', 'TIKI', NULL, NULL, 0),
-      ('subtes_7', 7, 'Gabungan Bagian', 'TIKI', NULL, 420, 0),
-      ('subtes_8', 8, 'Hubungan Kata', 'TIKI', NULL, 300, 0),
-      ('subtes_9', 9, 'Abstraksi Non-Verbal', 'TIKI', NULL, NULL, 0),
-      ('subtes_10', 10, 'Work Personality Analitik', 'Personality', NULL, NULL, 0),
-      ('subtes_11', 11, 'Work Behavioral Assessment', 'Behavioral', NULL, NULL, 0)
-      ON CONFLICT (id) DO UPDATE SET 
-          number = EXCLUDED.number,
-          name = EXCLUDED.name,
-          group_name = EXCLUDED.group_name,
-          item_type = EXCLUDED.item_type,
-          default_time_limit_seconds = EXCLUDED.default_time_limit_seconds,
-          is_active = EXCLUDED.is_active;
-    `;
-    console.log('✅ Seed 11 Subtes berhasil ditambahkan!');
+    if (shouldSeed) {
+      console.log('🔄 Menanamkan (Seeding) 11 Subtes...');
+      await sql`
+        INSERT INTO subtests (id, number, name, group_name, item_type, default_time_limit_seconds, is_active)
+        VALUES 
+        ('subtes_1', 1, 'Menghitung Huruf Sama', 'Learning Agility Index', 'letter_match_count', 360, 1),
+        ('subtes_2', 2, 'Segera Hadir', 'Learning Agility Index', NULL, NULL, 0),
+        ('subtes_3', 3, 'Selisih Huruf Terjauh', 'Learning Agility Index', NULL, NULL, 0),
+        ('subtes_4', 4, 'Selisih Angka Terjauh', 'Learning Agility Index', NULL, NULL, 0),
+        ('subtes_5', 5, 'Pasangan Huruf Diputar 90°', 'Learning Agility Index', NULL, NULL, 0),
+        ('subtes_6', 6, 'Berhitung Angka', 'TIKI', NULL, NULL, 0),
+        ('subtes_7', 7, 'Gabungan Bagian', 'TIKI', NULL, 420, 0),
+        ('subtes_8', 8, 'Hubungan Kata', 'TIKI', NULL, 300, 0),
+        ('subtes_9', 9, 'Abstraksi Non-Verbal', 'TIKI', NULL, NULL, 0),
+        ('subtes_10', 10, 'Work Personality Analitik', 'Personality', NULL, NULL, 0),
+        ('subtes_11', 11, 'Work Behavioral Assessment', 'Behavioral', NULL, NULL, 0)
+        ON CONFLICT (id) DO UPDATE SET 
+            number = EXCLUDED.number,
+            name = EXCLUDED.name,
+            group_name = EXCLUDED.group_name,
+            item_type = EXCLUDED.item_type,
+            default_time_limit_seconds = EXCLUDED.default_time_limit_seconds,
+            is_active = EXCLUDED.is_active;
+      `;
+      console.log('✅ Seed 11 Subtes berhasil ditambahkan!');
+    } else {
+      console.log('⏭️ Melewati proses seeding (--seed tidak diberikan).');
+    }
 
     // Cek apakah admin sudah ada
     const existingAdmin = await sql`SELECT * FROM admins WHERE username = ${process.env.ADMIN_USERNAME || 'admin'}`;
