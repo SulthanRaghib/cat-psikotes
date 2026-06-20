@@ -21,14 +21,15 @@ export default function SubtestPage({ params }: { params: Promise<{ id: string }
   
   // Settings state
   const [selectedDuration, setSelectedDuration] = useState<number | ''>(5); // Default 5 minutes
-  const [feedbackMode, setFeedbackMode] = useState<boolean>(true); // Default ON
+  const [feedbackMode, setFeedbackMode] = useState<boolean>(false); // Default OFF
 
   // Session state
   const [sessionId, setSessionId] = useState<number | null>(null);
   const [endTime, setEndTime] = useState<number | null>(null);
-  const [currentItem, setCurrentItem] = useState<any>(null);
   const [itemIndex, setItemIndex] = useState(1);
   const [sessionItems, setSessionItems] = useState<any[]>([]);
+  
+  const currentItem = sessionItems[itemIndex - 1] || null;
   
   // Flash feedback state
   const [flashStatus, setFlashStatus] = useState<'correct' | 'incorrect' | null>(null);
@@ -71,10 +72,17 @@ export default function SubtestPage({ params }: { params: Promise<{ id: string }
       const data = await res.json();
       if (data.sessionId) {
         setSessionId(data.sessionId);
-        setSessionItems([]);
+        const firstItem = generateLetterMatchItem();
+        setSessionItems([{
+          itemIndex: 1,
+          stimulus: { rowA: firstItem.rowA, rowB: firstItem.rowB },
+          correctAnswer: firstItem.correctAnswer,
+          userAnswer: null,
+          isCorrect: false,
+          answeredAtMs: null
+        }]);
         setItemIndex(1);
         setEndTime(Date.now() + (finalDuration * 60 * 1000));
-        setCurrentItem(generateLetterMatchItem());
         setScreen('session');
       }
     } catch (e) {
@@ -89,35 +97,50 @@ export default function SubtestPage({ params }: { params: Promise<{ id: string }
     const isCorrect = userAnswer === currentItem.correctAnswer;
     const answeredAtMs = Date.now() - (endTime! - ((typeof selectedDuration === 'number' ? selectedDuration : 5) * 60 * 1000));
 
-    const itemRecord = {
-      itemIndex,
-      stimulus: { rowA: currentItem.rowA, rowB: currentItem.rowB },
-      correctAnswer: currentItem.correctAnswer,
-      userAnswer,
-      isCorrect,
-      answeredAtMs
-    };
-
-    setSessionItems(prev => [...prev, itemRecord]);
+    setSessionItems(prev => {
+      const newItems = [...prev];
+      newItems[itemIndex - 1] = {
+        ...newItems[itemIndex - 1],
+        userAnswer,
+        isCorrect,
+        answeredAtMs
+      };
+      return newItems;
+    });
 
     if (feedbackMode) {
-      // Flash feedback
       setFlashStatus(isCorrect ? 'correct' : 'incorrect');
-      setIsInputLocked(true);
-      setTimeout(() => {
-        setFlashStatus(null);
-        setIsInputLocked(false);
-        advanceToNextItem();
-      }, 350);
-    } else {
-      // Instant transition
-      advanceToNextItem();
+      setTimeout(() => setFlashStatus(null), 350);
     }
   };
 
-  const advanceToNextItem = () => {
+  const handleNext = () => {
+    if (!currentItem || currentItem.userAnswer === null) {
+      return; // Do nothing if answer not selected
+    }
+
+    if (itemIndex === sessionItems.length) {
+      // Generate new item
+      const nextItem = generateLetterMatchItem();
+      setSessionItems(prev => [
+        ...prev,
+        {
+          itemIndex: prev.length + 1,
+          stimulus: { rowA: nextItem.rowA, rowB: nextItem.rowB },
+          correctAnswer: nextItem.correctAnswer,
+          userAnswer: null,
+          isCorrect: false,
+          answeredAtMs: null
+        }
+      ]);
+    }
     setItemIndex(prev => prev + 1);
-    setCurrentItem(generateLetterMatchItem());
+  };
+
+  const handlePrev = () => {
+    if (itemIndex > 1) {
+      setItemIndex(prev => prev - 1);
+    }
   };
 
   const handleExpire = async () => {
@@ -126,16 +149,18 @@ export default function SubtestPage({ params }: { params: Promise<{ id: string }
     // Fallback if they didn't answer the current item?
     // We just ignore the current item.
     
-    const correctCount = sessionItems.filter(i => i.isCorrect).length;
+    // Only score answered items
+    const answeredItems = sessionItems.filter(i => i.userAnswer !== null);
+    const correctCount = answeredItems.filter(i => i.isCorrect).length;
     
     try {
       const res = await fetch(`/api/subtests/${id}/sessions/${sessionId}/finish`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          itemsAttempted: sessionItems.length,
+          itemsAttempted: answeredItems.length,
           correctCount,
-          items: sessionItems
+          items: answeredItems
         })
       });
       const data = await res.json();
@@ -186,11 +211,28 @@ export default function SubtestPage({ params }: { params: Promise<{ id: string }
         </div>
 
         {currentItem && (
-          <LetterMatchStimulus rowA={currentItem.rowA} rowB={currentItem.rowB} />
+          <LetterMatchStimulus rowA={currentItem.stimulus.rowA} rowB={currentItem.stimulus.rowB} />
         )}
 
-        <div className="absolute bottom-16 w-full px-4">
-          <AnswerButtonsRow onAnswer={handleAnswer} disabled={isInputLocked} />
+        <div className="absolute bottom-8 w-full px-4 flex flex-col items-center">
+          <AnswerButtonsRow onAnswer={handleAnswer} disabled={isInputLocked} selectedValue={currentItem?.userAnswer} />
+          
+          <div className="mt-8 w-full max-w-xl flex justify-between">
+            <button 
+              onClick={handlePrev}
+              disabled={itemIndex === 1}
+              className={`px-6 py-3 rounded font-bold transition-colors ${itemIndex > 1 ? 'bg-slate-200 hover:bg-slate-300 text-slate-700' : 'bg-slate-100 text-slate-300 cursor-not-allowed opacity-50'}`}
+            >
+              ← Sebelumnya
+            </button>
+            <button 
+              onClick={handleNext}
+              disabled={currentItem?.userAnswer === null}
+              className={`px-6 py-3 rounded font-bold transition-colors ${currentItem?.userAnswer !== null ? 'bg-[#0F2A43] hover:bg-[#E8821E] text-white shadow-md' : 'bg-slate-200 text-slate-400 cursor-not-allowed opacity-50'}`}
+            >
+              Selanjutnya →
+            </button>
+          </div>
         </div>
       </div>
     );
