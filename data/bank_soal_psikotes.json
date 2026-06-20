@@ -1,0 +1,1302 @@
+[
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah angka selanjutnya dari deret berikut: $1, 3, 5, 7, \\dots$?",
+    "options": [
+      "8",
+      "9",
+      "10",
+      "11"
+    ],
+    "correct_index": 1,
+    "explanation": "Pola deret tersebut adalah penambahan $2$ ($n + 2$). Maka $7 + 2 = 9$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Lanjutkan deret berikut: $2, 4, 8, 16, \\dots$",
+    "options": [
+      "24",
+      "30",
+      "32",
+      "64"
+    ],
+    "correct_index": 2,
+    "explanation": "Pola deret tersebut adalah perkalian $2$. Maka $16 \\times 2 = 32$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah angka selanjutnya: $100, 90, 80, 70, \\dots$?",
+    "options": [
+      "50",
+      "60",
+      "65",
+      "70"
+    ],
+    "correct_index": 1,
+    "explanation": "Pola deret adalah pengurangan $10$. Maka $70 - 10 = 60$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Lanjutkan deret berikut: $3, 9, 27, 81, \\dots$",
+    "options": [
+      "162",
+      "243",
+      "324",
+      "405"
+    ],
+    "correct_index": 1,
+    "explanation": "Pola deret adalah perkalian $3$. Maka $81 \\times 3 = 243$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah angka selanjutnya dari deret kuadrat berikut: $1, 4, 9, 16, \\dots$?",
+    "options": [
+      "20",
+      "24",
+      "25",
+      "36"
+    ],
+    "correct_index": 2,
+    "explanation": "Pola deret adalah kuadrat bilangan asli ($1^2, 2^2, 3^2, 4^2$). Maka $5^2 = 25$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Lanjutkan deret Fibonacci berikut: $1, 1, 2, 3, 5, \\dots$",
+    "options": [
+      "7",
+      "8",
+      "9",
+      "10"
+    ],
+    "correct_index": 1,
+    "explanation": "Deret Fibonacci merupakan penjumlahan dua angka sebelumnya ($3 + 5 = 8$)."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Lanjutkan deret berikut: $5, 10, 20, 40, \\dots$",
+    "options": [
+      "60",
+      "70",
+      "80",
+      "100"
+    ],
+    "correct_index": 2,
+    "explanation": "Pola deret adalah perkalian $2$. Maka $40 \\times 2 = 80$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah angka selanjutnya: $121, 100, 81, 64, \\dots$?",
+    "options": [
+      "36",
+      "42",
+      "49",
+      "56"
+    ],
+    "correct_index": 2,
+    "explanation": "Pola kuadrat menurun ($11^2, 10^2, 9^2, 8^2$). Selanjutnya adalah $7^2 = 49$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Lanjutkan deret bilangan prima berikut: $2, 3, 5, 7, 11, \\dots$",
+    "options": [
+      "12",
+      "13",
+      "14",
+      "15"
+    ],
+    "correct_index": 1,
+    "explanation": "Bilangan prima setelah $11$ adalah $13$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Lanjutkan deret tingkat berikut: $10, 15, 21, 28, \\dots$",
+    "options": [
+      "34",
+      "35",
+      "36",
+      "37"
+    ],
+    "correct_index": 2,
+    "explanation": "Pola bertambah progresif: $+5, +6, +7$. Selanjutnya $+8$, jadi $28 + 8 = 36$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah angka selanjutnya dari deret: $5, 25, 125, \\dots$?",
+    "options": [
+      "225",
+      "525",
+      "625",
+      "725"
+    ],
+    "correct_index": 2,
+    "explanation": "Pola perkalian $5$. Maka $125 \\times 5 = 625$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Lanjutkan deret pangkat tiga berikut: $8, 27, 64, 125, \\dots$",
+    "options": [
+      "216",
+      "225",
+      "256",
+      "343"
+    ],
+    "correct_index": 0,
+    "explanation": "Pola adalah $n^3$ ($2^3, 3^3, 4^3, 5^3$). Selanjutnya $6^3 = 216$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah angka selanjutnya: $1000, 500, 250, \\dots$?",
+    "options": [
+      "100",
+      "125",
+      "150",
+      "200"
+    ],
+    "correct_index": 1,
+    "explanation": "Pola pembagian $2$. Maka $250 / 2 = 125$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Lanjutkan deret berikut: $3, 4, 7, 11, 18, \\dots$",
+    "options": [
+      "25",
+      "27",
+      "29",
+      "31"
+    ],
+    "correct_index": 2,
+    "explanation": "Deret Fibonacci, penjumlahan dua angka sebelumnya: $11 + 18 = 29$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Lanjutkan deret berikut: $0, 3, 8, 15, \\dots$",
+    "options": [
+      "20",
+      "22",
+      "24",
+      "26"
+    ],
+    "correct_index": 2,
+    "explanation": "Pola $n^2 - 1$ ($1^2-1, 2^2-1, 3^2-1, 4^2-1$). Selanjutnya $5^2 - 1 = 24$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah angka selanjutnya: $-5, -2, 1, 4, \\dots$?",
+    "options": [
+      "5",
+      "6",
+      "7",
+      "8"
+    ],
+    "correct_index": 2,
+    "explanation": "Pola penambahan konstan $+3$. Maka $4 + 3 = 7$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Lanjutkan deret berikut: $2, 4, 12, 48, \\dots$",
+    "options": [
+      "144",
+      "192",
+      "240",
+      "288"
+    ],
+    "correct_index": 2,
+    "explanation": "Pola perkalian yang meningkat: $\\times 2, \\times 3, \\times 4$. Selanjutnya $\\times 5$, maka $48 \\times 5 = 240$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Lanjutkan deret kelipatan berikut: $7, 14, 21, 28, \\dots$",
+    "options": [
+      "32",
+      "34",
+      "35",
+      "36"
+    ],
+    "correct_index": 2,
+    "explanation": "Pola kelipatan $7$ (atau $+7$). Maka $28 + 7 = 35$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah angka selanjutnya: $99, 88, 77, 66, \\dots$?",
+    "options": [
+      "44",
+      "55",
+      "60",
+      "65"
+    ],
+    "correct_index": 1,
+    "explanation": "Pola pengurangan $11$. Maka $66 - 11 = 55$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Lanjutkan deret berikut: $1, 8, 27, 64, \\dots$",
+    "options": [
+      "100",
+      "121",
+      "125",
+      "144"
+    ],
+    "correct_index": 2,
+    "explanation": "Pola kubik/pangkat tiga berurutan ($1^3, 2^3, 3^3, 4^3$). Selanjutnya $5^3 = 125$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah nilai dari $50\\%$ dari $200$?",
+    "options": [
+      "50",
+      "100",
+      "150",
+      "200"
+    ],
+    "correct_index": 1,
+    "explanation": "Setengah atau $50\\%$ dari $200$ adalah $100$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah nilai dari $20\\%$ dari $50$?",
+    "options": [
+      "5",
+      "10",
+      "15",
+      "20"
+    ],
+    "correct_index": 1,
+    "explanation": "$20/100 \\times 50 = 10$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Jika $x + 5 = 15$, berapakah nilai $x$?",
+    "options": [
+      "5",
+      "10",
+      "15",
+      "20"
+    ],
+    "correct_index": 1,
+    "explanation": "Pindahkan $5$ ke ruas kanan: $x = 15 - 5$, sehingga $x = 10$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Jika $2x = 24$, berapakah nilai $x$?",
+    "options": [
+      "10",
+      "12",
+      "14",
+      "22"
+    ],
+    "correct_index": 1,
+    "explanation": "$x = 24 / 2 = 12$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah hasil dari $\\frac{1}{2} + \\frac{1}{4}$?",
+    "options": [
+      "$\\frac{1}{6}$",
+      "$\\frac{2}{4}$",
+      "$\\frac{3}{4}$",
+      "$\\frac{5}{8}$"
+    ],
+    "correct_index": 2,
+    "explanation": "Samakan penyebut: $\\frac{2}{4} + \\frac{1}{4} = \\frac{3}{4}$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah hasil dari $0.5 \\times 100$?",
+    "options": [
+      "5",
+      "50",
+      "500",
+      "5000"
+    ],
+    "correct_index": 1,
+    "explanation": "$0.5$ sama dengan $\\frac{1}{2}$. Maka $\\frac{1}{2} \\times 100 = 50$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah nilai dari $3^3$?",
+    "options": [
+      "9",
+      "12",
+      "18",
+      "27"
+    ],
+    "correct_index": 3,
+    "explanation": "$3 \\times 3 \\times 3 = 27$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah akar kuadrat dari $144$ ($\\sqrt{144}$)?",
+    "options": [
+      "10",
+      "11",
+      "12",
+      "14"
+    ],
+    "correct_index": 2,
+    "explanation": "$12 \\times 12 = 144$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah hasil dari $15 \\times 15$?",
+    "options": [
+      "125",
+      "215",
+      "225",
+      "325"
+    ],
+    "correct_index": 2,
+    "explanation": "Perkalian kuadrat $15$ adalah $225$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah nilai dari $25\\%$ dari $400$?",
+    "options": [
+      "50",
+      "75",
+      "100",
+      "125"
+    ],
+    "correct_index": 2,
+    "explanation": "$25\\%$ sama dengan $\\frac{1}{4}$. $\\frac{1}{4} \\times 400 = 100$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah $\\frac{3}{4}$ dari $100$?",
+    "options": [
+      "25",
+      "50",
+      "75",
+      "100"
+    ],
+    "correct_index": 2,
+    "explanation": "$(100 / 4) \\times 3 = 25 \\times 3 = 75$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah nilai dari $10^3$?",
+    "options": [
+      "30",
+      "100",
+      "1000",
+      "10000"
+    ],
+    "correct_index": 2,
+    "explanation": "$10 \\times 10 \\times 10 = 1000$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah hasil dari $5!$ (faktorial)?",
+    "options": [
+      "20",
+      "60",
+      "100",
+      "120"
+    ],
+    "correct_index": 3,
+    "explanation": "$5 \\times 4 \\times 3 \\times 2 \\times 1 = 120$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Jika $x - 7 = 14$, berapakah nilai $x$?",
+    "options": [
+      "7",
+      "14",
+      "21",
+      "28"
+    ],
+    "correct_index": 2,
+    "explanation": "$x = 14 + 7 = 21$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah hasil dari $12 \\times 12$?",
+    "options": [
+      "124",
+      "144",
+      "164",
+      "244"
+    ],
+    "correct_index": 1,
+    "explanation": "Perkalian dasar kuadrat, hasilnya $144$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah nilai dari $30\\%$ dari $300$?",
+    "options": [
+      "30",
+      "60",
+      "90",
+      "120"
+    ],
+    "correct_index": 2,
+    "explanation": "$30/100 \\times 300 = 90$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah hasil dari $0.25 \\times 80$?",
+    "options": [
+      "15",
+      "20",
+      "25",
+      "30"
+    ],
+    "correct_index": 1,
+    "explanation": "$0.25$ sama dengan $\\frac{1}{4}$. $\\frac{1}{4} \\times 80 = 20$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah $\\frac{1}{3}$ dari $90$?",
+    "options": [
+      "20",
+      "30",
+      "40",
+      "50"
+    ],
+    "correct_index": 1,
+    "explanation": "$90 / 3 = 30$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah nilai dari $2^5$?",
+    "options": [
+      "10",
+      "16",
+      "32",
+      "64"
+    ],
+    "correct_index": 2,
+    "explanation": "$2 \\times 2 \\times 2 \\times 2 \\times 2 = 32$."
+  },
+  {
+    "id": "",
+    "category": "numerik",
+    "question": "Berapakah akar kuadrat dari $225$ ($\\sqrt{225}$)?",
+    "options": [
+      "15",
+      "25",
+      "35",
+      "45"
+    ],
+    "correct_index": 0,
+    "explanation": "$15 \\times 15 = 225$."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah sinonim (persamaan kata) dari: EVOKASI",
+    "options": [
+      "Penilaian",
+      "Penggugah rasa",
+      "Perubahan",
+      "Pengungsian"
+    ],
+    "correct_index": 1,
+    "explanation": "Evokasi berarti daya penggugah rasa."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah sinonim dari: DEHIDRASI",
+    "options": [
+      "Kehilangan cairan",
+      "Kekurangan darah",
+      "Penurunan gizi",
+      "Kelebihan air"
+    ],
+    "correct_index": 0,
+    "explanation": "Dehidrasi adalah kondisi tubuh kehilangan banyak cairan."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah sinonim dari: EFEKTIF",
+    "options": [
+      "Hemat",
+      "Manjur / Tepat guna",
+      "Cepat",
+      "Terarah"
+    ],
+    "correct_index": 1,
+    "explanation": "Efektif memiliki arti manjur atau membawa hasil (tepat guna)."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah sinonim dari: FLUKTUASI",
+    "options": [
+      "Perubahan arah",
+      "Kemajuan",
+      "Turun naik",
+      "Pengaturan"
+    ],
+    "correct_index": 2,
+    "explanation": "Fluktuasi adalah gejala turun naiknya suatu keadaan (seperti harga)."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah sinonim dari: TENDENSI",
+    "options": [
+      "Kecenderungan",
+      "Ketegangan",
+      "Tujuan",
+      "Kemauan"
+    ],
+    "correct_index": 0,
+    "explanation": "Tendensi artinya adalah kecenderungan atau kecondongan pada suatu hal."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah sinonim dari: KISI-KISI",
+    "options": [
+      "Pola",
+      "Terali / Jaringan",
+      "Alat ukur",
+      "Perangkap"
+    ],
+    "correct_index": 1,
+    "explanation": "Kisi-kisi dapat diartikan sebagai kayu atau besi yang dipasang bersilang-silang (terali)."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah sinonim dari: PARADOKS",
+    "options": [
+      "Pernyataan logis",
+      "Kesesuaian",
+      "Kejanggalan / Lawan asas",
+      "Kesamaan"
+    ],
+    "correct_index": 2,
+    "explanation": "Paradoks adalah pernyataan yang seolah-olah bertentangan namun mengandung kebenaran (kejanggalan)."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah sinonim dari: VIRTUAL",
+    "options": [
+      "Nyata",
+      "Maya",
+      "Khayalan",
+      "Masa depan"
+    ],
+    "correct_index": 1,
+    "explanation": "Virtual memiliki arti maya atau tidak nyata secara fisik."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah sinonim dari: KONVENSI",
+    "options": [
+      "Peraturan ketat",
+      "Undang-undang",
+      "Kesepakatan",
+      "Persidangan"
+    ],
+    "correct_index": 2,
+    "explanation": "Konvensi adalah permufakatan atau kesepakatan umum."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah sinonim dari: PROTEKSI",
+    "options": [
+      "Pengawasan",
+      "Penjagaan ketat",
+      "Perlindungan",
+      "Pencegahan"
+    ],
+    "correct_index": 2,
+    "explanation": "Proteksi diserap dari bahasa asing yang berarti perlindungan."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah antonim (lawan kata) dari: TINGGI",
+    "options": [
+      "Kerdil",
+      "Bawah",
+      "Rendah",
+      "Pendek"
+    ],
+    "correct_index": 2,
+    "explanation": "Lawan kata untuk mendeskripsikan elevasi/ukuran tinggi adalah rendah."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah antonim dari: GELAP",
+    "options": [
+      "Siang",
+      "Terang",
+      "Benderang",
+      "Cahaya"
+    ],
+    "correct_index": 1,
+    "explanation": "Lawan kata dari gelap adalah terang."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah antonim dari: MAYOR",
+    "options": [
+      "Kecil",
+      "Mini",
+      "Minor",
+      "Sedikit"
+    ],
+    "correct_index": 2,
+    "explanation": "Mayor (besar/utama) berantonim dengan minor (kecil/sebagian)."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah antonim dari: PROGRESIF",
+    "options": [
+      "Inovatif",
+      "Regresif",
+      "Modern",
+      "Stagnan"
+    ],
+    "correct_index": 1,
+    "explanation": "Progresif (maju) berlawanan dengan regresif (mundur)."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah antonim dari: AKTIF",
+    "options": [
+      "Diam",
+      "Pasif",
+      "Mati",
+      "Berhenti"
+    ],
+    "correct_index": 1,
+    "explanation": "Aktif berantonim dengan pasif."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah antonim dari: EKSTERNAL",
+    "options": [
+      "Luar",
+      "Dalam",
+      "Internal",
+      "Pusat"
+    ],
+    "correct_index": 2,
+    "explanation": "Eksternal (bagian luar) berantonim dengan internal (bagian dalam)."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah antonim dari: OPTIMIS",
+    "options": [
+      "Pesimis",
+      "Realistis",
+      "Apatis",
+      "Sedih"
+    ],
+    "correct_index": 0,
+    "explanation": "Optimis (pengharapan baik) berlawanan dengan pesimis (berpandangan buruk)."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah antonim dari: KONKRET",
+    "options": [
+      "Asli",
+      "Nyata",
+      "Abstrak",
+      "Palsu"
+    ],
+    "correct_index": 2,
+    "explanation": "Konkret (nyata/berwujud) berantonim dengan abstrak (tidak berwujud)."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah antonim dari: EKSPLISIT",
+    "options": [
+      "Jelas",
+      "Terbuka",
+      "Implisit",
+      "Rahasia"
+    ],
+    "correct_index": 2,
+    "explanation": "Eksplisit (gamblang/terus terang) berantonim dengan implisit (tersirat)."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "Pilihlah antonim dari: MAYORITAS",
+    "options": [
+      "Sebagian",
+      "Minoritas",
+      "Rakyat",
+      "Pemerintah"
+    ],
+    "correct_index": 1,
+    "explanation": "Mayoritas (kelompok lebih banyak) berantonim dengan minoritas (kelompok lebih sedikit)."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "BURUNG : TERBANG = IKAN : ....",
+    "options": [
+      "Insang",
+      "Air",
+      "Berenang",
+      "Sisik"
+    ],
+    "correct_index": 2,
+    "explanation": "Analogi cara bergerak: Burung bergerak dengan cara terbang, ikan bergerak dengan cara berenang."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "GURU : SEKOLAH = DOKTER : ....",
+    "options": [
+      "Obat",
+      "Puskesmas",
+      "Pasien",
+      "Rumah Sakit"
+    ],
+    "correct_index": 3,
+    "explanation": "Analogi tempat kerja utama: Guru bekerja di sekolah, dokter bekerja di rumah sakit."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "BUKU : BACA = RADIO : ....",
+    "options": [
+      "Tonton",
+      "Dengar",
+      "Suara",
+      "Siar"
+    ],
+    "correct_index": 1,
+    "explanation": "Analogi fungsi/kegunaan: Buku digunakan untuk dibaca, radio digunakan untuk didengar."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "SIANG : MATAHARI = MALAM : ....",
+    "options": [
+      "Gelap",
+      "Bintang",
+      "Bulan",
+      "Tidur"
+    ],
+    "correct_index": 2,
+    "explanation": "Analogi benda langit yang mendominasi: Siang diterangi matahari, malam diterangi bulan."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "MOBIL : BENSIN = PERAHU LAYAR : ....",
+    "options": [
+      "Air",
+      "Kayu",
+      "Angin",
+      "Mesin"
+    ],
+    "correct_index": 2,
+    "explanation": "Analogi sumber tenaga penggerak: Mobil bergerak dengan bensin, perahu layar bergerak dengan angin."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "KANTUK : TIDUR = HAUS : ....",
+    "options": [
+      "Air",
+      "Minum",
+      "Makan",
+      "Gelas"
+    ],
+    "correct_index": 1,
+    "explanation": "Analogi solusi kebutuhan: Jika mengantuk butuh tidur, jika haus butuh minum."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "PENSIL : KERTAS = KUAS : ....",
+    "options": [
+      "Cat",
+      "Kanvas",
+      "Lukisan",
+      "Air"
+    ],
+    "correct_index": 1,
+    "explanation": "Analogi media penggunaan: Pensil digunakan di atas kertas, kuas digunakan di atas kanvas."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "MATA : MELIHAT = TELINGA : ....",
+    "options": [
+      "Suara",
+      "Bunyi",
+      "Mendengar",
+      "Tuli"
+    ],
+    "correct_index": 2,
+    "explanation": "Analogi fungsi alat indera: Mata berfungsi untuk melihat, telinga berfungsi untuk mendengar."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "KARET : LENTUR = BESI : ....",
+    "options": [
+      "Keras",
+      "Kaku",
+      "Kuat",
+      "Berat"
+    ],
+    "correct_index": 1,
+    "explanation": "Analogi sifat utama material berlawanan: Karet bersifat lentur, besi bersifat kaku."
+  },
+  {
+    "id": "",
+    "category": "verbal",
+    "question": "KAPITALISME : MODAL = DEMOKRASI : ....",
+    "options": [
+      "Rakyat",
+      "Pemilu",
+      "Bebas",
+      "Negara"
+    ],
+    "correct_index": 0,
+    "explanation": "Analogi pemegang kekuasaan utama: Kapitalisme berpusat pada modal, demokrasi berpusat pada rakyat."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Semua kucing mengeong. Belang adalah kucing. Kesimpulan:",
+    "options": [
+      "Belang belum tentu mengeong",
+      "Belang mengeong",
+      "Sebagian kucing mengeong",
+      "Belang bukan kucing"
+    ],
+    "correct_index": 1,
+    "explanation": "Silogisme langsung: Jika A masuk kategori B, dan semua B memiliki sifat C, maka A memiliki sifat C."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Jika lapar, maka makan. Budi tidak makan. Kesimpulan:",
+    "options": [
+      "Budi lapar",
+      "Budi tidak lapar",
+      "Budi kenyang",
+      "Tidak ada kesimpulan"
+    ],
+    "correct_index": 1,
+    "explanation": "Modus tollens: Jika $P \\rightarrow Q$ dan $\\neg Q$, maka kesimpulannya adalah $\\neg P$."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Semua burung bisa terbang. Penguin adalah burung. Kesimpulan:",
+    "options": [
+      "Penguin tidak bisa terbang",
+      "Penguin bisa terbang",
+      "Sebagian burung terbang",
+      "Penguin adalah mamalia"
+    ],
+    "correct_index": 1,
+    "explanation": "Dalam logika silogisme (tanpa melihat fakta biologis), kesimpulan murni mengikuti premis: Penguin bisa terbang."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Sebagian mahasiswa rajin belajar. Semua yang rajin belajar lulus ujian. Kesimpulan:",
+    "options": [
+      "Semua mahasiswa lulus ujian",
+      "Semua yang lulus ujian adalah mahasiswa",
+      "Sebagian mahasiswa lulus ujian",
+      "Tidak ada mahasiswa yang lulus ujian"
+    ],
+    "correct_index": 2,
+    "explanation": "Irisan himpunan: Ada himpunan mahasiswa yang rajin, dan rajin pasti lulus, sehingga sebagian mahasiswa pasti lulus."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Tidak ada batu yang hidup. Karang adalah batu. Kesimpulan:",
+    "options": [
+      "Karang hidup",
+      "Karang tidak hidup",
+      "Sebagian batu hidup",
+      "Karang bukan batu"
+    ],
+    "correct_index": 1,
+    "explanation": "Silogisme universal negatif: Jika semua batu = mati, dan karang = batu, maka karang = mati (tidak hidup)."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Jika hujan, jalanan basah. Hari ini jalanan basah. Kesimpulan:",
+    "options": [
+      "Hari ini hujan",
+      "Hari ini tidak hujan",
+      "Belum tentu hujan",
+      "Jalanan licin"
+    ],
+    "correct_index": 2,
+    "explanation": "Kesesatan logika afirmasi konsekuen: $P \\rightarrow Q$, dan $Q$ benar, tidak memastikan $P$ (bisa jadi jalanan basah karena disiram air)."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Semua pekerja konstruksi memakai helm. Budi tidak memakai helm. Kesimpulan:",
+    "options": [
+      "Budi pekerja konstruksi",
+      "Budi bukan pekerja konstruksi",
+      "Budi lupa memakai helm",
+      "Sebagian pekerja memakai helm"
+    ],
+    "correct_index": 1,
+    "explanation": "Modus tollens: Pekerja $\\rightarrow$ Helm. Budi Tidak Helm $\\rightarrow$ Budi Bukan Pekerja."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Sebagian baju berwarna merah. Semua celana berwarna biru. Kesimpulan:",
+    "options": [
+      "Sebagian baju berwarna biru",
+      "Semua baju bukan celana",
+      "Tidak ada hubungan yang bisa disimpulkan",
+      "Celana berwarna merah"
+    ],
+    "correct_index": 2,
+    "explanation": "Dua premis membahas objek yang sama sekali berbeda dan tidak beririsan."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Jika hari libur, jalan tol macet. Hari ini jalan tol tidak macet. Kesimpulan:",
+    "options": [
+      "Hari ini hari libur",
+      "Hari ini bukan hari libur",
+      "Orang tidak pergi liburan",
+      "Jalan tol sepi"
+    ],
+    "correct_index": 1,
+    "explanation": "Modus tollens: Libur $\\rightarrow$ Macet. Tidak Macet $\\rightarrow$ Tidak Libur."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Beberapa karyawan naik kereta. Semua yang naik kereta turun di stasiun. Kesimpulan:",
+    "options": [
+      "Semua karyawan turun di stasiun",
+      "Beberapa karyawan turun di stasiun",
+      "Semua karyawan naik kereta",
+      "Stasiun penuh karyawan"
+    ],
+    "correct_index": 1,
+    "explanation": "Silogisme parsial: Irisan dari karyawan dan penumpang kereta semuanya akan turun di stasiun."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Tidak ada mawar berwarna biru. Bunga itu berwarna biru. Kesimpulan:",
+    "options": [
+      "Bunga itu mawar",
+      "Bunga itu bukan mawar",
+      "Sebagian mawar biru",
+      "Bunga itu palsu"
+    ],
+    "correct_index": 1,
+    "explanation": "Silogisme universal negatif menjamin tidak ada irisan antara mawar dan warna biru."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Semua dokter itu pintar. Sebagian dokter suka bermain musik. Kesimpulan:",
+    "options": [
+      "Semua yang pintar suka bermain musik",
+      "Sebagian yang pintar suka bermain musik",
+      "Semua dokter suka bermain musik",
+      "Tidak ada kesimpulan"
+    ],
+    "correct_index": 1,
+    "explanation": "Irisan antara orang pintar (semua dokter) dengan penyuka musik (sebagian dokter) menghasilkan: sebagian orang pintar."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Jika lampu mati, ruangan menjadi gelap. Ruangan tidak gelap. Kesimpulan:",
+    "options": [
+      "Lampu menyala (tidak mati)",
+      "Lampu mati",
+      "Ruangan ada jendelanya",
+      "Lampu rusak"
+    ],
+    "correct_index": 0,
+    "explanation": "Modus tollens: Lampu Mati $\\rightarrow$ Gelap. Tidak Gelap $\\rightarrow$ Lampu Tidak Mati (menyala)."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Setiap makhluk hidup akan mati. Pohon beringin adalah makhluk hidup. Kesimpulan:",
+    "options": [
+      "Pohon beringin akan mati",
+      "Pohon beringin hidup abadi",
+      "Makhluk hidup belum tentu mati",
+      "Sebagian pohon mati"
+    ],
+    "correct_index": 0,
+    "explanation": "Silogisme dasar modus ponens."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Semua angsa berwarna putih. Beberapa burung di danau adalah angsa. Kesimpulan:",
+    "options": [
+      "Semua burung di danau putih",
+      "Beberapa burung di danau berwarna putih",
+      "Semua angsa ada di danau",
+      "Danau berwarna putih"
+    ],
+    "correct_index": 1,
+    "explanation": "Karena ada sebagian burung danau yang merupakan angsa (yang selalu putih), maka sebagian burung di danau pasti putih."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Semua mamalia bernapas dengan paru-paru. Ikan paus adalah mamalia. Kesimpulan:",
+    "options": [
+      "Ikan paus bernapas dengan insang",
+      "Ikan paus bernapas dengan paru-paru",
+      "Paus bukan mamalia",
+      "Sebagian mamalia menggunakan insang"
+    ],
+    "correct_index": 1,
+    "explanation": "Mengikuti aturan premis: Mamalia $\\rightarrow$ paru-paru. Paus $\\rightarrow$ mamalia. Maka paus $\\rightarrow$ paru-paru."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Semua siswa wajib memakai seragam. Andi adalah siswa. Kesimpulan:",
+    "options": [
+      "Andi tidak memakai seragam",
+      "Sebagian siswa memakai seragam",
+      "Andi wajib memakai seragam",
+      "Andi memakai kemeja bebas"
+    ],
+    "correct_index": 2,
+    "explanation": "Penerapan hukum universal pada individu: Andi masuk kategori siswa, jadi aturan seragam berlaku baginya."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Jika seseorang merasa sakit, maka ia pergi ke dokter. Rina sakit. Kesimpulan:",
+    "options": [
+      "Rina tidak pergi ke mana-mana",
+      "Rina minum obat",
+      "Rina pergi ke dokter",
+      "Rina beristirahat di rumah"
+    ],
+    "correct_index": 2,
+    "explanation": "Modus ponens: Sakit $\\rightarrow$ Dokter. Rina sakit $\\rightarrow$ Rina ke dokter."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Tidak ada sarjana yang buta huruf. Budi adalah sarjana. Kesimpulan:",
+    "options": [
+      "Budi mungkin buta huruf",
+      "Budi tidak buta huruf",
+      "Semua yang tidak buta huruf adalah sarjana",
+      "Budi sangat pintar"
+    ],
+    "correct_index": 1,
+    "explanation": "Sifat universal negatif pada suatu kelompok mutlak meniadakan kemungkinan pada anggotanya."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Sebagian ikan hidup di sungai. Semua hewan yang hidup di sungai bernapas menghirup oksigen. Kesimpulan:",
+    "options": [
+      "Semua ikan bernapas menghirup oksigen",
+      "Sebagian ikan bernapas menghirup oksigen",
+      "Tidak ada ikan yang bernapas menghirup oksigen",
+      "Semua hewan di sungai adalah ikan"
+    ],
+    "correct_index": 1,
+    "explanation": "Sifat ini hanya ditransfer kepada \"sebagian ikan\" (yang hidup di sungai), bukan keseluruhan ikan."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "A lebih tinggi dari B. C lebih tinggi dari A. Siapakah yang tertinggi?",
+    "options": [
+      "A",
+      "B",
+      "C",
+      "A dan C sama"
+    ],
+    "correct_index": 2,
+    "explanation": "Urutan tinggi: C > A > B."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "X berlari lebih cepat dari Y. Z berlari lebih lambat dari Y. Siapakah yang paling lambat?",
+    "options": [
+      "X",
+      "Y",
+      "Z",
+      "Y dan Z"
+    ],
+    "correct_index": 2,
+    "explanation": "Urutan kecepatan: X > Y > Z."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "D duduk tepat di sebelah E. F duduk tepat di sebelah E. D tidak bersebelahan dengan F. Bagaimana urutan duduk mereka?",
+    "options": [
+      "E - D - F",
+      "D - E - F",
+      "D - F - E",
+      "F - D - E"
+    ],
+    "correct_index": 1,
+    "explanation": "Karena E harus bersebelahan dengan D dan F secara bersamaan (dan D-F tidak bersebelahan), posisi E pasti di tengah (D-E-F atau F-E-D)."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Harga buku lebih mahal dari pensil. Harga tas lebih mahal dari buku. Barang apakah yang paling murah?",
+    "options": [
+      "Buku",
+      "Pensil",
+      "Tas",
+      "Buku dan Pensil"
+    ],
+    "correct_index": 1,
+    "explanation": "Urutan harga: Tas > Buku > Pensil."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Benda P lebih berat dari Q. Benda R lebih berat dari P. Benda S lebih ringan dari Q. Benda apakah yang paling berat?",
+    "options": [
+      "P",
+      "Q",
+      "R",
+      "S"
+    ],
+    "correct_index": 2,
+    "explanation": "Urutan berat: R > P > Q > S. R paling berat."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Budi lahir sebelum Andi. Cici lahir setelah Andi. Siapakah yang paling tua di antara ketiganya?",
+    "options": [
+      "Andi",
+      "Budi",
+      "Cici",
+      "Budi dan Andi"
+    ],
+    "correct_index": 1,
+    "explanation": "Lahir sebelum = lebih tua. Urutan umur: Budi > Andi > Cici."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "M mendapat nilai lebih tinggi dari N. O mendapat nilai lebih rendah dari N. Siapakah yang mendapat nilai tertinggi?",
+    "options": [
+      "M",
+      "N",
+      "O",
+      "M dan N"
+    ],
+    "correct_index": 0,
+    "explanation": "Urutan nilai: M > N > O."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Jarak kota A ke B lebih jauh dari A ke C. Jarak kota A ke D lebih jauh dari A ke B. Kota mana yang paling dekat dari A?",
+    "options": [
+      "B",
+      "C",
+      "D",
+      "Semua sama jauh"
+    ],
+    "correct_index": 1,
+    "explanation": "Urutan jarak dari A (terjauh hingga terdekat): D > B > C."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Suhu di kamar P lebih dingin dari kamar Q. Kamar R lebih dingin dari kamar P. Kamar manakah yang paling dingin?",
+    "options": [
+      "P",
+      "Q",
+      "R",
+      "Q dan R"
+    ],
+    "correct_index": 2,
+    "explanation": "Urutan dingin (terdingin hingga terhangat): R > P > Q."
+  },
+  {
+    "id": "",
+    "category": "logika",
+    "question": "Kucing lebih lincah dari anjing. Kura-kura lebih lambat dari anjing. Hewan manakah yang paling lincah?",
+    "options": [
+      "Kucing",
+      "Anjing",
+      "Kura-kura",
+      "Anjing dan Kucing"
+    ],
+    "correct_index": 0,
+    "explanation": "Urutan kelincahan: Kucing > Anjing > Kura-kura."
+  }
+]

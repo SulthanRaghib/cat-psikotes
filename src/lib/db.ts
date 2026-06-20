@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS questions (
   options TEXT NOT NULL,        -- JSON stringified array of 4 string
   correct_index INTEGER NOT NULL,
   explanation TEXT NOT NULL,
-  created_at TEXT DEFAULT (datetime('now'))
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS attempts (
