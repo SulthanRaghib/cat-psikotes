@@ -143,6 +143,10 @@ class SqliteAdminRepository implements IAdminRepository {
       "INSERT INTO admins (username, password_hash) VALUES (?, ?)",
     ).run(username, passwordHash);
   }
+  async updatePassword(username: string, newHash: string): Promise<void> {
+    if (!db) throw new Error("SQLite not initialized");
+    db.prepare("UPDATE admins SET password_hash = ? WHERE username = ?").run(newHash, username);
+  }
 }
 
 class SqliteAttemptRepository implements IAttemptRepository {

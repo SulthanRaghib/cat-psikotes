@@ -62,6 +62,7 @@ export interface IQuestionRepository {
 export interface IAdminRepository {
   findByUsername(username: string): Promise<AdminRecord | null>;
   create(username: string, passwordHash: string): Promise<void>;
+  updatePassword(username: string, newHash: string): Promise<void>;
 }
 
 export interface IAttemptRepository {

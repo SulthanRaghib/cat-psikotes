@@ -81,6 +81,13 @@ class DummyAdminRepository implements IAdminRepository {
       password_hash: passwordHash,
     });
   }
+
+  async updatePassword(username: string, newHash: string): Promise<void> {
+    const admin = this.admins.find(a => a.username === username);
+    if (admin) {
+      admin.password_hash = newHash;
+    }
+  }
 }
 
 class DummyAttemptRepository implements IAttemptRepository {

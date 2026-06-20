@@ -90,6 +90,11 @@ class SupabaseAdminRepository implements IAdminRepository {
       .insert([{ username, password_hash: passwordHash }]);
     if (error) throw new Error(error.message);
   }
+  async updatePassword(username: string, newHash: string): Promise<void> {
+    if (!supabase) throw new Error("Supabase not initialized");
+    const { error } = await supabase.from('admins').update({ password_hash: newHash }).eq('username', username);
+    if (error) throw new Error(error.message);
+  }
 }
 
 class SupabaseAttemptRepository implements IAttemptRepository {
