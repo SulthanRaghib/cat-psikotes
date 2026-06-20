@@ -27,6 +27,7 @@ export default function App() {
   const [selectedCats, setSelectedCats] = useState<Category[]>(['numerik', 'logika', 'verbal', 'situasional']);
   const [questionCount, setQuestionCount] = useState<number>(20);
   const [timerMode, setTimerMode] = useState<boolean>(false);
+  const [timerDuration, setTimerDuration] = useState<number>(45);
   
   // History State
   const [histories, setHistories] = useState<Attempt[]>([]);
@@ -157,7 +158,7 @@ export default function App() {
       setCurrentIndex(0);
       setAnswers([]);
       setIsAnswered(false);
-      setTimeLeft(45);
+      setTimeLeft(timerDuration);
       setScreen('quiz');
     } else {
       alert("Gagal memuat soal atau bank soal kosong.");
@@ -188,7 +189,7 @@ export default function App() {
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(prev => prev + 1);
       setIsAnswered(false);
-      setTimeLeft(45);
+      setTimeLeft(timerDuration);
     } else {
       finishQuiz();
     }
@@ -196,7 +197,7 @@ export default function App() {
 
   const finishQuiz = async () => {
     setScreen('result');
-    const startedAt = new Date(Date.now() - (questions.length * 45 * 1000)).toISOString(); // Approx
+    const startedAt = new Date(Date.now() - (questions.length * timerDuration * 1000)).toISOString(); // Approx
     const finishedAt = new Date().toISOString();
     
     const payload = {
@@ -255,7 +256,12 @@ export default function App() {
             />
           </div>
 
-          <TimerToggle checked={timerMode} onChange={setTimerMode} />
+          <TimerToggle 
+            checked={timerMode} 
+            onChange={setTimerMode} 
+            duration={timerDuration}
+            onDurationChange={setTimerDuration}
+          />
 
           <button onClick={startQuiz} className="w-full bg-ink dark:bg-slate-200 text-white dark:text-[#090e17] font-['Space_Grotesk'] font-bold text-lg py-4 rounded-xl hover:bg-slate-800 dark:hover:bg-white transition-colors focus:ring-4 ring-ink/20 outline-none">
             Mulai Latihan →
