@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import DB from '@/lib/db';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   try {
-    const id = parseInt(params.id, 10);
-    const data = await DB.attempts.getById(id);
+    const { id } = await context.params;
+    const attemptId = parseInt(id, 10);
+    const data = await DB.attempts.getById(attemptId);
 
     if (!data) {
       return NextResponse.json({ error: 'Attempt not found' }, { status: 404 });

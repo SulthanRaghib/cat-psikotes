@@ -2,12 +2,12 @@ import { NextResponse } from 'next/server';
 import DB from '@/lib/db';
 import { getSession } from '@/lib/auth';
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
-    const id = params.id;
+    const { id } = await context.params;
     const data = await request.json();
 
     await DB.questions.update(id, {
@@ -24,12 +24,12 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
-    const id = params.id;
+    const { id } = await context.params;
     await DB.questions.delete(id);
     return NextResponse.json({ success: true });
   } catch (error: any) {
