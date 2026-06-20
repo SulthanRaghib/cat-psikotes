@@ -31,14 +31,45 @@ export default function SubtestInstructionScreen({
           {subtestName}
         </h2>
         
-        <div className="prose dark:prose-invert max-w-none mb-8 text-lg text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
-          <p>
-            <strong>Instruksi Pengerjaan:</strong>
-            <br />
-            Pada setiap soal terdapat dua baris berisi 4 huruf. Hitunglah ada berapa pasang huruf yang sama (huruf yang identik, tanpa memperhatikan besar atau kecilnya huruf) pada posisi yang sejajar di kedua baris tersebut. Pilih jawaban yang sesuai. 
-            <br /><br />
-            Kerjakan soal sebanyak-banyaknya selama waktu yang tersedia — begitu Anda menjawab, soal berikutnya akan langsung muncul.
+        <div className="mb-8 text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
+          <h3 className="font-bold text-lg mb-2">Instruksi Pengerjaan:</h3>
+          <p className="mb-4">
+            Pada setiap soal, Anda akan melihat 4 kotak sejajar yang masing-masing berisi satu huruf di bagian atas dan satu huruf di bagian bawah. 
+            Tugas Anda adalah <strong>menghitung ada berapa pasang huruf yang identik</strong> (atas dan bawah sama persis, tanpa mempedulikan huruf besar atau kecilnya).
           </p>
+          
+          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 mb-4">
+            <h4 className="font-bold text-sm text-slate-500 mb-2 uppercase tracking-wide">Contoh Soal</h4>
+            <div className="flex gap-4 md:gap-8 justify-center mb-4">
+              <div className="flex flex-col border-2 border-slate-300 dark:border-slate-600 rounded-xl overflow-hidden">
+                <div className="w-12 h-12 flex items-center justify-center font-bold text-2xl border-b-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80">E</div>
+                <div className="w-12 h-12 flex items-center justify-center font-bold text-2xl">e</div>
+              </div>
+              <div className="flex flex-col border-2 border-slate-300 dark:border-slate-600 rounded-xl overflow-hidden">
+                <div className="w-12 h-12 flex items-center justify-center font-bold text-2xl border-b-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80">v</div>
+                <div className="w-12 h-12 flex items-center justify-center font-bold text-2xl">Y</div>
+              </div>
+              <div className="flex flex-col border-2 border-slate-300 dark:border-slate-600 rounded-xl overflow-hidden">
+                <div className="w-12 h-12 flex items-center justify-center font-bold text-2xl border-b-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80">k</div>
+                <div className="w-12 h-12 flex items-center justify-center font-bold text-2xl">k</div>
+              </div>
+              <div className="flex flex-col border-2 border-slate-300 dark:border-slate-600 rounded-xl overflow-hidden">
+                <div className="w-12 h-12 flex items-center justify-center font-bold text-2xl border-b-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80">v</div>
+                <div className="w-12 h-12 flex items-center justify-center font-bold text-2xl">V</div>
+              </div>
+            </div>
+            <p className="text-sm bg-blue-50 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 p-3 rounded">
+              <strong>Penjelasan:</strong> Kotak ke-1 (E & e) sama. Kotak ke-2 (v & Y) beda. Kotak ke-3 (k & k) sama. Kotak ke-4 (v & V) sama.
+              Jadi ada <strong>3 pasang</strong> yang sama. Jawabannya adalah tombol <strong>3</strong>.
+            </p>
+          </div>
+
+          <ul className="list-disc pl-5 space-y-2">
+            <li>Pilih jawaban Anda dengan menekan angka yang sesuai.</li>
+            <li>Setelah yakin, tekan tombol <strong>"Selanjutnya"</strong> untuk berpindah ke soal berikutnya.</li>
+            <li>Anda dapat kembali ke soal sebelumnya dengan menekan <strong>"Sebelumnya"</strong> jika ingin merubah jawaban.</li>
+            <li>Kerjakan soal secepat dan setepat mungkin sebelum waktu habis!</li>
+          </ul>
         </div>
 
         <div className="flex flex-col md:flex-row gap-6 mb-8">
