@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 import postgres from 'postgres';
 import bcrypt from 'bcryptjs';
-import { generateTpaQuestions, generateSyllogismQuestions } from './tpaDataGenerator';
+import { generateTpaQuestions, generateSyllogismQuestions, generateReadingQuestions } from './tpaDataGenerator';
 
 config({ path: '.env' });
 config({ path: '.env.local' });
@@ -122,7 +122,7 @@ async function migrate() {
         ('tpa_2', 2, 'Interpretasi Data & Tabel', 'Logika Kuantitatif', 'TPA', NULL, NULL, 0),
         ('tpa_3', 3, 'Analogi Kata & Korelasi Makna', 'Kemampuan Verbal', 'TPA', NULL, NULL, 0),
         ('tpa_4', 4, 'Sinonim & Antonim', 'Kemampuan Verbal', 'TPA', NULL, NULL, 0),
-        ('tpa_5', 5, 'Pemahaman Wacana', 'Kemampuan Verbal', 'TPA', NULL, NULL, 0),
+        ('tpa_5', 5, 'Pemahaman Wacana', 'Kemampuan Verbal', 'TPA', 'tpa_multiple_choice', 1200, 1),
         ('tpa_6', 6, 'Silogisme & Penarikan Kesimpulan', 'Penalaran Logika & Analitis', 'TPA', 'tpa_multiple_choice', 1800, 1),
         ('tpa_7', 7, 'Penalaran Analitis', 'Penalaran Logika & Analitis', 'TPA', NULL, NULL, 0),
         ('tpa_8', 8, 'Rotasi Gambar & Jaring-jaring 3D', 'Kemampuan Figural & Spasial', 'TPA', NULL, NULL, 0),
@@ -139,9 +139,10 @@ async function migrate() {
       
       console.log('🔄 Menanamkan (Seeding) TPA Questions...');
       const questions = generateTpaQuestions('tpa_1', 100);
+      const tpa5Questions = generateReadingQuestions('tpa_5');
       const tpa6Questions = generateSyllogismQuestions('tpa_6', 50);
       
-      const allQuestions = [...questions, ...tpa6Questions];
+      const allQuestions = [...questions, ...tpa5Questions, ...tpa6Questions];
       
       // Batch insert because postgres library handles arrays of objects naturally
       await sql`

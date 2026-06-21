@@ -1,6 +1,6 @@
 import { sqliteProvider } from "../src/lib/db/providers/sqlite";
 import path from "path";
-import { generateTpaQuestions, generateSyllogismQuestions } from "./tpaDataGenerator";
+import { generateTpaQuestions, generateSyllogismQuestions, generateReadingQuestions } from "./tpaDataGenerator";
 import { Subtest } from "../src/types";
 
 async function main() {
@@ -27,7 +27,7 @@ async function main() {
     { id: "tpa_2", number: 2, name: "Interpretasi Data & Tabel", group_name: "Logika Kuantitatif", category: "TPA", item_type: null, default_time_limit_seconds: null, is_active: 0 },
     { id: "tpa_3", number: 3, name: "Analogi Kata & Korelasi Makna", group_name: "Kemampuan Verbal", category: "TPA", item_type: null, default_time_limit_seconds: null, is_active: 0 },
     { id: "tpa_4", number: 4, name: "Sinonim & Antonim", group_name: "Kemampuan Verbal", category: "TPA", item_type: null, default_time_limit_seconds: null, is_active: 0 },
-    { id: "tpa_5", number: 5, name: "Pemahaman Wacana", group_name: "Kemampuan Verbal", category: "TPA", item_type: null, default_time_limit_seconds: null, is_active: 0 },
+    { id: "tpa_5", number: 5, name: "Pemahaman Wacana", group_name: "Kemampuan Verbal", category: "TPA", item_type: "tpa_multiple_choice", default_time_limit_seconds: 1200, is_active: 1 },
     { id: "tpa_6", number: 6, name: "Silogisme & Penarikan Kesimpulan", group_name: "Penalaran Logika & Analitis", category: "TPA", item_type: "tpa_multiple_choice", default_time_limit_seconds: 1800, is_active: 1 },
     { id: "tpa_7", number: 7, name: "Penalaran Analitis", group_name: "Penalaran Logika & Analitis", category: "TPA", item_type: null, default_time_limit_seconds: null, is_active: 0 },
     { id: "tpa_8", number: 8, name: "Rotasi Gambar & Jaring-jaring 3D", group_name: "Kemampuan Figural & Spasial", category: "TPA", item_type: null, default_time_limit_seconds: null, is_active: 0 },
@@ -50,15 +50,13 @@ async function main() {
     }
     
     const tpaQuestions = generateTpaQuestions('tpa_1', 100);
+    const tpa5Questions = generateReadingQuestions('tpa_5');
     const tpa6Questions = generateSyllogismQuestions('tpa_6', 50);
 
     const insertQ = db.prepare("INSERT OR REPLACE INTO tpa_questions (subtest_id, number, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
-    for (const q of tpaQuestions) {
-      insertQ.run(q.subtest_id, q.number, q.question_text, q.option_a, q.option_b, q.option_c, q.option_d, q.option_e, q.correct_answer, q.explanation);
-    }
-    
-    for (const q of tpa6Questions) {
+    const allQs = [...tpaQuestions, ...tpa5Questions, ...tpa6Questions];
+    for (const q of allQs) {
       insertQ.run(q.subtest_id, q.number, q.question_text, q.option_a, q.option_b, q.option_c, q.option_d, q.option_e, q.correct_answer, q.explanation);
     }
 
