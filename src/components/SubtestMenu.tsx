@@ -4,12 +4,12 @@ import { Subtest } from "@/types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export default function SubtestMenu() {
+export default function SubtestMenu({ category = 'PSIKOTES' }: { category?: 'PSIKOTES' | 'TPA' }) {
   const [subtests, setSubtests] = useState<Subtest[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/subtests')
+    fetch(`/api/subtests?category=${category}`)
       .then(res => res.json())
       .then(data => {
         if (data.subtests) setSubtests(data.subtests);

@@ -1,9 +1,16 @@
 import { NextResponse } from 'next/server';
 import DB from '@/lib/db';
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const subtests = await DB.subtests.getAll();
+    const { searchParams } = new URL(request.url);
+    const category = searchParams.get('category');
+    let subtests = await DB.subtests.getAll();
+    
+    if (category) {
+      subtests = subtests.filter(s => s.category === category);
+    }
+    
     return NextResponse.json({ subtests });
   } catch (error: unknown) {
     console.error(error);

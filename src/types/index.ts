@@ -3,9 +3,24 @@ export interface Subtest {
   number: number;
   name: string;
   group_name: string;
+  category?: 'PSIKOTES' | 'TPA';
   item_type: string | null;
   default_time_limit_seconds: number | null;
   is_active: number; // 0 or 1
+}
+
+export interface TpaQuestion {
+  id: number;
+  subtest_id: string;
+  number: number;
+  question_text: string;
+  image_url: string | null;
+  option_a: string;
+  option_b: string;
+  option_c: string;
+  option_d: string;
+  option_e: string | null;
+  correct_answer: string;
 }
 
 export interface SubtestSession {

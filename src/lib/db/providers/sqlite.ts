@@ -10,8 +10,8 @@ if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
 }
 
-// Renaming the DB file to app_v2.db to ensure a clean slate
-const dbPath = path.join(dbDir, "app_v2.db");
+// Renaming the DB file to app_v3.db to ensure a clean slate for TPA module
+const dbPath = path.join(dbDir, "app_v3.db");
 
 let db: Database.Database;
 let isReady = false;
@@ -26,9 +26,24 @@ try {
       number INTEGER NOT NULL,
       name TEXT NOT NULL,
       group_name TEXT NOT NULL,
+      category TEXT DEFAULT 'PSIKOTES',
       item_type TEXT,
       default_time_limit_seconds INTEGER,
       is_active INTEGER NOT NULL DEFAULT 0
+    );
+
+    CREATE TABLE IF NOT EXISTS tpa_questions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      subtest_id TEXT NOT NULL REFERENCES subtests(id) ON DELETE CASCADE,
+      number INTEGER NOT NULL,
+      question_text TEXT NOT NULL,
+      image_url TEXT,
+      option_a TEXT NOT NULL,
+      option_b TEXT NOT NULL,
+      option_c TEXT NOT NULL,
+      option_d TEXT NOT NULL,
+      option_e TEXT,
+      correct_answer TEXT NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS subtest_sessions (
@@ -87,18 +102,24 @@ class SqliteSubtestRepository implements ISubtestRepository {
 
   async create(data: Subtest): Promise<void> {
     db.prepare(`
-      INSERT OR REPLACE INTO subtests (id, number, name, group_name, item_type, default_time_limit_seconds, is_active)
-      VALUES (@id, @number, @name, @group_name, @item_type, @default_time_limit_seconds, @is_active)
-    `).run(data);
+      INSERT OR REPLACE INTO subtests (id, number, name, group_name, category, item_type, default_time_limit_seconds, is_active)
+      VALUES (@id, @number, @name, @group_name, @category, @item_type, @default_time_limit_seconds, @is_active)
+    `).run({
+      ...data,
+      category: data.category || 'PSIKOTES'
+    });
   }
 
   async bulkCreate(data: Subtest[]): Promise<void> {
     const insert = db.prepare(`
-      INSERT OR REPLACE INTO subtests (id, number, name, group_name, item_type, default_time_limit_seconds, is_active)
-      VALUES (@id, @number, @name, @group_name, @item_type, @default_time_limit_seconds, @is_active)
+      INSERT OR REPLACE INTO subtests (id, number, name, group_name, category, item_type, default_time_limit_seconds, is_active)
+      VALUES (@id, @number, @name, @group_name, @category, @item_type, @default_time_limit_seconds, @is_active)
     `);
     const transaction = db.transaction((items: Subtest[]) => {
-      for (const item of items) insert.run(item);
+      for (const item of items) insert.run({
+        ...item,
+        category: item.category || 'PSIKOTES'
+      });
     });
     transaction(data);
   }

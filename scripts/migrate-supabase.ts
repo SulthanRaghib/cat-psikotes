@@ -48,6 +48,7 @@ async function migrate() {
         number INTEGER NOT NULL,
         name VARCHAR(255) NOT NULL,
         group_name VARCHAR(100),
+        category VARCHAR(50) DEFAULT 'PSIKOTES',
         item_type VARCHAR(50),
         default_time_limit_seconds INTEGER,
         is_active INTEGER DEFAULT 0
@@ -81,33 +82,61 @@ async function migrate() {
       )
     `;
 
+    await sql`
+      CREATE TABLE IF NOT EXISTS tpa_questions (
+        id SERIAL PRIMARY KEY,
+        subtest_id VARCHAR(50) REFERENCES subtests(id) ON DELETE CASCADE,
+        number INTEGER NOT NULL,
+        question_text TEXT NOT NULL,
+        image_url TEXT,
+        option_a TEXT NOT NULL,
+        option_b TEXT NOT NULL,
+        option_c TEXT NOT NULL,
+        option_d TEXT NOT NULL,
+        option_e TEXT,
+        correct_answer VARCHAR(5) NOT NULL
+      )
+    `;
+
     console.log('✅ Struktur tabel baru berhasil dibuat!');
 
     if (shouldSeed) {
-      console.log('🔄 Menanamkan (Seeding) 11 Subtes...');
+      console.log('🔄 Menanamkan (Seeding) 12 Subtes...');
       await sql`
-        INSERT INTO subtests (id, number, name, group_name, item_type, default_time_limit_seconds, is_active)
+        INSERT INTO subtests (id, number, name, group_name, category, item_type, default_time_limit_seconds, is_active)
         VALUES 
-        ('subtes_1', 1, 'Menghitung Huruf Sama', 'Learning Agility Index', 'letter_match_count', 360, 1),
-        ('subtes_2', 2, 'Segera Hadir', 'Learning Agility Index', NULL, NULL, 0),
-        ('subtes_3', 3, 'Selisih Huruf Terjauh', 'Learning Agility Index', 'farthest_letter_distance', 360, 1),
-        ('subtes_4', 4, 'Selisih Angka Terjauh', 'Learning Agility Index', NULL, NULL, 0),
-        ('subtes_5', 5, 'Pasangan Huruf Diputar 90°', 'Learning Agility Index', NULL, NULL, 0),
-        ('subtes_6', 6, 'Berhitung Angka', 'TIKI', NULL, NULL, 0),
-        ('subtes_7', 7, 'Gabungan Bagian', 'TIKI', NULL, 420, 0),
-        ('subtes_8', 8, 'Hubungan Kata', 'TIKI', NULL, 300, 0),
-        ('subtes_9', 9, 'Abstraksi Non-Verbal', 'TIKI', NULL, NULL, 0),
-        ('subtes_10', 10, 'Work Personality Analitik', 'Personality', NULL, NULL, 0),
-        ('subtes_11', 11, 'Work Behavioral Assessment', 'Behavioral', NULL, NULL, 0)
+        ('subtes_1', 1, 'Menghitung Huruf Sama', 'Learning Agility Index', 'PSIKOTES', 'letter_match_count', 360, 1),
+        ('subtes_2', 2, 'Segera Hadir', 'Learning Agility Index', 'PSIKOTES', NULL, NULL, 0),
+        ('subtes_3', 3, 'Selisih Huruf Terjauh', 'Learning Agility Index', 'PSIKOTES', 'farthest_letter_distance', 120, 1),
+        ('subtes_4', 4, 'Selisih Angka Terjauh', 'Learning Agility Index', 'PSIKOTES', NULL, NULL, 0),
+        ('subtes_5', 5, 'Pasangan Huruf Diputar 90°', 'Learning Agility Index', 'PSIKOTES', NULL, NULL, 0),
+        ('subtes_6', 6, 'Perhitungan Dasar', 'TIKI', 'PSIKOTES', NULL, NULL, 0),
+        ('subtes_7', 7, 'Gabungan Bagian', 'TIKI', 'PSIKOTES', NULL, NULL, 0),
+        ('subtes_8', 8, 'Eksklusi Gambar', 'TIKI', 'PSIKOTES', NULL, NULL, 0),
+        ('subtes_9', 9, 'Hubungan Kata', 'TIKI', 'PSIKOTES', NULL, NULL, 0),
+        ('subtes_10', 10, 'Membandingkan Gambar', 'TIKI', 'PSIKOTES', NULL, NULL, 0),
+        ('subtes_11', 11, 'Labirin', 'TIKI', 'PSIKOTES', NULL, NULL, 0),
+        ('tpa_1', 1, 'Kuantitatif & Deret Angka', 'Logika Kuantitatif', 'TPA', 'tpa_multiple_choice', 600, 1)
         ON CONFLICT (id) DO UPDATE SET 
             number = EXCLUDED.number,
             name = EXCLUDED.name,
             group_name = EXCLUDED.group_name,
+            category = EXCLUDED.category,
             item_type = EXCLUDED.item_type,
             default_time_limit_seconds = EXCLUDED.default_time_limit_seconds,
             is_active = EXCLUDED.is_active;
       `;
-      console.log('✅ Seed 11 Subtes berhasil ditambahkan!');
+      
+      console.log('🔄 Menanamkan (Seeding) TPA Questions...');
+      await sql`
+        INSERT INTO tpa_questions (subtest_id, number, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer)
+        VALUES 
+        ('tpa_1', 1, 'Berapakah angka selanjutnya dari deret: 2, 4, 8, 16, ...', '20', '24', '32', '64', '128', 'C'),
+        ('tpa_1', 2, 'Jika 3 pekerja dapat membangun dinding dalam 6 hari, berapa hari yang dibutuhkan 9 pekerja untuk dinding yang sama?', '1', '2', '3', '4', '5', 'B'),
+        ('tpa_1', 3, 'Satu galon cat dapat menutupi 400 meter persegi. Jika sebuah dinding berukuran 20 meter x 60 meter, berapa galon minimal yang dibutuhkan?', '2', '3', '4', '5', '6', 'B')
+      `;
+      
+      console.log('✅ Seed 12 Subtes dan TPA berhasil ditambahkan!');
     } else {
       console.log('⏭️ Melewati proses seeding (--seed tidak diberikan).');
     }
