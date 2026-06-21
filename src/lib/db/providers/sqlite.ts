@@ -87,14 +87,14 @@ class SqliteSubtestRepository implements ISubtestRepository {
 
   async create(data: Subtest): Promise<void> {
     db.prepare(`
-      INSERT INTO subtests (id, number, name, group_name, item_type, default_time_limit_seconds, is_active)
+      INSERT OR REPLACE INTO subtests (id, number, name, group_name, item_type, default_time_limit_seconds, is_active)
       VALUES (@id, @number, @name, @group_name, @item_type, @default_time_limit_seconds, @is_active)
     `).run(data);
   }
 
   async bulkCreate(data: Subtest[]): Promise<void> {
     const insert = db.prepare(`
-      INSERT INTO subtests (id, number, name, group_name, item_type, default_time_limit_seconds, is_active)
+      INSERT OR REPLACE INTO subtests (id, number, name, group_name, item_type, default_time_limit_seconds, is_active)
       VALUES (@id, @number, @name, @group_name, @item_type, @default_time_limit_seconds, @is_active)
     `);
     const transaction = db.transaction((items: Subtest[]) => {

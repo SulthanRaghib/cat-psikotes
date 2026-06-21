@@ -112,7 +112,6 @@ async function main() {
   ];
 
   try {
-    await sqliteProvider.subtests.deleteAll();
     await sqliteProvider.subtests.bulkCreate(subtests);
     console.log("Successfully seeded 11 subtests.");
   } catch (error) {
