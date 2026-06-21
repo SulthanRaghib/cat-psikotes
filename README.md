@@ -1,141 +1,142 @@
-# 🧠 CAT - Sistem Ujian Psikotes Kognitif (RTC Staff)
+# ⚡ ProAssess Center
 
-Aplikasi **Computer Assisted Test (CAT)** modern berbasis web yang dirancang khusus untuk menyimulasikan baterai ujian psikometri tingkat tinggi. Dibangun dengan fokus pada kecepatan, akurasi, antarmuka premium (UI/UX yang sangat responsif), dan pembuatan soal secara algoritmik tanpa batas (Infinite Power Test).
+Sebuah platform *Computer-Aided Test* (CAT) mutakhir yang dirancang khusus untuk asesmen kognitif, psikometri, dan Tes Potensi Akademik (TPA). ProAssess Center memberikan pengalaman tes yang sangat reaktif, aman, dan dapat digunakan baik secara *online* menggunakan *database cloud* maupun *offline* melalui *database* lokal.
 
----
+<div align="center">
 
-## ✨ Fitur Utama
+[![Next.js](https://img.shields.io/badge/Next.js-15-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4+-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-Cloud-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+[![SQLite](https://img.shields.io/badge/SQLite-Local-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://sqlite.org/)
 
-### 🎯 Arsitektur 11 Subtes Kognitif
-Sistem dirancang untuk mendukung 11 jenis subtes kognitif dan kepribadian, dengan mekanisme ujian yang berbeda-beda.
-- **Letter Match (Menghitung Huruf Sama)**: Mengukur ketelitian tingkat tinggi dengan membandingkan deretan huruf.
-- *(Subtes lainnya sedang dalam tahap pengembangan aktif)*
-
-### 🤖 Generator Algoritmik (Infinite Questions)
-Berbeda dengan sistem ujian tradisional, aplikasi ini **tidak menggunakan bank soal statis**. Setiap soal di-generate secara otomatis secara matematis dan logis sesaat sebelum ditampilkan kepada peserta, menjamin tidak ada soal yang habis atau berulang.
-
-### ⚙️ Sistem Navigasi Pintar
-- **Manual Navigation**: Peserta dapat memilih jawaban, menekan tombol *Selanjutnya*, dan kembali ke soal sebelumnya (*Sebelumnya*) untuk mengoreksi jawaban.
-- **Mode Latihan (Umpan Balik)**: Fitur opsional untuk memunculkan kilatan warna (hijau/merah) secara instan ketika peserta memilih jawaban.
-
-### 🎨 Desain Premium & Mode Gelap (Dark Mode)
-- **Tema Terintegrasi**: Pilihan *Light Mode*, *Dark Mode*, dan *System Preference*.
-- **Desain Modern**: Memanfaatkan palet warna yang memanjakan mata, tipografi modern, kotak soal presisi, dan animasi mulus.
-
-### 💾 Multi-Environment Database (DAL)
-- 🖥️ **Lokal (Development)**: Berjalan secara *plug-and-play* menggunakan **SQLite**.
-- ☁️ **Production (Cloud)**: Siap di-deploy menggunakan database skala besar **Supabase (PostgreSQL)** (ideal untuk Vercel).
-- 🔄 **Otomasi Migrasi**: Tersedia perintah `migrate:fresh --seed` bawaan layaknya framework Laravel untuk menghapus bersih dan memutar ulang database Supabase Anda hanya lewat satu perintah NPM.
+</div>
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## 🎯 Fitur Utama
 
-| Komponen | Teknologi Utama |
-| :--- | :--- |
-| **Framework Web** | Next.js 15 (App Router), React 19 |
-| **Styling & UI** | Tailwind CSS, Lucide React (Ikonografi) |
-| **Database Lokal** | Better-SQLite3 |
-| **Database Cloud** | @supabase/supabase-js, postgres (Driver SQL) |
-| **State Management** | React Hooks (useState, useEffect, dll) |
-| **Penyandian & Keamanan** | BcryptJS (Enkripsi Hash) |
+### 🧠 1. Asesmen Psikometri Terpadu (11 Subtes Kognitif)
+Engine tes khusus yang menantang berbagai aspek kecerdasan otak melalui tes interaktif secara *real-time*:
+- **Menghitung Huruf Sama**: Mengukur fokus dan atensi terhadap pola teks.
+- **Selisih Huruf Terjauh**: Mengukur pemetaan spasial-alfabetis di otak secara instan.
+- *(Dan 9 modul psikotes standar industri lainnya yang akan segera hadir).*
+
+### 📊 2. Tes Potensi Akademik (TPA) & Learning Management
+Berbeda dengan sekadar alat tes, modul TPA dilengkapi dengan berbagai fitur pendukung edukasi:
+- **Mode Latihan (Real-time Feedback)**: Jawaban yang dipilih akan langsung menampilkan **kotak penjelasan matematis** serta kebenaran logika. Ideal untuk simulasi belajar mandiri.
+- **Post-Test Review**: Papan rekapitulasi setelah ujian selesai yang memungkinkan kandidat untuk melihat detail jawaban mereka dibandingkan dengan kunci jawaban asli.
+- Generator algoritma pintar untuk menghasilkan soal (Angka, Logika, Aritmatika, dll) secara otomatis untuk menghindari kecurangan/hapalan soal.
+
+### 🌓 3. UI/UX Profesional & Aksesibilitas
+- **Light/Dark Mode Aktif**: Mendukung deteksi preferensi sistem pengguna demi kenyamanan mata.
+- **Navigasi Soal Pintar**: Grid bernomor di sisi kanan layar untuk melompat antarsoal dengan indikator warna (sudah dijawab, aktif, benar/salah di mode latihan).
+- Responsif penuh di Desktop maupun Mobile.
+
+### 💾 4. Dual Database Architecture
+- **Supabase (PostgreSQL)**: Digunakan ketika variabel `NEXT_PUBLIC_SUPABASE_URL` terdeteksi di *production*. Data sesi pengguna direkam ke Cloud secara sentralisasi.
+- **SQLite (Lokal/Offline)**: *Fallback* yang langsung aktif saat koneksi Supabase tidak tersedia, sehingga tes tetap bisa berjalan pada ekosistem lokal tertutup (intranet).
 
 ---
 
-## 🚀 Prasyarat Instalasi
+## 🏗️ Struktur Proyek
 
-Sebelum memulai, pastikan sistem Anda telah terpasang:
-- **Node.js** (Versi 18.x atau lebih tinggi)
-- **NPM** (atau Yarn/PNPM)
-- Akses ke Terminal atau Command Prompt
+Proyek ini menggunakan struktur standar **Next.js App Router**:
+
+```text
+📁 src/
+ ├── 📁 app/
+ │   ├── 📁 api/           # API Routes (Backend logic, integrasi Supabase/SQLite)
+ │   ├── 📁 psikotes/      # Halaman Modul 11 Subtes Psikotes
+ │   ├── 📁 tpa/           # Halaman Modul Tes Potensi Akademik (TPA) & Engine Review
+ │   └── layout.tsx        # Root HTML & Global Provider (ThemeProvider)
+ ├── 📁 components/        # UI Reusable (GlobalHeader, SubtestMenu, ThemeProvider)
+ ├── 📁 lib/               # Utility functions & Database Providers (sqlite.ts)
+ └── 📁 types/             # Definisi Interfaces & Type (TypeScript)
+📁 scripts/                # Script Seeding & Migrasi Database
+```
 
 ---
 
-## 📦 Panduan Instalasi & Penggunaan
+## 💻 Prasyarat Instalasi
+
+Pastikan Anda telah menginstal perangkat keras dan lunak berikut sebelum memulai:
+
+- **Node.js**: Minimal versi `18.x` (Disarankan `20.x`).
+- **NPM** atau **Yarn**.
+- Akun **Supabase** (Jika ingin menjalankan fungsionalitas sinkronisasi Cloud).
+
+---
+
+## 🚀 Cara Instalasi & Penggunaan
 
 ### 1. Kloning Repositori
-Langkah pertama, unduh repositori ini ke komputer Anda dan masuk ke direktorinya.
 ```bash
-git clone <url-repositori-anda>
-cd cat-tes-psikotes-rtc-staff
+git clone https://github.com/Username/cat-psikotes.git
+cd cat-psikotes
+```
+
+### 2. Instalasi Dependensi
+```bash
 npm install
 ```
 
-### 2. Konfigurasi Lingkungan (.env)
-Salin berkas `.env.example` menjadi `.env` (atau buat file `.env` baru) dan sesuaikan pengaturannya:
+### 3. Konfigurasi Environment Variables
+Gandakan file konfigurasi `.env.example` (jika ada) atau buat file `.env` dan `.env.local` baru:
 
 ```env
-# Pilihan Database: sqlite | supabase
-DB_PROVIDER="sqlite"
+# .env.local
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_DB_URL=your_postgres_transaction_connection_string
 
-# === Konfigurasi Supabase (Bila Menggunakan Cloud) ===
-NEXT_PUBLIC_SUPABASE_URL="https://xxx.supabase.co"
-NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJh..."
-SUPABASE_SERVICE_ROLE_KEY="eyJh..."
-
-# Connection String untuk otomasi Migrasi
-SUPABASE_DB_URL="postgresql://postgres:[PASSWORD]@[HOST]:6543/postgres"
+# Akun Admin Default
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=admin123
 ```
 
-### 3. Migrasi & Seeding Database
+### 4. Migrasi dan Seeding Database
+Pilih salah satu sesuai kebutuhan Anda (Supabase atau Lokal):
 
-**Jika menggunakan SQLite (Lokal):**
-Anda cukup menjalankan skrip bawaan untuk menginisialisasi 11 daftar subtes ke dalam file lokal `app_v2.db`.
-```bash
-npm run db:seed
-```
-
-**Jika menggunakan Supabase (Cloud):**
-Aplikasi menyediakan *tools* khusus untuk menyapu bersih skema publik dan merakit ulang tabel dari awal beserta datanya (mirip `migrate:fresh --seed`).
+**Opsi A: Menggunakan Supabase (Cloud)**
+Script ini akan membaca `SUPABASE_DB_URL` dari `.env`, menghapus *schema* lama, membuat *schema* baru, dan memasukkan (*seed*) seluruh soal ke *Cloud*.
 ```bash
 npm run db:migrate:supabase -- --seed
 ```
 
-### 4. Menjalankan Aplikasi
-Mulai peladen (*server*) lokal Anda.
+**Opsi B: Menggunakan SQLite (Lokal)**
+Script ini akan membangun dan memasukkan soal langsung ke file `data/app_v3.db`.
+```bash
+npm run db:seed
+```
+
+### 5. Jalankan Server Development
 ```bash
 npm run dev
 ```
-Buka peramban (*browser*) Anda dan arahkan ke **http://localhost:3000**.
+
+Akses `http://localhost:3000` melalui *browser* Anda.
 
 ---
 
-## 📂 Susunan Proyek (Project Structure)
+## 🧩 Penjelasan Logika & Modul
 
-Pemahaman akan struktur map akan mempermudah navigasi Anda:
+### 1. Modul SubtestMenu (`src/components/SubtestMenu.tsx`)
+Komponen ini secara dinamis menarik seluruh modul ujian dari *database* (melalui endpoint `/api/subtests`) dan mengelompokkannya berdasarkan `group_name` (misalnya: *Learning Agility Index*, *Logika Kuantitatif*, dll). Jika modul bersatus `is_active = 0`, ia akan merender *Card* sebagai "Belum Tersedia/Segera Hadir".
 
-```text
-├── /data                # Penyimpanan database SQLite lokal (.db)
-├── /scripts             # Kumpulan skrip CLI (seeding, migrasi Supabase)
-├── /src
-│   ├── /app             # Struktur *App Router* Next.js
-│   │   ├── /api         # Endpoint sistem REST API
-│   │   └── /subtes      # Modul antarmuka utama ujian (dynamic routes)
-│   ├── /components      # Komponen Visual React (UI Reusable)
-│   │   ├── AnswerButtonsRow.tsx
-│   │   ├── LetterMatchStimulus.tsx
-│   │   └── ThemeToggle.tsx
-│   ├── /lib             # Logic dan Generator Internal
-│   │   ├── /db          # Data Access Layer (SQLite & Supabase Providers)
-│   │   └── /generators  # Pusat Algoritma Pencetak Soal Otomatis
-│   └── /types           # Definisi struktur tipe TypeScript
-└── supabase_schema.sql  # Berkas panduan skema SQL manual
-```
+### 2. TPA Engine (`src/app/tpa/[id]/page.tsx`)
+Merupakan jantung dari modul TPA yang memiliki *state machine* rumit:
+- **Status IDLE**: Menampilkan detail tes, pilihan pengaturan durasi, dan sakelar (*toggle*) **Mode Latihan**.
+- **Status PLAYING**: Soal dan *timer* dirender. Menggunakan *state* `answers` lokal yang tidak memerlukan *trip* server per klik (meminimalisir *lag*).
+- **Mode Latihan (Active)**: Menerapkan fungsi kunci langsung (*instant lock*) setiap menekan jawaban. Komponen akan seketika mengevaluasi validitas terhadap `correct_answer` dan mengeluarkan kotak *Alert* (komponen UI) yang membongkar nilai `explanation` dari *database*.
+- **Status REVIEW**: Mode *Read-Only* pasca-tes dengan mekanisme validasi pewarnaan instan untuk refleksi pembelajaran.
+
+### 3. Database Abstraction Layer (`src/lib/db/providers/sqlite.ts`)
+Diimplementasikan menggunakan kelas (*Class*) abstrak yang menjamin bahwa baik fungsi yang memanggil Supabase maupun SQLite akan memiliki konvensi pemanggilan yang sama. 
 
 ---
 
-## 💡 Dokumentasi Fungsional & Alur Logika
-
-Agar lebih mudah dipahami saat melakukan pengembangan, berikut adalah rincian cara kerja sistem utama:
-
-### A. Generator Algoritmik (Contoh: Menghitung Huruf Sama)
-Terletak di `/src/lib/generators/letterMatch.ts`.
-- **Logic**: Algoritma akan menghasilkan dua baris *array* (Row A dan Row B).
-- Ia menjamin bahwa *selalu ada* minimal 1 pasang huruf yang identik pada kolom yang sejajar, hingga maksimal 4 huruf (jadi jawabannya selalu berkisar antara 1, 2, 3, atau 4).
-- Algoritma juga dirancang untuk mengacak kapitalisasi huruf dengan probabilitas tertentu untuk meningkatkan tingkat kesulitan visual (nyaru).
-
-### B. Siklus Pengerjaan (Subtes Page)
-Terletak di `/src/app/subtes/[id]/page.tsx`.
-- **Bank Soal Dinamis**: Sistem menyimpan soal yang sudah digenerate ke dalam `sessionItems`.
-- **Manual Navigation**: Saat peserta mengklik "Selanjutnya", sistem mengecek apakah peserta berada di ujung array soal. Jika iya, algoritma dipanggil untuk mencetak soal *baru* secara seketika (*on-the-fly*). Jika peserta sedang meninjau mundur, aplikasi hanya menaikkan indeks baca tanpa melakukan pembuatan ulang.
-- **Payload Akhir**: Begitu batas waktu habis atau sesi diakhiri, seluruh log jawaban akan dibungkus rapat dan dikirim ke REST API `/api/subtests/[id]/sessions/[sessionId]/finish` untuk dikalkulasi nilai akhirnya.
+<p align="center">
+  <i>Dikembangkan dengan kebanggaan untuk asesmen kognitif berbasis presisi tinggi.</i>
+</p>
