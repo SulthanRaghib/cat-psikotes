@@ -12,6 +12,14 @@ interface Props {
   items: ReviewItem[];
 }
 
+function formatAnswerValue(item: ReviewItem, value: number | null): string {
+  if (value === null) return '-';
+  if (item.stimulus?.leftLetter !== undefined) {
+    return value === 0 ? item.stimulus.leftLetter : value === 1 ? item.stimulus.rightLetter : '-';
+  }
+  return String(value);
+}
+
 export default function SessionReviewList({ items }: Props) {
   return (
     <div className="w-full max-w-4xl mx-auto mt-8 flex flex-col gap-4">
@@ -35,7 +43,19 @@ export default function SessionReviewList({ items }: Props) {
           
           <div className="flex-1 overflow-x-auto p-4 bg-white dark:bg-slate-800 rounded shadow-sm">
             {/* Render stimulus specifically for letter match */}
-            {item.stimulus && item.stimulus.rowA && item.stimulus.rowB ? (
+            {item.stimulus && item.stimulus.leftLetter !== undefined ? (
+              <div className="flex items-center gap-2 md:gap-4 select-none font-bold text-xl md:text-2xl text-[#0F2A43] dark:text-slate-100 justify-center">
+                <div className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-xl border-2 ${item.userAnswer === 0 ? (item.isCorrect ? 'border-green-400 bg-green-50' : 'border-red-400 bg-red-50') : 'border-slate-200'}`}>
+                  {item.stimulus.leftLetter}
+                </div>
+                <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-xl border-2 border-slate-200 bg-slate-50 text-slate-500">
+                  {item.stimulus.middleLetter}
+                </div>
+                <div className={`w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-xl border-2 ${item.userAnswer === 1 ? (item.isCorrect ? 'border-green-400 bg-green-50' : 'border-red-400 bg-red-50') : 'border-slate-200'}`}>
+                  {item.stimulus.rightLetter}
+                </div>
+              </div>
+            ) : item.stimulus && item.stimulus.rowA && item.stimulus.rowB ? (
               <div className="flex flex-col items-center select-none font-bold text-xl md:text-2xl text-[#0F2A43] dark:text-slate-100">
                 <div className="flex gap-2 md:gap-4">
                   {item.stimulus.rowA.map((charA: string, cIdx: number) => {
@@ -63,7 +83,7 @@ export default function SessionReviewList({ items }: Props) {
             <div className="text-center">
               <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-1">Jawaban Anda</div>
               <div className={`text-2xl font-bold ${item.isCorrect ? 'text-green-600' : 'text-red-600'}`}>
-                {item.userAnswer !== null ? item.userAnswer : '-'}
+                {formatAnswerValue(item, item.userAnswer)}
               </div>
             </div>
             
@@ -71,7 +91,7 @@ export default function SessionReviewList({ items }: Props) {
               <div className="text-center">
                 <div className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-1">Kunci Benar</div>
                 <div className="text-2xl font-bold text-green-600">
-                  {item.correctAnswer}
+                  {formatAnswerValue(item, item.correctAnswer)}
                 </div>
               </div>
             )}

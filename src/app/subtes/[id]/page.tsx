@@ -2,10 +2,9 @@
 
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
-import { generateLetterMatchItem } from "@/lib/generators/letterMatch";
 import SubtestInstructionScreen from "@/components/SubtestInstructionScreen";
-import LetterMatchStimulus from "@/components/LetterMatchStimulus";
-import AnswerButtonsRow from "@/components/AnswerButtonsRow";
+import StimulusRenderer from "@/components/StimulusRenderer";
+import { ITEM_GENERATORS } from "@/lib/itemGenerators";
 import GlobalCountdown from "@/components/GlobalCountdown";
 import SessionResultSummary from "@/components/SessionResultSummary";
 import SessionReviewList from "@/components/SessionReviewList";
@@ -72,10 +71,17 @@ export default function SubtestPage({ params }: { params: Promise<{ id: string }
       const data = await res.json();
       if (data.sessionId) {
         setSessionId(data.sessionId);
-        const firstItem = generateLetterMatchItem();
+        
+        const generator = ITEM_GENERATORS[subtestInfo?.item_type];
+        if (!generator) {
+          alert("Tipe soal untuk subtes ini belum didukung.");
+          return;
+        }
+        
+        const firstItem = generator();
         setSessionItems([{
           itemIndex: 1,
-          stimulus: { rowA: firstItem.rowA, rowB: firstItem.rowB },
+          stimulus: firstItem.stimulus,
           correctAnswer: firstItem.correctAnswer,
           userAnswer: null,
           isCorrect: false,
@@ -121,18 +127,21 @@ export default function SubtestPage({ params }: { params: Promise<{ id: string }
 
     if (itemIndex === sessionItems.length) {
       // Generate new item
-      const nextItem = generateLetterMatchItem();
-      setSessionItems(prev => [
-        ...prev,
-        {
-          itemIndex: prev.length + 1,
-          stimulus: { rowA: nextItem.rowA, rowB: nextItem.rowB },
-          correctAnswer: nextItem.correctAnswer,
-          userAnswer: null,
-          isCorrect: false,
-          answeredAtMs: null
-        }
-      ]);
+      const generator = ITEM_GENERATORS[subtestInfo?.item_type];
+      if (generator) {
+        const nextItem = generator();
+        setSessionItems(prev => [
+          ...prev,
+          {
+            itemIndex: prev.length + 1,
+            stimulus: nextItem.stimulus,
+            correctAnswer: nextItem.correctAnswer,
+            userAnswer: null,
+            isCorrect: false,
+            answeredAtMs: null
+          }
+        ]);
+      }
     }
     setItemIndex(prev => prev + 1);
   };
@@ -187,6 +196,7 @@ export default function SubtestPage({ params }: { params: Promise<{ id: string }
         </div>
         <SubtestInstructionScreen 
           subtestName={subtestInfo?.name || "Memuat..."}
+          itemType={subtestInfo?.item_type}
           onStart={handleStart}
           recentSessions={recentSessions}
           selectedDuration={selectedDuration}
@@ -210,12 +220,17 @@ export default function SubtestPage({ params }: { params: Promise<{ id: string }
           <div className="text-center mt-2 text-slate-500 font-semibold tracking-widest uppercase">Soal ke-{itemIndex}</div>
         </div>
 
-        {currentItem && (
-          <LetterMatchStimulus rowA={currentItem.stimulus.rowA} rowB={currentItem.stimulus.rowB} />
+        {currentItem && subtestInfo && (
+          <StimulusRenderer 
+            itemType={subtestInfo.item_type} 
+            stimulus={currentItem.stimulus} 
+            onAnswer={handleAnswer} 
+            disabled={isInputLocked} 
+            selectedValue={currentItem?.userAnswer ?? null} 
+          />
         )}
 
         <div className="absolute bottom-8 w-full px-4 flex flex-col items-center">
-          <AnswerButtonsRow onAnswer={handleAnswer} disabled={isInputLocked} selectedValue={currentItem?.userAnswer} />
           
           <div className="mt-8 w-full max-w-xl flex justify-between">
             <button 

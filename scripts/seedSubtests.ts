@@ -33,9 +33,9 @@ async function main() {
       number: 3,
       name: "Selisih Huruf Terjauh",
       group_name: "Learning Agility Index",
-      item_type: null,
-      default_time_limit_seconds: null,
-      is_active: 0
+      item_type: "farthest_letter_distance",
+      default_time_limit_seconds: 360,
+      is_active: 1
     },
     {
       id: "subtes_4",
