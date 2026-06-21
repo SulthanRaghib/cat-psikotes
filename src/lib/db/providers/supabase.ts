@@ -103,7 +103,15 @@ class SupabaseSubtestSessionRepository implements ISubtestSessionRepository {
 class SupabaseSubtestSessionItemRepository implements ISubtestSessionItemRepository {
   async bulkCreate(sessionId: number, items: Omit<SubtestSessionItem, 'id' | 'session_id'>[]): Promise<void> {
     if (!isReady) return;
-    const payload = items.map(i => ({ session_id: sessionId, ...i }));
+    const payload = items.map((i: any) => ({
+      session_id: sessionId,
+      item_index: i.item_index,
+      stimulus: typeof i.stimulus_json === 'string' ? JSON.parse(i.stimulus_json) : i.stimulus_json,
+      correct_answer: i.correct_answer,
+      user_answer: i.user_answer,
+      is_correct: Boolean(i.is_correct),
+      answered_at_ms: i.answered_at_ms
+    }));
     const { error } = await supabase.from("subtest_session_items").insert(payload);
     if (error) throw error;
   }
@@ -112,7 +120,11 @@ class SupabaseSubtestSessionItemRepository implements ISubtestSessionItemReposit
     if (!isReady) return [];
     const { data, error } = await supabase.from("subtest_session_items").select("*").eq("session_id", sessionId).order("item_index", { ascending: true });
     if (error) throw error;
-    return data || [];
+    return (data || []).map((row: any) => ({
+      ...row,
+      stimulus_json: typeof row.stimulus === 'string' ? row.stimulus : JSON.stringify(row.stimulus),
+      is_correct: row.is_correct ? 1 : 0
+    }));
   }
 }
 
