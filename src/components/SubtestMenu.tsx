@@ -49,7 +49,7 @@ export default function SubtestMenu({ category = 'PSIKOTES' }: { category?: 'PSI
                   )}
                 </div>
                 {test.is_active === 1 ? (
-                  <Link href={`/subtes/${test.id}`} className="mt-4 inline-block w-full text-center bg-[#0F2A43] hover:bg-[#E8821E] text-white font-semibold py-2 rounded transition-colors">
+                  <Link href={category === 'TPA' ? `/tpa/${test.id}` : `/subtes/${test.id}`} className="mt-4 inline-block w-full text-center bg-[#0F2A43] hover:bg-[#E8821E] text-white font-semibold py-2 rounded transition-colors">
                     Mulai
                   </Link>
                 ) : (
