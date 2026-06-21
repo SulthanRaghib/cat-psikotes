@@ -358,7 +358,7 @@ export default function TpaExamPage({ params }: { params: Promise<{ id: string }
         <div className="w-full md:w-80 shrink-0 flex flex-col gap-4">
           <div className="bg-white dark:bg-slate-800 rounded-xl shadow p-6 border-t-4 border-slate-200 dark:border-slate-700">
             <h3 className="font-bold mb-4 text-center border-b pb-3 dark:border-slate-700 text-[#0F2A43] dark:text-slate-200 uppercase tracking-wider text-sm">Navigasi Soal</h3>
-            <div className="grid grid-cols-5 gap-2 max-h-[50vh] overflow-y-auto p-1 scrollbar-thin">
+            <div className="grid grid-cols-5 gap-2 max-h-[50vh] overflow-y-auto p-3 scrollbar-thin">
               {questions.map((q, idx) => {
                 const isAnswered = !!answers[q.id];
                 const isCurrent = idx === currentIndex;
