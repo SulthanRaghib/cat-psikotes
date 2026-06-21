@@ -95,7 +95,8 @@ async function migrate() {
         option_c TEXT NOT NULL,
         option_d TEXT NOT NULL,
         option_e TEXT,
-        correct_answer VARCHAR(5) NOT NULL
+        correct_answer VARCHAR(5) NOT NULL,
+        explanation TEXT
       )
     `;
 

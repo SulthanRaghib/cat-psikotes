@@ -26,6 +26,7 @@ export function generateTpaQuestions(subtestId: string, count: number = 100) {
     const type = i % 5;
     let series: number[] = [];
     let nextNumber = 0;
+    let explanation = "";
     
     if (type === 0) {
       // Arithmetic
@@ -33,12 +34,14 @@ export function generateTpaQuestions(subtestId: string, count: number = 100) {
       const step = Math.floor(Math.random() * 15) + 2;
       series = [start, start + step, start + step * 2, start + step * 3, start + step * 4];
       nextNumber = start + step * 5;
+      explanation = `Pola deret aritmatika ini adalah penambahan konstan +${step} pada setiap angka sebelumnya. Angka terakhir adalah ${start + step * 4}, ditambah ${step} menjadi ${nextNumber}.`;
     } else if (type === 1) {
       // Geometric
       const start = Math.floor(Math.random() * 5) + 2;
       const mult = Math.floor(Math.random() * 3) + 2;
       series = [start, start * mult, start * mult ** 2, start * mult ** 3, start * mult ** 4];
       nextNumber = start * mult ** 5;
+      explanation = `Pola deret geometri ini adalah perkalian konstan x${mult} pada setiap angka sebelumnya. Angka terakhir dikali ${mult} menghasilkan ${nextNumber}.`;
     } else if (type === 2) {
       // Fibonacci-like
       let a = Math.floor(Math.random() * 5) + 1;
@@ -51,6 +54,7 @@ export function generateTpaQuestions(subtestId: string, count: number = 100) {
         b = next;
       }
       nextNumber = a + b;
+      explanation = `Ini adalah pola deret mirip Fibonacci dimana suatu angka adalah hasil penjumlahan dari dua angka sebelumnya (${a} + ${b} = ${nextNumber}).`;
     } else if (type === 3) {
       // Alternating series
       const start1 = Math.floor(Math.random() * 20) + 10;
@@ -59,11 +63,13 @@ export function generateTpaQuestions(subtestId: string, count: number = 100) {
       const step2 = -1 * (Math.floor(Math.random() * 5) + 2);
       series = [start1, start2, start1 + step1, start2 + step2, start1 + step1 * 2, start2 + step2 * 2];
       nextNumber = start1 + step1 * 3;
+      explanation = `Ini adalah deret berselang (alternating). Sub-deret ganjil polanya +${step1}, sedangkan sub-deret genap polanya ${step2}. Angka selanjutnya meneruskan sub-deret ganjil.`;
     } else {
       // Squares/Cubes
       const start = Math.floor(Math.random() * 5) + 2;
       series = [start**2, (start+1)**2, (start+2)**2, (start+3)**2, (start+4)**2];
       nextNumber = (start+5)**2;
+      explanation = `Pola deret ini adalah bilangan kuadrat berurutan dimulai dari ${start}². Angka selanjutnya adalah (${start+5})² = ${nextNumber}.`;
     }
 
     const wrongs = [
@@ -78,6 +84,7 @@ export function generateTpaQuestions(subtestId: string, count: number = 100) {
       number: currentNumber++,
       question_text: `Berapakah angka selanjutnya dari deret berikut: ${series.join(', ')}, ...`,
       image_url: null,
+      explanation,
       ...shuffleOptions(nextNumber.toString(), wrongs)
     });
   }
@@ -95,11 +102,14 @@ export function generateTpaQuestions(subtestId: string, count: number = 100) {
       (basePrice * (1 - (discount+10)/100)).toString()
     ];
 
+    const explanation = `Harga awal Rp${basePrice.toLocaleString('id-ID')}. Diskon ${discount}% = Rp${(basePrice * discount / 100).toLocaleString('id-ID')}. Maka harga akhir = Rp${basePrice.toLocaleString('id-ID')} - Rp${(basePrice * discount / 100).toLocaleString('id-ID')} = Rp${finalPrice.toLocaleString('id-ID')}.`;
+
     questions.push({
       subtest_id: subtestId,
       number: currentNumber++,
       question_text: `Sebuah barang seharga Rp${basePrice.toLocaleString('id-ID')} mendapat diskon ${discount}%. Berapakah harga akhir barang tersebut?`,
       image_url: null,
+      explanation,
       ...shuffleOptions(finalPrice.toString(), wrongs)
     });
   }
@@ -117,11 +127,14 @@ export function generateTpaQuestions(subtestId: string, count: number = 100) {
       (speed * (timeHours - 1)).toString()
     ];
 
+    const explanation = `Rumus Jarak = Kecepatan x Waktu. Jarak = ${speed} km/jam x ${timeHours} jam = ${distance} km.`;
+
     questions.push({
       subtest_id: subtestId,
       number: currentNumber++,
       question_text: `Sebuah mobil melaju dengan kecepatan rata-rata ${speed} km/jam. Jika mobil tersebut melaju selama ${timeHours} jam, berapakah jarak yang ditempuh?`,
       image_url: null,
+      explanation,
       ...shuffleOptions(distance.toString() + ' km', wrongs.map(w => w + ' km'))
     });
   }
@@ -142,11 +155,14 @@ export function generateTpaQuestions(subtestId: string, count: number = 100) {
       Math.round((exactDays * 1.5) * 10) / 10
     ];
 
+    const explanation = `Ini adalah perbandingan berbalik nilai. (Pekerja 1 x Waktu 1) = (Pekerja 2 x Waktu 2). Sehingga: ${workers1} x ${days1} = ${workers2} x Waktu2. Waktu2 = ${workers1 * days1} / ${workers2} = ${days2} hari.`;
+
     questions.push({
       subtest_id: subtestId,
       number: currentNumber++,
       question_text: `Jika ${workers1} pekerja dapat menyelesaikan sebuah proyek dalam ${days1} hari. Berapa hari waktu yang dibutuhkan jika proyek dikerjakan oleh ${workers2} pekerja? (Bulatkan 1 angka di belakang koma)`,
       image_url: null,
+      explanation,
       ...shuffleOptions(days2.toString() + ' hari', wrongs.map(w => w.toString() + ' hari'))
     });
   }
@@ -164,11 +180,14 @@ export function generateTpaQuestions(subtestId: string, count: number = 100) {
       (area + length).toString()
     ];
 
+    const explanation = `Rumus luas persegi panjang adalah Panjang x Lebar. Luas = ${length} m x ${width} m = ${area} m².`;
+
     questions.push({
       subtest_id: subtestId,
       number: currentNumber++,
       question_text: `Sebuah kebun berbentuk persegi panjang dengan panjang ${length} meter dan lebar ${width} meter. Berapakah luas kebun tersebut?`,
       image_url: null,
+      explanation,
       ...shuffleOptions(area.toString() + ' m²', wrongs.map(w => w + ' m²'))
     });
   }
@@ -183,6 +202,7 @@ export function generateTpaQuestions(subtestId: string, count: number = 100) {
       number: currentNumber++,
       question_text: `Berapakah hasil dari ${a} x ${b}?`,
       image_url: null,
+      explanation: `Operasi perkalian dasar: ${a} dikali ${b} menghasilkan ${ans}.`,
       ...shuffleOptions(ans.toString(), [
         (ans + a).toString(),
         (ans - b).toString(),

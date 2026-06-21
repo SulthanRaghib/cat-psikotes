@@ -43,7 +43,8 @@ try {
       option_c TEXT NOT NULL,
       option_d TEXT NOT NULL,
       option_e TEXT,
-      correct_answer TEXT NOT NULL
+      correct_answer TEXT NOT NULL,
+      explanation TEXT
     );
 
     CREATE TABLE IF NOT EXISTS subtest_sessions (

@@ -35,11 +35,17 @@ async function main() {
     const Database = require("better-sqlite3");
     const db = new Database(dbPath);
     
+    try {
+      db.exec("ALTER TABLE tpa_questions ADD COLUMN explanation TEXT;");
+    } catch (e) {
+      // Column might already exist
+    }
+    
     const tpaQuestions = generateTpaQuestions('tpa_1', 100);
 
-    const insertQ = db.prepare("INSERT OR REPLACE INTO tpa_questions (subtest_id, number, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    const insertQ = db.prepare("INSERT OR REPLACE INTO tpa_questions (subtest_id, number, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     for (const q of tpaQuestions) {
-      insertQ.run(q.subtest_id, q.number, q.question_text, q.option_a, q.option_b, q.option_c, q.option_d, q.option_e, q.correct_answer);
+      insertQ.run(q.subtest_id, q.number, q.question_text, q.option_a, q.option_b, q.option_c, q.option_d, q.option_e, q.correct_answer, q.explanation);
     }
 
     console.log("Selesai menanamkan subtes & bank soal TPA.");

@@ -23,7 +23,7 @@ export async function GET(
       
       const { data, error } = await supabase
         .from('tpa_questions')
-        .select('id, number, question_text, image_url, option_a, option_b, option_c, option_d, option_e')
+        .select('id, number, question_text, image_url, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation')
         .eq('subtest_id', subtestId)
         .order('number', { ascending: true });
         
@@ -33,7 +33,7 @@ export async function GET(
       const dbPath = path.join(process.cwd(), "data", "app_v3.db");
       const Database = require("better-sqlite3");
       const db = new Database(dbPath);
-      questions = db.prepare("SELECT id, number, question_text, image_url, option_a, option_b, option_c, option_d, option_e FROM tpa_questions WHERE subtest_id = ? ORDER BY number ASC").all(subtestId);
+      questions = db.prepare("SELECT id, number, question_text, image_url, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation FROM tpa_questions WHERE subtest_id = ? ORDER BY number ASC").all(subtestId);
     }
 
     return NextResponse.json({ questions });
