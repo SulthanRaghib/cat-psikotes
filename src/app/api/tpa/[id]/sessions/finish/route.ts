@@ -31,6 +31,7 @@ export async function POST(
       questions = data || [];
     } else {
       const dbPath = path.join(process.cwd(), "data", "app_v3.db");
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const Database = require("better-sqlite3");
       const db = new Database(dbPath);
       questions = db.prepare("SELECT id, correct_answer, question_text FROM tpa_questions WHERE subtest_id = ?").all(subtestId);
