@@ -1,5 +1,5 @@
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-const MAX_DIST = 10; // jarak maksimum tiap sisi dari huruf tengah (bisa disesuaikan)
+const MAX_DIST = 5; // jarak maksimum tiap sisi dari huruf tengah (bisa disesuaikan)
 
 export function generateFarthestLetterItem(): {
   leftLetter: string;
