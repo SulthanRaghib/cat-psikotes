@@ -245,7 +245,7 @@ export default function TpaExamPage({ params }: { params: Promise<{ id: string }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col">
-      <header className="bg-white dark:bg-slate-800 shadow-sm px-4 py-3 flex justify-between items-center border-b border-slate-200 dark:border-slate-700 z-50 sticky top-0">
+      <header className="bg-white dark:bg-slate-800 shadow-sm px-4 py-3 flex justify-between items-center border-b border-slate-200 dark:border-slate-700 z-[100] sticky top-0">
         <div className="font-bold text-[#0F2A43] dark:text-slate-100 flex items-center gap-4">
           <span>{subtestName}</span>
           {status === "REVIEW" && <span className="bg-[#E8821E] text-white text-xs px-2 py-1 rounded-md font-bold uppercase tracking-wider">Mode Review</span>}
@@ -380,8 +380,8 @@ export default function TpaExamPage({ params }: { params: Promise<{ id: string }
                   <button
                     key={q.id}
                     onClick={() => setCurrentIndex(idx)}
-                    className={`aspect-square rounded-lg flex items-center justify-center font-bold text-sm transition-all border
-                      ${isCurrent ? 'ring-4 ring-offset-1 ring-[#E8821E] z-10 scale-110' : ''}
+                    className={`aspect-square rounded-lg flex items-center justify-center font-bold text-sm transition-all border relative
+                      ${isCurrent ? 'ring-4 ring-offset-1 ring-[#E8821E] z-10 scale-110' : 'z-0'}
                       ${btnStyle}
                     `}
                   >
