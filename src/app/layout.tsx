@@ -9,8 +9,8 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const ibmPlexMono = IBM_Plex_Mono({ weight: ['500', '600', '700'], subsets: ['latin'], variable: '--font-mono' });
 
 export const metadata: Metadata = {
-  title: 'Latihan Psikotes — RTC Staff',
-  description: 'Simulasi latihan psikotes untuk kandidat RTC Staff PT Elnusa Petrofin',
+  title: 'ProAssess — Cognitive & Psychological Testing',
+  description: 'Platform asesmen kognitif, tes potensi akademik (TPA), dan simulasi psikometri.',
 };
 
 export default function RootLayout({
