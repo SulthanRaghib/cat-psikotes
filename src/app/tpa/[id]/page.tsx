@@ -245,7 +245,7 @@ export default function TpaExamPage({ params }: { params: Promise<{ id: string }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col">
-      <header className="bg-white dark:bg-slate-800 shadow-sm px-4 py-3 flex justify-between items-center border-b border-slate-200 dark:border-slate-700 z-10 sticky top-0">
+      <header className="bg-white dark:bg-slate-800 shadow-sm px-4 py-3 flex justify-between items-center border-b border-slate-200 dark:border-slate-700 z-50 sticky top-0">
         <div className="font-bold text-[#0F2A43] dark:text-slate-100 flex items-center gap-4">
           <span>{subtestName}</span>
           {status === "REVIEW" && <span className="bg-[#E8821E] text-white text-xs px-2 py-1 rounded-md font-bold uppercase tracking-wider">Mode Review</span>}
