@@ -47,7 +47,7 @@ INSERT INTO subtests (id, number, name, group_name, item_type, default_time_limi
 VALUES 
 ('subtes_1', 1, 'Menghitung Huruf Sama', 'Learning Agility Index', 'letter_match_count', 360, 1),
 ('subtes_2', 2, 'Segera Hadir', 'Learning Agility Index', NULL, NULL, 0),
-('subtes_3', 3, 'Selisih Huruf Terjauh', 'Learning Agility Index', NULL, NULL, 0),
+('subtes_3', 3, 'Selisih Huruf Terjauh', 'Learning Agility Index', 'farthest_letter_distance', 360, 1),
 ('subtes_4', 4, 'Selisih Angka Terjauh', 'Learning Agility Index', NULL, NULL, 0),
 ('subtes_5', 5, 'Pasangan Huruf Diputar 90°', 'Learning Agility Index', NULL, NULL, 0),
 ('subtes_6', 6, 'Berhitung Angka', 'TIKI', NULL, NULL, 0),
