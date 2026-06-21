@@ -1,5 +1,31 @@
 const ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ".split("");
 
+const CONFUSING_PAIRS: Record<string, string[]> = {
+  'A': ['R', 'H', 'M'],
+  'B': ['P', 'R', 'D'],
+  'C': ['G', 'Q'],
+  'D': ['B', 'P'],
+  'E': ['F'],
+  'F': ['E', 'P'],
+  'G': ['C', 'Q'],
+  'H': ['M', 'N', 'A'],
+  'J': ['U', 'T'],
+  'K': ['X', 'Y'],
+  'M': ['N', 'W', 'H'],
+  'N': ['M', 'Z', 'H'],
+  'P': ['R', 'F', 'B'],
+  'Q': ['G', 'C'],
+  'R': ['P', 'B', 'A'],
+  'S': ['Z', 'C'],
+  'T': ['J', 'Y'],
+  'U': ['V', 'J'],
+  'V': ['U', 'W', 'Y'],
+  'W': ['V', 'M'],
+  'X': ['K', 'Y'],
+  'Y': ['V', 'X', 'T'],
+  'Z': ['S', 'N']
+};
+
 function randomLetter(): string {
   return ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
 }
@@ -27,14 +53,34 @@ export function generateLetterMatchItem(): {
 
   for (let col = 0; col < 4; col++) {
     const baseLetter = randomLetter();
-    rowA.push(randomCase(baseLetter));
+    const baseLetterA = randomCase(baseLetter);
+    rowA.push(baseLetterA);
 
     if (matchIndices.has(col)) {
-      rowB.push(randomCase(baseLetter)); // huruf sama, kapitalisasi diacak ulang
+      // Untuk huruf yang SAMA (Match), kita perbesar kemungkinan (80%) agar menggunakan kapitalisasi yang BERBEDA.
+      // Ini mengecoh otak karena secara visual bentuknya berbeda, tapi sebenarnya hurufnya sama.
+      let baseLetterB = randomCase(baseLetter);
+      if (Math.random() < 0.8) {
+        baseLetterB = baseLetterA === baseLetterA.toUpperCase() ? baseLetter.toLowerCase() : baseLetter.toUpperCase();
+      }
+      rowB.push(baseLetterB);
     } else {
+      // Untuk huruf yang BEDA (Non-match), kita gunakan huruf yang secara visual mirip (Nyaru)
       let otherLetter = randomLetter();
-      while (otherLetter === baseLetter) otherLetter = randomLetter();
-      rowB.push(randomCase(otherLetter));
+      if (Math.random() < 0.75 && CONFUSING_PAIRS[baseLetter]) {
+        const pool = CONFUSING_PAIRS[baseLetter];
+        otherLetter = pool[Math.floor(Math.random() * pool.length)];
+      } else {
+        while (otherLetter === baseLetter) otherLetter = randomLetter();
+      }
+      
+      // Untuk pengecoh, kita perbesar kemungkinan (80%) agar menggunakan kapitalisasi yang SAMA.
+      // Ini mengecoh otak karena secara visual tingginya sama dan bentuknya mirip.
+      let otherLetterB = randomCase(otherLetter);
+      if (Math.random() < 0.8) {
+        otherLetterB = baseLetterA === baseLetterA.toUpperCase() ? otherLetter.toUpperCase() : otherLetter.toLowerCase();
+      }
+      rowB.push(otherLetterB);
     }
   }
 
