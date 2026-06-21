@@ -121,16 +121,48 @@ export default function TpaExamPage({ params }: { params: Promise<{ id: string }
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
         <GlobalHeader />
-        <main className="max-w-2xl mx-auto py-12 px-4">
+        <main className="max-w-3xl mx-auto py-12 px-4">
           <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow text-center border-t-4 border-[#2E6F95]">
-            <h1 className="text-3xl font-bold mb-4">{subtestName || "Tes Potensi Akademik"}</h1>
-            <p className="text-slate-600 dark:text-slate-400 mb-8">
-              Tes ini terdiri dari {questions.length} soal pilihan ganda. 
-              Anda memiliki waktu <strong>{Math.floor(timeLimit / 60)} menit</strong> untuk menyelesaikan semuanya.
-            </p>
+            <h1 className="text-3xl font-bold mb-4 text-[#0F2A43] dark:text-white">{subtestName || "Tes Potensi Akademik"}</h1>
+            
+            <div className="text-left bg-slate-50 dark:bg-slate-900/50 p-6 rounded-xl mb-8 border border-slate-200 dark:border-slate-700">
+              <h3 className="font-bold text-lg mb-2 text-[#0F2A43] dark:text-slate-200">Tentang Tes Ini:</h3>
+              <p className="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
+                Tes ini dirancang untuk mengukur kapasitas kecerdasan logika dan daya tangkap analitis kuantitatif Anda secara presisi. Keterampilan ini sangat esensial untuk peran teknis dan manajerial, termasuk <i>Development & Drilling</i>.
+              </p>
+              
+              <h4 className="font-semibold text-slate-700 dark:text-slate-300 mb-2">Cakupan Topik Soal:</h4>
+              <ul className="list-disc list-inside text-slate-600 dark:text-slate-400 space-y-1 mb-4">
+                <li>Deret Angka (Aritmatika, Geometri, Fibonacci, Deret Tingkat)</li>
+                <li>Aritmatika Sosial (Diskon, Keuntungan, Harga Jual/Beli)</li>
+                <li>Kecepatan, Jarak, dan Waktu Tempuh</li>
+                <li>Perbandingan Berbalik Nilai (Estimasi Waktu Pekerja)</li>
+                <li>Logika Geometri Dasar (Luas, Keliling, Volume)</li>
+              </ul>
+              
+              <div className="p-4 bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-300 rounded-lg text-sm border border-blue-100 dark:border-blue-800">
+                <strong>Informasi:</strong> Terdapat total <strong>{questions.length} soal</strong> pilihan ganda. Sistem akan mengunci otomatis ketika waktu habis. Anda dapat melompat ke soal manapun menggunakan panel navigasi di sebelah kanan.
+              </div>
+            </div>
+
+            <div className="mb-8 max-w-sm mx-auto text-left">
+              <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Atur Waktu Ujian:</label>
+              <select 
+                value={timeLimit} 
+                onChange={e => setTimeLimit(Number(e.target.value))}
+                className="w-full p-3 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-[#0F2A43] dark:text-white font-medium focus:ring-2 focus:ring-[#2E6F95] outline-none transition-all"
+              >
+                <option value={600}>10 Menit (Latihan Kilat)</option>
+                <option value={1800}>30 Menit (Setengah Sesi)</option>
+                <option value={3600}>60 Menit (Sesi Penuh - Standar)</option>
+                <option value={5400}>90 Menit (Sesi Ekstensif)</option>
+                <option value={7200}>120 Menit (Simulasi Asli)</option>
+              </select>
+            </div>
+
             <button 
               onClick={handleStart}
-              className="px-8 py-3 bg-[#2E6F95] hover:bg-[#1f4e6b] text-white font-bold rounded-lg text-lg transition-colors"
+              className="px-10 py-4 bg-[#2E6F95] hover:bg-[#1f4e6b] text-white font-bold rounded-xl text-lg transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 w-full sm:w-auto"
             >
               Mulai Ujian Sekarang
             </button>

@@ -1,5 +1,6 @@
 import { sqliteProvider } from "../src/lib/db/providers/sqlite";
 import path from "path";
+import { generateTpaQuestions } from "./tpaDataGenerator";
 import { Subtest } from "../src/types";
 
 async function main() {
@@ -22,7 +23,7 @@ async function main() {
     { id: "subtes_9", number: 9, name: "Hubungan Kata", group_name: "TIKI", category: "PSIKOTES", item_type: null, default_time_limit_seconds: null, is_active: 0 },
     { id: "subtes_10", number: 10, name: "Membandingkan Gambar", group_name: "TIKI", category: "PSIKOTES", item_type: null, default_time_limit_seconds: null, is_active: 0 },
     { id: "subtes_11", number: 11, name: "Labirin", group_name: "TIKI", category: "PSIKOTES", item_type: null, default_time_limit_seconds: null, is_active: 0 },
-    { id: "tpa_1", number: 1, name: "Kuantitatif & Deret Angka", group_name: "Logika Kuantitatif", category: "TPA", item_type: "tpa_multiple_choice", default_time_limit_seconds: 600, is_active: 1 }
+    { id: "tpa_1", number: 1, name: "Kuantitatif & Deret Angka", group_name: "Logika Kuantitatif", category: "TPA", item_type: "tpa_multiple_choice", default_time_limit_seconds: 3600, is_active: 1 }
   ];
 
   try {
@@ -34,11 +35,7 @@ async function main() {
     const Database = require("better-sqlite3");
     const db = new Database(dbPath);
     
-    const tpaQuestions = [
-      { subtest_id: 'tpa_1', number: 1, question_text: 'Berapakah angka selanjutnya dari deret: 2, 4, 8, 16, ...', option_a: '20', option_b: '24', option_c: '32', option_d: '64', option_e: '128', correct_answer: 'C' },
-      { subtest_id: 'tpa_1', number: 2, question_text: 'Jika 3 pekerja dapat membangun dinding dalam 6 hari, berapa hari yang dibutuhkan 9 pekerja untuk dinding yang sama?', option_a: '1', option_b: '2', option_c: '3', option_d: '4', option_e: '5', correct_answer: 'B' },
-      { subtest_id: 'tpa_1', number: 3, question_text: 'Satu galon cat dapat menutupi 400 meter persegi. Jika sebuah dinding berukuran 20 meter x 60 meter, berapa galon minimal yang dibutuhkan?', option_a: '2', option_b: '3', option_c: '4', option_d: '5', option_e: '6', correct_answer: 'B' }
-    ];
+    const tpaQuestions = generateTpaQuestions('tpa_1', 100);
 
     const insertQ = db.prepare("INSERT OR REPLACE INTO tpa_questions (subtest_id, number, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
     for (const q of tpaQuestions) {

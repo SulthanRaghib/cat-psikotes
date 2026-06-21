@@ -1,6 +1,7 @@
 import { config } from 'dotenv';
 import postgres from 'postgres';
 import bcrypt from 'bcryptjs';
+import { generateTpaQuestions } from './tpaDataGenerator';
 
 config({ path: '.env' });
 config({ path: '.env.local' });
@@ -116,7 +117,7 @@ async function migrate() {
         ('subtes_9', 9, 'Hubungan Kata', 'TIKI', 'PSIKOTES', NULL, NULL, 0),
         ('subtes_10', 10, 'Membandingkan Gambar', 'TIKI', 'PSIKOTES', NULL, NULL, 0),
         ('subtes_11', 11, 'Labirin', 'TIKI', 'PSIKOTES', NULL, NULL, 0),
-        ('tpa_1', 1, 'Kuantitatif & Deret Angka', 'Logika Kuantitatif', 'TPA', 'tpa_multiple_choice', 600, 1)
+        ('tpa_1', 1, 'Kuantitatif & Deret Angka', 'Logika Kuantitatif', 'TPA', 'tpa_multiple_choice', 3600, 1)
         ON CONFLICT (id) DO UPDATE SET 
             number = EXCLUDED.number,
             name = EXCLUDED.name,
@@ -127,13 +128,12 @@ async function migrate() {
             is_active = EXCLUDED.is_active;
       `;
       
-      console.log('🔄 Menanamkan (Seeding) TPA Questions...');
+      console.log('🔄 Menanamkan (Seeding) 100 TPA Questions...');
+      const questions = generateTpaQuestions('tpa_1', 100);
+      
+      // Batch insert because postgres library handles arrays of objects naturally
       await sql`
-        INSERT INTO tpa_questions (subtest_id, number, question_text, option_a, option_b, option_c, option_d, option_e, correct_answer)
-        VALUES 
-        ('tpa_1', 1, 'Berapakah angka selanjutnya dari deret: 2, 4, 8, 16, ...', '20', '24', '32', '64', '128', 'C'),
-        ('tpa_1', 2, 'Jika 3 pekerja dapat membangun dinding dalam 6 hari, berapa hari yang dibutuhkan 9 pekerja untuk dinding yang sama?', '1', '2', '3', '4', '5', 'B'),
-        ('tpa_1', 3, 'Satu galon cat dapat menutupi 400 meter persegi. Jika sebuah dinding berukuran 20 meter x 60 meter, berapa galon minimal yang dibutuhkan?', '2', '3', '4', '5', '6', 'B')
+        INSERT INTO tpa_questions ${sql(questions)}
       `;
       
       console.log('✅ Seed 12 Subtes dan TPA berhasil ditambahkan!');
