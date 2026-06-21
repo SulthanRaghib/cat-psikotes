@@ -57,30 +57,20 @@ export function generateLetterMatchItem(): {
     rowA.push(baseLetterA);
 
     if (matchIndices.has(col)) {
-      // Untuk huruf yang SAMA (Match), kita perbesar kemungkinan (80%) agar menggunakan kapitalisasi yang BERBEDA.
-      // Ini mengecoh otak karena secara visual bentuknya berbeda, tapi sebenarnya hurufnya sama.
-      let baseLetterB = randomCase(baseLetter);
-      if (Math.random() < 0.8) {
-        baseLetterB = baseLetterA === baseLetterA.toUpperCase() ? baseLetter.toLowerCase() : baseLetter.toUpperCase();
-      }
-      rowB.push(baseLetterB);
+      // Match: purely random case so it can't be used as a cue
+      rowB.push(randomCase(baseLetter));
     } else {
-      // Untuk huruf yang BEDA (Non-match), kita gunakan huruf yang secara visual mirip (Nyaru)
+      // Non-match: pick visually confusing letters
       let otherLetter = randomLetter();
-      if (Math.random() < 0.75 && CONFUSING_PAIRS[baseLetter]) {
+      if (Math.random() < 0.8 && CONFUSING_PAIRS[baseLetter]) {
         const pool = CONFUSING_PAIRS[baseLetter];
         otherLetter = pool[Math.floor(Math.random() * pool.length)];
       } else {
         while (otherLetter === baseLetter) otherLetter = randomLetter();
       }
       
-      // Untuk pengecoh, kita perbesar kemungkinan (80%) agar menggunakan kapitalisasi yang SAMA.
-      // Ini mengecoh otak karena secara visual tingginya sama dan bentuknya mirip.
-      let otherLetterB = randomCase(otherLetter);
-      if (Math.random() < 0.8) {
-        otherLetterB = baseLetterA === baseLetterA.toUpperCase() ? otherLetter.toUpperCase() : otherLetter.toLowerCase();
-      }
-      rowB.push(otherLetterB);
+      // Purely random case
+      rowB.push(randomCase(otherLetter));
     }
   }
 
