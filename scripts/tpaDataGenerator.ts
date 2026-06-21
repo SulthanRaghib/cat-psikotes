@@ -494,3 +494,118 @@ export function generateReadingQuestions(subtestId: string) {
 
   return questions;
 }
+
+export function generateAnalogyQuestions(subtestId: string, count: number = 30) {
+  const questions = [];
+  let currentNumber = 1;
+
+  const shuffleOptions = (correct: string, wrongs: string[]) => {
+    const all = [correct, ...wrongs];
+    for (let i = all.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [all[i], all[j]] = [all[j], all[i]];
+    }
+    const correctIndex = all.indexOf(correct);
+    const letters = ['A', 'B', 'C', 'D', 'E'];
+    return {
+      option_a: all[0],
+      option_b: all[1],
+      option_c: all[2],
+      option_d: all[3],
+      option_e: all[4] || null,
+      correct_answer: letters[correctIndex]
+    };
+  };
+
+  const analogyData = [
+    {
+      relation: "Sinonim (Persamaan Makna)",
+      pairs: [
+        ['Gembira', 'Senang'], ['Pintar', 'Cerdas'], ['Cepat', 'Kilat'], 
+        ['Bohong', 'Dusta'], ['Kaya', 'Tajir'], ['Cantik', 'Jelita'], 
+        ['Haus', 'Dahaga'], ['Pakaian', 'Baju'], ['Kawan', 'Teman'],
+        ['Angin', 'Bayu'], ['Matahari', 'Mentari'], ['Bunga', 'Kembang']
+      ]
+    },
+    {
+      relation: "Antonim (Lawan Kata)",
+      pairs: [
+        ['Gelap', 'Terang'], ['Panjang', 'Pendek'], ['Besar', 'Kecil'], 
+        ['Tinggi', 'Rendah'], ['Siang', 'Malam'], ['Asli', 'Palsu'], 
+        ['Kaya', 'Miskin'], ['Berat', 'Ringan'], ['Lebar', 'Sempit'], 
+        ['Cepat', 'Lambat'], ['Jauh', 'Dekat'], ['Atas', 'Bawah']
+      ]
+    },
+    {
+      relation: "Fungsi / Kegunaan",
+      pairs: [
+        ['Mata', 'Melihat'], ['Telinga', 'Mendengar'], ['Kaki', 'Berjalan'], 
+        ['Hidung', 'Mencium'], ['Pisau', 'Memotong'], ['Gigi', 'Mengunyah'], 
+        ['Sapu', 'Membersihkan'], ['Payung', 'Melindungi'], ['Lem', 'Merekatkan'],
+        ['Gunting', 'Menggunting'], ['Kipas', 'Mendinginkan'], ['Rem', 'Menghentikan']
+      ]
+    },
+    {
+      relation: "Profesi dan Tempat Kerja",
+      pairs: [
+        ['Dokter', 'Rumah Sakit'], ['Guru', 'Sekolah'], ['Koki', 'Restoran'], 
+        ['Masinis', 'Kereta Api'], ['Nakhoda', 'Kapal'], ['Pilot', 'Pesawat'], 
+        ['Petani', 'Sawah'], ['Hakim', 'Pengadilan'], ['Polisi', 'Kantor Polisi'],
+        ['Nelayan', 'Laut'], ['Pustakawan', 'Perpustakaan'], ['Buruh', 'Pabrik']
+      ]
+    },
+    {
+      relation: "Alat dan Penggunanya",
+      pairs: [
+        ['Cangkul', 'Petani'], ['Stetoskop', 'Dokter'], ['Kapur', 'Guru'], 
+        ['Kamera', 'Fotografer'], ['Panci', 'Koki'], ['Kuas', 'Pelukis'], 
+        ['Gunting', 'Tukang Cukur'], ['Palu', 'Tukang Kayu'], ['Pistol', 'Polisi'],
+        ['Jaring', 'Nelayan'], ['Jarum', 'Penjahit'], ['Timbangan', 'Pedagang']
+      ]
+    },
+    {
+      relation: "Bagian dan Keseluruhan",
+      pairs: [
+        ['Daun', 'Pohon'], ['Roda', 'Mobil'], ['Layar', 'Televisi'], 
+        ['Jari', 'Tangan'], ['Bulu', 'Burung'], ['Kaca', 'Jendela'], 
+        ['Halaman', 'Buku'], ['Baling-baling', 'Helikopter'], ['Kelopak', 'Bunga'],
+        ['Rambut', 'Kepala'], ['Atap', 'Rumah'], ['Mata Uang', 'Negara']
+      ]
+    }
+  ];
+
+  for (let i = 0; i < count; i++) {
+    const catIndex = Math.floor(Math.random() * analogyData.length);
+    const category = analogyData[catIndex];
+    
+    const shuffledPairs = [...category.pairs].sort(() => 0.5 - Math.random());
+    const pair1 = shuffledPairs[0];
+    const pair2 = shuffledPairs[1];
+    
+    const wrongs = [shuffledPairs[2][1], shuffledPairs[3][1], shuffledPairs[4][1], shuffledPairs[5][1]];
+    
+    const flip = Math.random() > 0.5;
+    
+    let questionText = "";
+    let explanation = "";
+    
+    if (!flip) {
+      questionText = `${pair1[0].toUpperCase()} : ${pair1[1].toUpperCase()} = ${pair2[0].toUpperCase()} : ...`;
+      explanation = `Hubungan pada analogi ini adalah "${category.relation}". ${pair1[0]} memiliki hubungan "${category.relation}" dengan ${pair1[1]}, sebagaimana ${pair2[0]} memiliki hubungan dengan ${pair2[1]}.`;
+    } else {
+      questionText = `${pair1[1].toUpperCase()} : ${pair1[0].toUpperCase()} = ${pair2[1].toUpperCase()} : ...`;
+      explanation = `Hubungan pada analogi ini adalah "${category.relation}" namun posisinya dibalik. ${pair1[1]} adalah pasangannya ${pair1[0]}, sebagaimana ${pair2[1]} adalah pasangannya ${pair2[0]}.`;
+    }
+
+    questions.push({
+      subtest_id: subtestId,
+      number: currentNumber++,
+      question_text: questionText,
+      image_url: null,
+      explanation,
+      ...shuffleOptions(!flip ? pair2[1].toUpperCase() : pair2[0].toUpperCase(), wrongs.map(w => w.toUpperCase()))
+    });
+  }
+
+  return questions;
+}
