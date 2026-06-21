@@ -1,4 +1,4 @@
-const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ".split("");
 
 function randomLetter(): string {
   return ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
