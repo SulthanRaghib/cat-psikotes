@@ -1,23 +1,26 @@
-const ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ".split("");
+const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 const CONFUSING_PAIRS: Record<string, string[]> = {
   'A': ['R', 'H', 'M'],
   'B': ['P', 'R', 'D'],
-  'C': ['G', 'Q'],
-  'D': ['B', 'P'],
+  'C': ['G', 'Q', 'O'],
+  'D': ['B', 'P', 'O'],
   'E': ['F'],
   'F': ['E', 'P'],
-  'G': ['C', 'Q'],
+  'G': ['C', 'Q', 'O'],
   'H': ['M', 'N', 'A'],
-  'J': ['U', 'T'],
+  'I': ['L', 'T', 'J'],
+  'J': ['U', 'T', 'I'],
   'K': ['X', 'Y'],
+  'L': ['I', 'T'],
   'M': ['N', 'W', 'H'],
   'N': ['M', 'Z', 'H'],
+  'O': ['Q', 'C', 'G', 'D'],
   'P': ['R', 'F', 'B'],
-  'Q': ['G', 'C'],
+  'Q': ['G', 'C', 'O'],
   'R': ['P', 'B', 'A'],
   'S': ['Z', 'C'],
-  'T': ['J', 'Y'],
+  'T': ['J', 'Y', 'I', 'L'],
   'U': ['V', 'J'],
   'V': ['U', 'W', 'Y'],
   'W': ['V', 'M'],
@@ -51,8 +54,17 @@ export function generateLetterMatchItem(): {
     matchIndices.add(Math.floor(Math.random() * 4));
   }
 
+  // Ambil 4 huruf unik untuk base rowA agar tidak ada kolom yang hurufnya kembar
+  const baseLetters: string[] = [];
+  while (baseLetters.length < 4) {
+    const l = randomLetter();
+    if (!baseLetters.includes(l)) {
+      baseLetters.push(l);
+    }
+  }
+
   for (let col = 0; col < 4; col++) {
-    const baseLetter = randomLetter();
+    const baseLetter = baseLetters[col];
     const baseLetterA = randomCase(baseLetter);
     rowA.push(baseLetterA);
 
