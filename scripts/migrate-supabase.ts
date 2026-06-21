@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 import postgres from 'postgres';
 import bcrypt from 'bcryptjs';
-import { generateTpaQuestions } from './tpaDataGenerator';
+import { generateTpaQuestions, generateSyllogismQuestions } from './tpaDataGenerator';
 
 config({ path: '.env' });
 config({ path: '.env.local' });
@@ -123,7 +123,7 @@ async function migrate() {
         ('tpa_3', 3, 'Analogi Kata & Korelasi Makna', 'Kemampuan Verbal', 'TPA', NULL, NULL, 0),
         ('tpa_4', 4, 'Sinonim & Antonim', 'Kemampuan Verbal', 'TPA', NULL, NULL, 0),
         ('tpa_5', 5, 'Pemahaman Wacana', 'Kemampuan Verbal', 'TPA', NULL, NULL, 0),
-        ('tpa_6', 6, 'Silogisme & Penarikan Kesimpulan', 'Penalaran Logika & Analitis', 'TPA', NULL, NULL, 0),
+        ('tpa_6', 6, 'Silogisme & Penarikan Kesimpulan', 'Penalaran Logika & Analitis', 'TPA', 'tpa_multiple_choice', 1800, 1),
         ('tpa_7', 7, 'Penalaran Analitis', 'Penalaran Logika & Analitis', 'TPA', NULL, NULL, 0),
         ('tpa_8', 8, 'Rotasi Gambar & Jaring-jaring 3D', 'Kemampuan Figural & Spasial', 'TPA', NULL, NULL, 0),
         ('tpa_9', 9, 'Logika Pola Serial Gambar', 'Kemampuan Figural & Spasial', 'TPA', NULL, NULL, 0)
@@ -137,12 +137,15 @@ async function migrate() {
             is_active = EXCLUDED.is_active;
       `;
       
-      console.log('🔄 Menanamkan (Seeding) 100 TPA Questions...');
+      console.log('🔄 Menanamkan (Seeding) TPA Questions...');
       const questions = generateTpaQuestions('tpa_1', 100);
+      const tpa6Questions = generateSyllogismQuestions('tpa_6', 50);
+      
+      const allQuestions = [...questions, ...tpa6Questions];
       
       // Batch insert because postgres library handles arrays of objects naturally
       await sql`
-        INSERT INTO tpa_questions ${sql(questions)}
+        INSERT INTO tpa_questions ${sql(allQuestions)}
       `;
       
       console.log('✅ Seed 12 Subtes dan TPA berhasil ditambahkan!');

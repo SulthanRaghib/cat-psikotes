@@ -214,3 +214,117 @@ export function generateTpaQuestions(subtestId: string, count: number = 100) {
 
   return questions;
 }
+
+export function generateSyllogismQuestions(subtestId: string, count: number = 50) {
+  const questions = [];
+  let currentNumber = 1;
+
+  const shuffleOptions = (correct: string, wrongs: string[]) => {
+    const all = [correct, ...wrongs];
+    for (let i = all.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [all[i], all[j]] = [all[j], all[i]];
+    }
+    const correctIndex = all.indexOf(correct);
+    const letters = ['A', 'B', 'C', 'D', 'E'];
+    return {
+      option_a: all[0],
+      option_b: all[1],
+      option_c: all[2],
+      option_d: all[3],
+      option_e: all[4] || null,
+      correct_answer: letters[correctIndex]
+    };
+  };
+
+  const subjects = ['karyawan', 'mahasiswa', 'peserta ujian', 'teknisi', 'insinyur', 'pelamar', 'pekerja tambang', 'peneliti', 'dokter', 'guru'];
+  const properties = ['memakai seragam', 'lulus tes', 'mendapat bonus', 'hadir tepat waktu', 'memiliki sertifikat', 'memahami prosedur', 'mendapat promosi', 'bekerja lembur', 'mengikuti pelatihan', 'mendapat cuti'];
+  const conditions = ['hujan turun deras', 'cuaca cerah', 'mesin rusak', 'listrik padam', 'target tercapai', 'harga saham naik', 'proyek selesai', 'bos marah', 'jalan macet', 'alarm berbunyi'];
+  const actions = ['rapat ditunda', 'karyawan libur', 'produksi dihentikan', 'semua orang panik', 'bonus dibagikan', 'investor senang', 'pelanggan komplain', 'kantor ditutup', 'jadwal diubah', 'pekerja dievakuasi'];
+  const consequences = ['perusahaan rugi', 'gaji dipotong', 'suasana menjadi tegang', 'keuntungan menurun', 'media meliput', 'pekerjaan menumpuk', 'sistem di-restart', 'manajer dipanggil', 'semua orang pulang', 'kegiatan dibatalkan'];
+
+  const getRandom = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+  const getUnique = (arr: string[], c: number) => {
+    const shuffled = [...arr].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, c);
+  };
+
+  for (let i = 0; i < count; i++) {
+    const type = i % 5;
+    let question_text = '';
+    let correct_answer = '';
+    let explanation = '';
+    let wrongs: string[] = [];
+
+    if (type === 0) {
+      const A = getRandom(conditions);
+      const B = getRandom(actions);
+      question_text = `Premis 1: Jika ${A}, maka ${B}.\nPremis 2: Hari ini ${A}.\n\nKesimpulan yang tepat adalah...`;
+      correct_answer = `Hari ini ${B}.`;
+      wrongs = [
+        `Hari ini tidak ${B}.`,
+        `Jika tidak ${A}, maka ${B}.`,
+        `Hari ini tidak ${A} dan tidak ${B}.`,
+        `Tidak dapat ditarik kesimpulan.`
+      ];
+      explanation = `Ini adalah bentuk Modus Ponens (P \u2192 Q, P terjadi, maka Q pasti terjadi). Karena premis 2 menyatakan "${A}" terjadi, maka kesimpulan mutlaknya adalah "${B}".`;
+    } else if (type === 1) {
+      const A = getRandom(conditions);
+      const B = getRandom(actions);
+      question_text = `Premis 1: Jika ${A}, maka ${B}.\nPremis 2: Ternyata tidak ${B}.\n\nKesimpulan yang tepat adalah...`;
+      correct_answer = `Ternyata tidak ${A}.`;
+      wrongs = [
+        `Ternyata ${A}.`,
+        `Mungkin ${A} dan mungkin ${B}.`,
+        `Hari ini ${A} tetapi tidak ${B}.`,
+        `Tidak dapat ditarik kesimpulan.`
+      ];
+      explanation = `Ini adalah bentuk Modus Tollens (P \u2192 Q, \u007EQ terjadi, maka \u007EP pasti terjadi). Karena akibatnya ("${B}") tidak terjadi, maka pasti sebabnya ("${A}") juga tidak terjadi.`;
+    } else if (type === 2) {
+      const [A, B, C] = getUnique([...conditions, ...actions, ...consequences], 3);
+      question_text = `Premis 1: Jika ${A}, maka ${B}.\nPremis 2: Jika ${B}, maka ${C}.\n\nKesimpulan yang tepat adalah...`;
+      correct_answer = `Jika ${A}, maka ${C}.`;
+      wrongs = [
+        `Jika ${C}, maka ${A}.`,
+        `Jika tidak ${A}, maka ${C}.`,
+        `Jika ${A}, maka tidak ${C}.`,
+        `Semua jawaban salah.`
+      ];
+      explanation = `Ini adalah Silogisme Hipotesis berantai (P \u2192 Q dan Q \u2192 R, maka P \u2192 R). Rantai sebab akibat langsung menghubungkan P ("${A}") dengan R ("${C}").`;
+    } else if (type === 3) {
+      const subj = getRandom(subjects);
+      const [prop1, prop2] = getUnique(properties, 2);
+      question_text = `Premis 1: Semua ${subj} ${prop1}.\nPremis 2: Sebagian ${subj} ${prop2}.\n\nKesimpulan yang tepat adalah...`;
+      correct_answer = `Sebagian ${subj} yang ${prop2} pasti ${prop1}.`;
+      wrongs = [
+        `Semua ${subj} ${prop2} dan ${prop1}.`,
+        `Sebagian ${subj} tidak ${prop1} tetapi ${prop2}.`,
+        `Semua yang ${prop2} pasti bukan ${subj}.`,
+        `Tidak dapat ditarik kesimpulan.`
+      ];
+      explanation = `Hukum silogisme: Jika ada premis "sebagian" (partikular), maka kesimpulan juga harus "sebagian". Karena SEMUA ${subj} pasti ${prop1}, maka SEBAGIAN ${subj} yang ${prop2} sudah pasti juga ${prop1}.`;
+    } else {
+      const subjs = getUnique(subjects, 2);
+      const prop = getRandom(properties);
+      question_text = `Premis 1: Semua ${subjs[0]} adalah ${subjs[1]}.\nPremis 2: Semua ${subjs[1]} ${prop}.\n\nKesimpulan yang tepat adalah...`;
+      correct_answer = `Semua ${subjs[0]} ${prop}.`;
+      wrongs = [
+        `Sebagian ${subjs[0]} ${prop}.`,
+        `Semua yang ${prop} adalah ${subjs[0]}.`,
+        `Semua ${subjs[1]} adalah ${subjs[0]}.`,
+        `Semua jawaban salah.`
+      ];
+      explanation = `Hukum silogisme: Karena himpunan P (${subjs[0]}) berada di dalam Q (${subjs[1]}), dan Q memiliki sifat R (${prop}), maka P secara mutlak juga memiliki sifat R.`;
+    }
+
+    questions.push({
+      subtest_id: subtestId,
+      number: currentNumber++,
+      question_text,
+      image_url: null,
+      explanation,
+      ...shuffleOptions(correct_answer, wrongs)
+    });
+  }
+  return questions;
+}
