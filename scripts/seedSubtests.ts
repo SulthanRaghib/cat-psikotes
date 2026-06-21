@@ -23,7 +23,15 @@ async function main() {
     { id: "subtes_9", number: 9, name: "Hubungan Kata", group_name: "TIKI", category: "PSIKOTES", item_type: null, default_time_limit_seconds: null, is_active: 0 },
     { id: "subtes_10", number: 10, name: "Membandingkan Gambar", group_name: "TIKI", category: "PSIKOTES", item_type: null, default_time_limit_seconds: null, is_active: 0 },
     { id: "subtes_11", number: 11, name: "Labirin", group_name: "TIKI", category: "PSIKOTES", item_type: null, default_time_limit_seconds: null, is_active: 0 },
-    { id: "tpa_1", number: 1, name: "Kuantitatif & Deret Angka", group_name: "Logika Kuantitatif", category: "TPA", item_type: "tpa_multiple_choice", default_time_limit_seconds: 3600, is_active: 1 }
+    { id: "tpa_1", number: 1, name: "Kuantitatif & Deret Angka", group_name: "Logika Kuantitatif", category: "TPA", item_type: "tpa_multiple_choice", default_time_limit_seconds: 3600, is_active: 1 },
+    { id: "tpa_2", number: 2, name: "Interpretasi Data & Tabel", group_name: "Logika Kuantitatif", category: "TPA", item_type: null, default_time_limit_seconds: null, is_active: 0 },
+    { id: "tpa_3", number: 3, name: "Analogi Kata & Korelasi Makna", group_name: "Kemampuan Verbal", category: "TPA", item_type: null, default_time_limit_seconds: null, is_active: 0 },
+    { id: "tpa_4", number: 4, name: "Sinonim & Antonim", group_name: "Kemampuan Verbal", category: "TPA", item_type: null, default_time_limit_seconds: null, is_active: 0 },
+    { id: "tpa_5", number: 5, name: "Pemahaman Wacana", group_name: "Kemampuan Verbal", category: "TPA", item_type: null, default_time_limit_seconds: null, is_active: 0 },
+    { id: "tpa_6", number: 6, name: "Silogisme & Penarikan Kesimpulan", group_name: "Penalaran Logika & Analitis", category: "TPA", item_type: null, default_time_limit_seconds: null, is_active: 0 },
+    { id: "tpa_7", number: 7, name: "Penalaran Analitis", group_name: "Penalaran Logika & Analitis", category: "TPA", item_type: null, default_time_limit_seconds: null, is_active: 0 },
+    { id: "tpa_8", number: 8, name: "Rotasi Gambar & Jaring-jaring 3D", group_name: "Kemampuan Figural & Spasial", category: "TPA", item_type: null, default_time_limit_seconds: null, is_active: 0 },
+    { id: "tpa_9", number: 9, name: "Logika Pola Serial Gambar", group_name: "Kemampuan Figural & Spasial", category: "TPA", item_type: null, default_time_limit_seconds: null, is_active: 0 }
   ];
 
   try {

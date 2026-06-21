@@ -118,7 +118,15 @@ async function migrate() {
         ('subtes_9', 9, 'Hubungan Kata', 'TIKI', 'PSIKOTES', NULL, NULL, 0),
         ('subtes_10', 10, 'Membandingkan Gambar', 'TIKI', 'PSIKOTES', NULL, NULL, 0),
         ('subtes_11', 11, 'Labirin', 'TIKI', 'PSIKOTES', NULL, NULL, 0),
-        ('tpa_1', 1, 'Kuantitatif & Deret Angka', 'Logika Kuantitatif', 'TPA', 'tpa_multiple_choice', 3600, 1)
+        ('tpa_1', 1, 'Kuantitatif & Deret Angka', 'Logika Kuantitatif', 'TPA', 'tpa_multiple_choice', 3600, 1),
+        ('tpa_2', 2, 'Interpretasi Data & Tabel', 'Logika Kuantitatif', 'TPA', NULL, NULL, 0),
+        ('tpa_3', 3, 'Analogi Kata & Korelasi Makna', 'Kemampuan Verbal', 'TPA', NULL, NULL, 0),
+        ('tpa_4', 4, 'Sinonim & Antonim', 'Kemampuan Verbal', 'TPA', NULL, NULL, 0),
+        ('tpa_5', 5, 'Pemahaman Wacana', 'Kemampuan Verbal', 'TPA', NULL, NULL, 0),
+        ('tpa_6', 6, 'Silogisme & Penarikan Kesimpulan', 'Penalaran Logika & Analitis', 'TPA', NULL, NULL, 0),
+        ('tpa_7', 7, 'Penalaran Analitis', 'Penalaran Logika & Analitis', 'TPA', NULL, NULL, 0),
+        ('tpa_8', 8, 'Rotasi Gambar & Jaring-jaring 3D', 'Kemampuan Figural & Spasial', 'TPA', NULL, NULL, 0),
+        ('tpa_9', 9, 'Logika Pola Serial Gambar', 'Kemampuan Figural & Spasial', 'TPA', NULL, NULL, 0)
         ON CONFLICT (id) DO UPDATE SET 
             number = EXCLUDED.number,
             name = EXCLUDED.name,
