@@ -328,3 +328,169 @@ export function generateSyllogismQuestions(subtestId: string, count: number = 50
   }
   return questions;
 }
+
+export function generateReadingQuestions(subtestId: string) {
+  const questions = [];
+  let currentNumber = 1;
+
+  const shuffleOptions = (correct: string, wrongs: string[]) => {
+    const all = [correct, ...wrongs];
+    for (let i = all.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [all[i], all[j]] = [all[j], all[i]];
+    }
+    const correctIndex = all.indexOf(correct);
+    const letters = ['A', 'B', 'C', 'D', 'E'];
+    return {
+      option_a: all[0],
+      option_b: all[1],
+      option_c: all[2],
+      option_d: all[3],
+      option_e: all[4] || null,
+      correct_answer: letters[correctIndex]
+    };
+  };
+
+  const passages = [
+    {
+      text: "Teks 1 untuk Soal 1-3\n\nDalam industri hulu migas, operasi pengeboran (drilling) merupakan salah satu tahapan dengan risiko tinggi, baik secara finansial maupun keselamatan. Faktor utama yang menyebabkan insiden selama pengeboran adalah hilangnya kendali terhadap tekanan sumur atau yang biasa dikenal dengan istilah 'blowout'. Untuk mencegah hal ini, setiap rig dilengkapi dengan Blowout Preventer (BOP). BOP bertindak sebagai katup penutup darurat yang sangat besar, dirancang untuk menyegel, mengendalikan, dan memonitor sumur minyak dan gas untuk mencegah pelepasan fluida yang tidak terkendali. Inspeksi dan pengujian BOP wajib dilakukan secara berkala sebelum dan selama proses pengeboran berlangsung. Kegagalan melakukan pengujian ini dapat berakibat fatal, tidak hanya menyebabkan kerugian alat miliaran rupiah, tetapi juga hilangnya nyawa pekerja serta kerusakan lingkungan yang parah akibat tumpahan minyak.",
+      items: [
+        {
+          q: "Gagasan utama dari paragraf di atas adalah...",
+          ans: "Pentingnya fungsi dan pengujian Blowout Preventer (BOP) dalam mencegah insiden pengeboran.",
+          wrongs: [
+            "Kerugian finansial dan lingkungan akibat tumpahan minyak di industri migas.",
+            "Operasi pengeboran merupakan tahapan paling mahal dalam hulu migas.",
+            "BOP adalah alat yang mahal namun sering mengalami kegagalan teknis.",
+            "Hilangnya nyawa pekerja sering terjadi akibat kelalaian inspeksi sumur."
+          ],
+          exp: "Gagasan utama adalah ide pokok sebuah teks. Keseluruhan paragraf berfokus membahas peran krusial Blowout Preventer (BOP) untuk mencegah 'blowout' dan pentingnya pengujian alat tersebut demi mencegah berbagai risiko fatal."
+        },
+        {
+          q: "Berdasarkan teks, pernyataan manakah yang TIDAK BENAR mengenai Blowout Preventer (BOP)?",
+          ans: "BOP digunakan untuk meningkatkan laju aliran fluida dari dalam sumur gas.",
+          wrongs: [
+            "BOP bertindak sebagai katup penutup darurat yang besar.",
+            "Inspeksi BOP wajib dilakukan secara berkala sebelum pengeboran.",
+            "BOP dirancang untuk menyegel dan memonitor sumur minyak.",
+            "Kegagalan fungsi BOP dapat berakibat pada kerusakan lingkungan."
+          ],
+          exp: "Pernyataan tersebut salah karena menurut teks, fungsi BOP adalah 'menyegel, mengendalikan, dan memonitor sumur... untuk MENCEGAH pelepasan fluida', bukan untuk meningkatkan laju alirannya."
+        },
+        {
+          q: "Kata 'fatal' pada kalimat terakhir dalam teks tersebut memiliki makna yang paling dekat dengan...",
+          ans: "Mematikan atau membawa akibat yang sangat buruk.",
+          wrongs: [
+            "Sulit untuk diperbaiki.",
+            "Sangat memakan banyak biaya.",
+            "Menimbulkan ketidaknyamanan jangka panjang.",
+            "Menghentikan seluruh proses operasional secara tiba-tiba."
+          ],
+          exp: "Secara leksikal (kamus), fatal berarti membawa kematian atau kehancuran/akibat yang sangat buruk yang tidak bisa diubah lagi. Konteks kalimat ini merujuk pada hilangnya nyawa dan kerusakan parah."
+        }
+      ]
+    },
+    {
+      text: "Teks 2 untuk Soal 4-6\n\nKecerdasan Buatan (AI) telah membawa revolusi signifikan dalam dunia analisis data. Dulu, para analis data menghabiskan 80% waktu mereka untuk membersihkan dan merapikan data, dan hanya 20% untuk mencari wawasan (insights) yang berguna. Dengan masuknya algoritma machine learning, proses pembersihan data kini dapat diotomatisasi. AI dapat mendeteksi anomali, mengisi data yang hilang (missing values), dan mengidentifikasi pola tersembunyi yang mungkin terlewatkan oleh mata manusia. Namun, ketergantungan yang berlebihan pada AI menimbulkan kekhawatiran baru: 'Black Box Problem'. Masalah ini muncul ketika sebuah model AI menghasilkan prediksi yang sangat akurat, tetapi para pembuatnya sendiri tidak bisa menjelaskan secara logis bagaimana AI tersebut bisa sampai pada kesimpulan itu. Dalam sektor medis atau hukum, ketidakmampuan menjelaskan dasar keputusan ini sangat berbahaya.",
+      items: [
+        {
+          q: "Apa yang dimaksud dengan 'Black Box Problem' berdasarkan teks di atas?",
+          ans: "Situasi di mana model AI memberikan prediksi akurat namun proses pengambilan keputusannya tidak dapat dijelaskan secara logis.",
+          wrongs: [
+            "Ketergantungan analis data pada algoritma machine learning untuk membersihkan data.",
+            "Sebuah masalah di mana AI tidak dapat mengisi data yang hilang dengan benar.",
+            "Ketidakmampuan AI dalam mendeteksi anomali tanpa bantuan dari manusia.",
+            "Sistem keamanan kotak hitam yang digunakan untuk menyimpan data medis dan hukum."
+          ],
+          exp: "Paragraf menyebutkan secara eksplisit: 'Masalah ini muncul ketika sebuah model AI menghasilkan prediksi yang sangat akurat, tetapi para pembuatnya sendiri tidak bisa menjelaskan secara logis bagaimana AI tersebut bisa sampai pada kesimpulan itu.'"
+        },
+        {
+          q: "Kesimpulan yang dapat ditarik dari teks di atas mengenai peran AI bagi analis data adalah...",
+          ans: "AI meningkatkan efisiensi analis dengan mengotomatisasi pembersihan data, tetapi memunculkan tantangan baru terkait transparansi keputusan.",
+          wrongs: [
+            "AI telah sepenuhnya menggantikan peran analis data dalam mencari wawasan yang berguna.",
+            "AI hanya berguna dalam sektor medis dan hukum untuk menghindari kesalahan fatal.",
+            "Meskipun AI mempercepat proses kerja, analis data tetap menghabiskan 80% waktunya untuk memvalidasi algoritma.",
+            "AI tidak bisa mendeteksi pola tersembunyi sebaik mata manusia yang terlatih."
+          ],
+          exp: "Kesimpulan harus merangkum ide awal (efisiensi berkat otomasi data cleaning) dan akhir (masalah black box / kurangnya transparansi). Opsi ini mencakup kedua gagasan tersebut secara seimbang."
+        },
+        {
+          q: "Mengapa teks menyatakan bahwa 'Black Box Problem' sangat berbahaya dalam sektor medis atau hukum?",
+          ans: "Karena dalam kedua sektor tersebut, setiap keputusan yang diambil harus memiliki dasar alasan logis dan dapat dipertanggungjawabkan.",
+          wrongs: [
+            "Karena AI belum diizinkan oleh undang-undang untuk memproses data hukum.",
+            "Karena prediksi AI dalam medis sering kali terbukti tidak akurat secara fatal.",
+            "Karena analis data di bidang medis tidak mengerti cara kerja algoritma machine learning.",
+            "Karena algoritma AI dapat dengan mudah dimanipulasi oleh pihak yang tidak bertanggung jawab."
+          ],
+          exp: "Ini merupakan penalaran inferensial. Dalam hukum dan medis, nyawa dan nasib seseorang menjadi taruhan. Keputusan (misal: memvonis hukuman atau diagnosis penyakit) wajib memiliki dasar yang rasional untuk dipertanggungjawabkan (akuntabilitas), tidak bisa hanya mengandalkan hasil \"ajaib\" dari mesin."
+        }
+      ]
+    },
+    {
+      text: "Teks 3 untuk Soal 7-10\n\nBerdasarkan studi dari Global Leadership Institute, Learning Agility atau ketangkasan belajar kini dianggap sebagai prediktor kesuksesan karier yang lebih valid daripada IQ. Seseorang yang memiliki Learning Agility tinggi memiliki kemampuan dan kemauan untuk belajar dari pengalaman, lalu mengaplikasikan pembelajaran tersebut untuk meraih kesuksesan dalam kondisi yang baru atau pertama kali dialami. Konsep ini mencakup empat dimensi utama: Mental Agility (berpikir kritis dan merasa nyaman dengan ambiguitas), People Agility (memahami orang lain dan mampu bekerja dengan beragam tipe individu), Change Agility (suka melakukan eksperimen dan tahan banting terhadap perubahan), serta Results Agility (mampu memberikan hasil dalam situasi pertama kali). Pemimpin dengan Learning Agility yang rendah biasanya terjebak pada cara-cara lama yang berhasil di masa lalu, yang sering kali justru menjadi penyebab utama kegagalan mereka saat menghadapi krisis modern.",
+      items: [
+        {
+          q: "Berdasarkan teks, mengapa pemimpin dengan Learning Agility rendah berpotensi mengalami kegagalan saat krisis modern?",
+          ans: "Karena mereka cenderung mengandalkan metode-metode usang yang pernah berhasil di masa lalu tanpa mau beradaptasi.",
+          wrongs: [
+            "Karena mereka memiliki tingkat IQ yang berada di bawah standar rata-rata pemimpin.",
+            "Karena mereka gagal memahami orang lain dan tidak mampu bekerja dalam tim.",
+            "Karena mereka tidak pernah dihadapkan pada situasi baru sebelumnya.",
+            "Karena mereka selalu bereksperimen dengan cara baru namun sering gagal di tengah jalan."
+          ],
+          exp: "Dinyatakan di kalimat terakhir: 'Pemimpin dengan Learning Agility yang rendah biasanya terjebak pada cara-cara lama yang berhasil di masa lalu... penyebab utama kegagalan mereka saat menghadapi krisis modern.'"
+        },
+        {
+          q: "Seorang manajer dipindahkan ke divisi baru yang belum pernah ia tangani. Ia langsung mampu menyusun strategi yang efektif dan membawa divisinya mencapai target. Kemampuan ini paling sesuai dengan dimensi...",
+          ans: "Results Agility",
+          wrongs: [
+            "Mental Agility",
+            "People Agility",
+            "Change Agility",
+            "Emotional Agility"
+          ],
+          exp: "Teks menjelaskan Results Agility sebagai 'mampu memberikan hasil (meraih target/menyusun strategi efektif) dalam situasi pertama kali (divisi baru yang belum pernah ditangani).'"
+        },
+        {
+          q: "Pernyataan yang PALING TIDAK MENDUKUNG gagasan utama teks tersebut adalah...",
+          ans: "Perekrutan karyawan sebaiknya didasarkan murni pada skor tes kecerdasan intelektual (IQ).",
+          wrongs: [
+            "Pelatihan karyawan di perusahaan harus fokus pada kemampuan adaptasi terhadap tantangan baru.",
+            "Kandidat dengan pengalaman yang beragam lebih disukai daripada yang ahli namun kaku di satu bidang.",
+            "Perusahaan sebaiknya mempromosikan staf yang berani mengambil risiko untuk mencoba hal baru.",
+            "Pengalaman masa lalu harus dijadikan pelajaran, bukan cetak biru yang kaku."
+          ],
+          exp: "Teks secara jelas menyatakan bahwa Learning Agility 'kini dianggap sebagai prediktor kesuksesan karier yang LEBIH VALID daripada IQ'. Maka gagasan merekrut HANYA berdasarkan IQ bertentangan secara frontal dengan esensi teks."
+        },
+        {
+          q: "Kata 'ambiguitas' dalam teks tersebut bersinonim dengan...",
+          ans: "Ketidakpastian atau keadaan yang memiliki makna lebih dari satu.",
+          wrongs: [
+            "Ketegasan",
+            "Kesesatan",
+            "Kekakuan sistem",
+            "Ketahanan mental"
+          ],
+          exp: "Ambiguitas merujuk pada situasi yang rancu, tidak jelas maknanya, memiliki banyak penafsiran, atau mengandung unsur ketidakpastian. Orang dengan Mental Agility tinggi merasa nyaman berada dalam situasi yang belum pasti."
+        }
+      ]
+    }
+  ];
+
+  for (const passage of passages) {
+    for (const item of passage.items) {
+      questions.push({
+        subtest_id: subtestId,
+        number: currentNumber++,
+        question_text: passage.text + '\n\n' + item.q,
+        image_url: null,
+        explanation: item.exp,
+        ...shuffleOptions(item.ans, item.wrongs)
+      });
+    }
+  }
+
+  return questions;
+}
